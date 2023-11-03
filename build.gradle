@@ -38,6 +38,10 @@ dependencies {
     // DataBase
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
 
+    // Swagger
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.1'
