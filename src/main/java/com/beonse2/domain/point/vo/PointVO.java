@@ -11,6 +11,7 @@ import static lombok.AccessLevel.*;
 @NoArgsConstructor(access = PROTECTED)
 public class PointVO {
 
+    private Long pid;
     private int points;
     private int paymentPrice;
     private String cardName;
