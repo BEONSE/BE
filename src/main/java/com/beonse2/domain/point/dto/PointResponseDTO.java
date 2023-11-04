@@ -1,6 +1,7 @@
 package com.beonse2.domain.point.dto;
 
 import com.beonse2.domain.point.vo.PointVO;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -12,7 +13,7 @@ public class PointResponseDTO {
     private String cardName;
     private String cardNumber;
 
-
+    @Builder
     public PointResponseDTO(PointVO pointVO) {
         this.pid = pointVO.getPid();
         this.points = pointVO.getPoints();

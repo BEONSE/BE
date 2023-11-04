@@ -3,12 +3,8 @@ package com.beonse2.domain.point.vo;
 import com.beonse2.domain.point.dto.PointRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import static lombok.AccessLevel.*;
 
 @Getter
-@NoArgsConstructor(access = PROTECTED)
 public class PointVO {
 
     private Long pid;
@@ -18,9 +14,8 @@ public class PointVO {
     private String cardNumber;
 
     @Builder
-
-    public PointVO(PointRequestDTO pointRequestDTO) {
-        this.points = pointRequestDTO.getPoints();
+    public PointVO(int points, PointRequestDTO pointRequestDTO) {
+        this.points = points;
         this.paymentPrice = pointRequestDTO.getPaymentPrice();
         this.cardName = pointRequestDTO.getCardName();
         this.cardNumber = pointRequestDTO.getCardNumber();
