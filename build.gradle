@@ -23,13 +23,15 @@ repositories {
 
 dependencies {
     // Spring boot
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+
     // Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    testImplementation 'org.springframework.security:spring-security-test'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    testImplementation 'org.springframework.security:spring-security-test'
 
     /* spring-security-crypto */
     implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.6'
@@ -49,6 +51,10 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'com.auth0:java-jwt:3.10.3'
+
+    // Swagger
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
