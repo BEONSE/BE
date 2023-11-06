@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.member.mapper.MemberMapper">
+
+<!--    <sql id="memberColumns">
+    <![CDATA[
+          mid
+        , email
+        , nickname
+        , password
+        , name
+        , address
+        , role
+        , paymentAmount
+        , status
+        , image
+        ,isApproval
+        , createAt
+        , modifiedAt
+    ]]>
+    </sql>-->
+
+<!-- 회원 정보 저장 (회원 가입) -->
+    <insert id="save" parameterType="com.beonse2.member.dto.MemberDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MEMBER
+              VALUES  (#{id},
+                       #{email},
+                       #{nickname},
+                       #{password},
+                       #{name},
+                       #{address},
+                       #{role},
+                       0,
+                       0,
+                       NULL,
+                       NULL,
+                       SYSDATE,
+                       0);
+    </insert>
+
+<!--회원 상세정보 조회-->
+
+    <select id="findByEmail" parameterType="string" resultType="com.beonse2.member.dto.MemberDTO" >
+        SELECT *
+        FROM MEMBER
+        WHERE STATUS = 0
+          AND EMAIL = #{value}
+    </select>
+
+<!--회원 정보 수정-->
+    <update id="update" parameterType="com.beonse2.member.dto.MemberDTO">
+        UPDATE MEMBER
+        SET
+            NICKNAME = #{nickname},
+        <if test="password != null and password != ''">
+            PASSWORD = #{password}
+        </if>
+       ,
+            ADDRESS = #{address},
+            IMAGE = #{image},
+            MODIFIED_AT = SYSDATE
+        WHERE MID = #{id}
+    </update>
+
+<!--회원 정보 삭제(회원 탈퇴)-->
+    <delete id="deleteById" parameterType="long">
+        UPDATE MEMBER
+        SET
+            STATUS = 1
+        WHERE
+            MID = #{id}
+    </delete>
+
+<!--회원 수 카운팅 (ID 중복 체크)-->
+    <select id="duplicateEmail" parameterType="String" resultType="int">
+        SELECT
+            count(*)
+        FROM
+            MEMBER
+        WHERE
+            EMAIL = #{value}
+    </select>
+</mapper>

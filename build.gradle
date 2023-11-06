@@ -31,12 +31,24 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    /* spring-security-crypto */
+    implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.6'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     // DataBase
     runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+
+    // https://mvnrepository.com/artifact/com.auth0/java-jwt
+    implementation group: 'com.auth0', name: 'java-jwt', version: '3.10.2'
+    // jwt토큰
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'com.auth0:java-jwt:3.10.3'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
