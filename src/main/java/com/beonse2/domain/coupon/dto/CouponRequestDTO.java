@@ -5,7 +5,6 @@ import lombok.Getter;
 @Getter
 public class CouponRequestDTO {
 
-    private Long branchBid;
     private String type;
     private int price;
 
