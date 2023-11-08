@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
@@ -33,19 +36,42 @@ public class PointService {
 
         int points = (int) (pointRequestDTO.getPaymentPrice() * 1.1);
 
-
         pointMapper.save(PointVO.builder()
                 .points(points)
-                .pointRequestDTO(pointRequestDTO)
+                .paymentPrice(pointRequestDTO.getPaymentPrice())
+                .cardName(pointRequestDTO.getCardName())
+                .cardNumber(pointRequestDTO.getCardNumber())
                 .build());
 
         PointVO pointVO = PointVO.builder()
                 .points(points)
-                .pointRequestDTO(pointRequestDTO)
+                .paymentPrice(pointRequestDTO.getPaymentPrice())
+                .cardName(pointRequestDTO.getCardName())
+                .cardNumber(pointRequestDTO.getCardNumber())
                 .build();
 
         return ResponseEntity.ok(PointResponseDTO.builder()
                 .pointVO(pointVO)
                 .build());
+    }
+
+    public ResponseEntity<List<PointResponseDTO>> findPointList(Long memberMid) {
+
+        List<PointVO> pointVOS = pointMapper.findAllByMemberMidOrderByPaymentDateDesc(memberMid);
+
+        if (pointVOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_PAYMENT);
+        }
+
+        List<PointResponseDTO> pointResponseDTOS = new ArrayList<>();
+        for (PointVO pointVO : pointVOS) {
+            PointResponseDTO pointResponseDTO = PointResponseDTO.builder()
+                    .pointVO(pointVO)
+                    .build();
+
+            pointResponseDTOS.add(pointResponseDTO);
+        }
+
+        return ResponseEntity.ok(pointResponseDTOS);
     }
 }
