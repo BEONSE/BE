@@ -12,18 +12,16 @@ import static lombok.AccessLevel.*;
 @NoArgsConstructor(access = PROTECTED)
 public class CouponVO {
 
-    private Long mcid;
+    private Long cid;
     private Long memberMid;
-    private Long branchBid;
     private String type;
     private int price;
     private boolean isUsed;
     private Timestamp paymentDate;
 
     @Builder
-    public CouponVO(Long memberMid, Long branchBid, String type, int price, boolean isUsed) {
+    public CouponVO(Long memberMid, String type, int price, boolean isUsed) {
         this.memberMid = memberMid;
-        this.branchBid = branchBid;
         this.type = type;
         this.price = price;
         this.isUsed = isUsed;
