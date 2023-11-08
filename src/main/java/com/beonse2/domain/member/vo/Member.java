@@ -1,8 +1,7 @@
-package com.beonse2.member.vo;
+package com.beonse2.domain.member.vo;
 
-import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.vo.enums.Approval;
-import com.beonse2.member.vo.enums.Role;
+import com.beonse2.domain.member.vo.enums.Approval;
+import com.beonse2.domain.member.vo.enums.Role;
 import lombok.*;
 
 

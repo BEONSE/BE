@@ -1,18 +1,15 @@
-package com.beonse2.member.service;
+package com.beonse2.domain.member.service;
 
 import com.beonse2.exception.CustomException;
-import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.mapper.MemberMapper;
-import lombok.NoArgsConstructor;
+import com.beonse2.domain.member.dto.MemberDTO;
+import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service

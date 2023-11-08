@@ -1,4 +1,4 @@
-package com.beonse2.member.dto;
+package com.beonse2.domain.member.dto;
 
 import lombok.*;
 

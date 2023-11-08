@@ -1,9 +1,6 @@
-package com.beonse2.member.mapper;
+package com.beonse2.domain.member.mapper;
 
-import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.dto.MemberRequest;
-import com.beonse2.member.dto.MemberResponse;
-import com.beonse2.member.vo.Member;
+import com.beonse2.domain.member.dto.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Optional;
