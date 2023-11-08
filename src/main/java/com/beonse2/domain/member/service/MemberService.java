@@ -1,22 +1,19 @@
-package com.beonse2.member.service;
+package com.beonse2.domain.member.service;
 
 import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.domain.member.vo.enums.Role;
 import com.beonse2.exception.CustomException;
-import com.beonse2.member.dto.LoginDTO;
-import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.dto.TokenDTO;
-import com.beonse2.member.mapper.MemberMapper;
-import com.beonse2.member.vo.Member;
-import com.beonse2.member.vo.enums.Role;
+import com.beonse2.domain.member.dto.LoginDTO;
+import com.beonse2.domain.member.dto.MemberDTO;
+import com.beonse2.domain.member.dto.TokenDTO;
+import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.sql.Timestamp;
 

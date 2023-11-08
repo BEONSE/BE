@@ -1,7 +1,6 @@
-package com.beonse2.member.dto;
+package com.beonse2.domain.member.dto;
 
-import com.beonse2.member.vo.Member;
-import com.beonse2.member.vo.enums.Role;
+import com.beonse2.domain.member.vo.enums.Role;
 import lombok.Getter;
 
 import java.io.File;

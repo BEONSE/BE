@@ -1,4 +1,4 @@
-package com.beonse2.member.vo.enums;
+package com.beonse2.domain.member.vo.enums;
 
 public enum Approval {
     WAITING("승인대기"),

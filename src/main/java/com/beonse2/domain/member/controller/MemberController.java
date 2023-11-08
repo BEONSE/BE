@@ -1,14 +1,14 @@
-package com.beonse2.member.controller;
+package com.beonse2.domain.member.controller;
 
 import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.exception.CustomException;
-import com.beonse2.member.dto.LoginDTO;
-import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.dto.TokenDTO;
-import com.beonse2.member.service.MemberService;
+import com.beonse2.domain.member.dto.LoginDTO;
+import com.beonse2.domain.member.dto.MemberDTO;
+import com.beonse2.domain.member.dto.TokenDTO;
+import com.beonse2.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

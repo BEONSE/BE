@@ -30,8 +30,8 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
 
     // Spring Security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-//    testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     /* spring-security-crypto */
     implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.7.6'

@@ -1,4 +1,4 @@
-package com.beonse2.member.vo.enums;
+package com.beonse2.domain.member.vo.enums;
 
 
 import lombok.AllArgsConstructor;
