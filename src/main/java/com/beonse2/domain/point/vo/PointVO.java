@@ -4,6 +4,8 @@ import com.beonse2.domain.point.dto.PointRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.sql.Timestamp;
+
 @Getter
 public class PointVO {
 
@@ -12,12 +14,15 @@ public class PointVO {
     private int paymentPrice;
     private String cardName;
     private String cardNumber;
+    private Timestamp paymentDate;
 
     @Builder
-    public PointVO(int points, PointRequestDTO pointRequestDTO) {
+    public PointVO(Long pid, int points, int paymentPrice, String cardName, String cardNumber, Timestamp paymentDate) {
+        this.pid = pid;
         this.points = points;
-        this.paymentPrice = pointRequestDTO.getPaymentPrice();
-        this.cardName = pointRequestDTO.getCardName();
-        this.cardNumber = pointRequestDTO.getCardNumber();
+        this.paymentPrice = paymentPrice;
+        this.cardName = cardName;
+        this.cardNumber = cardNumber;
+        this.paymentDate = paymentDate;
     }
 }

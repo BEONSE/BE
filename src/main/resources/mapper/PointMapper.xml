@@ -9,4 +9,10 @@
         VALUES (point_seq.NEXTVAL, 1, #{points}, #{paymentPrice}, #{cardName}, #{cardNumber}, SYSTIMESTAMP)
     </insert>
 
+    <select id="findAllByMemberMidOrderByPaymentDateDesc" resultType="com.beonse2.domain.point.vo.PointVO" parameterType="int">
+        SELECT pid, points, payment_price, card_name, card_number, payment_date
+        FROM point
+        WHERE member_mid = 1
+        ORDER BY payment_date DESC
+    </select>
 </mapper>
