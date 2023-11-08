@@ -1,8 +1,8 @@
-package com.beonse2.domain.mycoupon.controller;
+package com.beonse2.domain.coupon.controller;
 
-import com.beonse2.domain.mycoupon.dto.MyCouponRequestDTO;
-import com.beonse2.domain.mycoupon.dto.MyCouponResponseDTO;
-import com.beonse2.domain.mycoupon.service.MyCouponService;
+import com.beonse2.domain.coupon.dto.CouponRequestDTO;
+import com.beonse2.domain.coupon.dto.CouponResponseDTO;
+import com.beonse2.domain.coupon.service.CouponService;
 import com.beonse2.domain.member.dto.MemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,9 +16,9 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-public class MyCouponController {
+public class CouponController {
 
-    private final MyCouponService couponService;
+    private final CouponService couponService;
 
     @Operation(summary = "쿠폰 결제", description = "쿠폰 결제")
     @ApiResponses({
@@ -26,8 +26,8 @@ public class MyCouponController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @PostMapping("/payments/coupons")
-    public ResponseEntity<MyCouponResponseDTO> postMyCoupon(@AuthenticationPrincipal MemberDTO memberDTO,
-                                                          @RequestBody MyCouponRequestDTO couponRequestDTO) {
+    public ResponseEntity<CouponResponseDTO> postMyCoupon(@AuthenticationPrincipal MemberDTO memberDTO,
+                                                          @RequestBody CouponRequestDTO couponRequestDTO) {
         return couponService.createMyCoupon(memberDTO, couponRequestDTO);
     }
 
@@ -36,9 +36,8 @@ public class MyCouponController {
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
-    @GetMapping("/mypage/coupons/{coupon-cid}")
-    public ResponseEntity<List<MyCouponResponseDTO>> getMyCouponList(@AuthenticationPrincipal MemberDTO memberDTO,
-                                                                   @PathVariable("coupon-cid") Long couponId) {
-        return couponService.findMyCouponList(memberDTO, couponId);
+    @GetMapping("/mypage/coupons")
+    public ResponseEntity<List<CouponResponseDTO>> getMyCouponList(@AuthenticationPrincipal MemberDTO memberDTO) {
+        return couponService.findMyCouponList(memberDTO);
     }
 }

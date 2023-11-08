@@ -1,11 +1,11 @@
-package com.beonse2.domain.mycoupon.service;
+package com.beonse2.domain.coupon.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
-import com.beonse2.domain.mycoupon.dto.MyCouponRequestDTO;
-import com.beonse2.domain.mycoupon.dto.MyCouponResponseDTO;
-import com.beonse2.domain.mycoupon.mapper.MyCouponMapper;
-import com.beonse2.domain.mycoupon.vo.MyCouponVO;
+import com.beonse2.domain.coupon.dto.CouponRequestDTO;
+import com.beonse2.domain.coupon.dto.CouponResponseDTO;
+import com.beonse2.domain.coupon.mapper.CouponMapper;
+import com.beonse2.domain.coupon.vo.CouponVO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +18,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MyCouponService {
+public class CouponService {
 
-    private final MyCouponMapper couponMapper;
+    private final CouponMapper couponMapper;
 
     @Transactional
-    public ResponseEntity<MyCouponResponseDTO> createMyCoupon(MemberDTO memberDTO, MyCouponRequestDTO couponRequestDTO) {
+    public ResponseEntity<CouponResponseDTO> createMyCoupon(MemberDTO memberDTO, CouponRequestDTO couponRequestDTO) {
 
-        MyCouponVO couponVO = MyCouponVO.builder()
+        CouponVO couponVO = CouponVO.builder()
                 .memberMid(1L)
                 .branchBid(1L)
                 .type(couponRequestDTO.getType())
@@ -33,7 +33,7 @@ public class MyCouponService {
                 .isUsed(false)
                 .build();
 
-        couponMapper.saveMyCoupon(MyCouponVO.builder()
+        couponMapper.saveMyCoupon(CouponVO.builder()
                 .memberMid(1L)
                 .branchBid(1L)
                 .type(couponRequestDTO.getType())
@@ -41,22 +41,22 @@ public class MyCouponService {
                 .isUsed(false)
                 .build());
 
-        return ResponseEntity.ok(MyCouponResponseDTO.builder()
+        return ResponseEntity.ok(CouponResponseDTO.builder()
                 .couponVO(couponVO)
                 .build());
     }
 
-    public ResponseEntity<List<MyCouponResponseDTO>> findMyCouponList(MemberDTO memberDTO, Long couponId) {
+    public ResponseEntity<List<CouponResponseDTO>> findMyCouponList(MemberDTO memberDTO) {
 
-        List<MyCouponVO> couponVOS = couponMapper.findAllByMemberMidAndMyCouponMcpidOrderByPaymentDateDesc(couponId);
+        List<CouponVO> couponVOS = couponMapper.findAllByMemberMidOrderByPaymentDateDesc(memberDTO.getMid());
 
         if (couponVOS.isEmpty()) {
             throw new CustomException(ErrorCode.NOT_FOUND_COUPON);
         }
 
-        List<MyCouponResponseDTO> couponResponseDTOS = new ArrayList<>();
-        for (MyCouponVO couponVO : couponVOS) {
-            MyCouponResponseDTO couponResponseDTO = MyCouponResponseDTO.builder()
+        List<CouponResponseDTO> couponResponseDTOS = new ArrayList<>();
+        for (CouponVO couponVO : couponVOS) {
+            CouponResponseDTO couponResponseDTO = CouponResponseDTO.builder()
                     .couponVO(couponVO)
                     .build();
 
