@@ -17,7 +17,9 @@ import java.util.Collection;
 @AllArgsConstructor
 public class MemberDTO implements UserDetails {
 
+    private Long mid;
     private String email; //email -> id
+    private String name;
     private String nickname; //닉네임
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     // 해당 필드는 오직 쓰려는 경우(deserialize)에만 접근이 허용
@@ -30,7 +32,6 @@ public class MemberDTO implements UserDetails {
     private File image;//프로필 사진
     private Timestamp createdAt;//생성일
     private Timestamp modifiedAt;//수정일
-
 
     //security 이용 코드
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

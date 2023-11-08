@@ -7,18 +7,14 @@ import com.beonse2.config.service.ResponseService;
 import com.beonse2.exception.CustomException;
 import com.beonse2.member.dto.LoginDTO;
 import com.beonse2.member.dto.MemberDTO;
-import com.beonse2.member.dto.MemberRequest;
 import com.beonse2.member.dto.TokenDTO;
 import com.beonse2.member.service.MemberService;
-import com.beonse2.member.vo.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -29,22 +25,23 @@ import javax.servlet.http.Cookie;
 @RequestMapping("/api")
 public class MemberController {
 
-    @Autowired
-    MemberService memberService;
 
-    @Autowired
-    ResponseService responseService;
+    private final MemberService memberService;
 
-    @Autowired
-    TokenProvider tokenProvider;
+
+    private final ResponseService responseService;
+
+
+    private final TokenProvider tokenProvider;
 
     //회원 가입
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody MemberDTO member) {
+    public ResponseEntity<?> save(@RequestBody MemberDTO member) {
         ResponseEntity responseEntity = null;
 
         try {
-            memberService.join(member);
+            memberService.save(member);
+            System.out.println("Member : " + member);
             TokenDTO token = memberService.tokenGenerator(member.getEmail());
             ResponseCookie responseCookie =
                     ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
@@ -53,14 +50,14 @@ public class MemberController {
                             .httpOnly(true)
                             // .httpOnly(true).secure(true)
                             .build();
-            System.out.println(responseCookie.toString());
+            System.out.println("responseCookie : "  + responseCookie);
 
             SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
             responseEntity = ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                     .body(response);
 
-        }catch(CustomException exception) {
+        } catch (CustomException exception) {
             BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 
@@ -68,7 +65,7 @@ public class MemberController {
         return responseEntity;
     }
 
-    @PostMapping(value="/login")
+    @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
         ResponseEntity responseEntity = null;
         try {
@@ -97,7 +94,7 @@ public class MemberController {
         return responseEntity;
     }
 
-    @PostMapping(value="/logout")
+    @PostMapping(value = "/logout")
     public ResponseEntity logout(
             @CookieValue(value = HttpHeaders.SET_COOKIE) Cookie refreshCookie
     ) {
@@ -129,7 +126,7 @@ public class MemberController {
      * @param email email 전송을 위한 DTO
      * @return email 있다면 success값을 true, 없다면 false를 리턴.
      */
-    @GetMapping(value="/get")
+    @GetMapping(value = "/get")
     public ResponseEntity isHaveUser(@RequestParam String email) {
         ResponseEntity responseEntity = null;
         // Cookie cookie = new Cookie("name", value)

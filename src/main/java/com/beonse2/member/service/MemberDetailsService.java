@@ -3,6 +3,8 @@ package com.beonse2.member.service;
 import com.beonse2.exception.CustomException;
 import com.beonse2.member.dto.MemberDTO;
 import com.beonse2.member.mapper.MemberMapper;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,15 +16,15 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
 
-    @Autowired
-    MemberMapper memberMapper;
+    private final MemberMapper memberMapper;
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return memberMapper.findByMember(email)
+        return memberMapper.findByEmail(email)
                 .map(this::addAuthorities) // .map(member -> addAuthorities(member))
                 .orElseThrow(() -> new CustomException(email + "email을 찾을 수 없습니다."));
     }

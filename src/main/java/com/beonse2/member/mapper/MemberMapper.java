@@ -11,8 +11,7 @@ import java.util.Optional;
 @Mapper
 public interface MemberMapper {
 
-    void join(MemberDTO member);
-    Optional<MemberDTO> findByMember(String email);
+    void save(MemberDTO member);
 
     Optional<MemberDTO> findByEmail(String email);
 
