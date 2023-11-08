@@ -1,6 +1,5 @@
-package com.beonse2.domain.coupon.vo;
+package com.beonse2.domain.mycoupon.vo;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +10,9 @@ import static lombok.AccessLevel.*;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class CouponVO {
+public class MyCouponVO {
 
-    private Long cid;
+    private Long mcpId;
     private Long memberMid;
     private Long branchBid;
     private String type;
@@ -22,7 +21,7 @@ public class CouponVO {
     private Timestamp paymentDate;
 
     @Builder
-    public CouponVO(Long memberMid, Long branchBid, String type, int price, boolean isUsed) {
+    public MyCouponVO(Long memberMid, Long branchBid, String type, int price, boolean isUsed) {
         this.memberMid = memberMid;
         this.branchBid = branchBid;
         this.type = type;

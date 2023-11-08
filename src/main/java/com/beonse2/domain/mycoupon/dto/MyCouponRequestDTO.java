@@ -1,9 +1,9 @@
-package com.beonse2.domain.coupon.dto;
+package com.beonse2.domain.mycoupon.dto;
 
 import lombok.Getter;
 
 @Getter
-public class CouponRequestDTO {
+public class MyCouponRequestDTO {
 
     private Long branchBid;
     private String type;

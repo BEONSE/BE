@@ -1,15 +1,15 @@
-package com.beonse2.domain.coupon.dto;
+package com.beonse2.domain.mycoupon.dto;
 
-import com.beonse2.domain.coupon.vo.CouponVO;
+import com.beonse2.domain.mycoupon.vo.MyCouponVO;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.sql.Timestamp;
 
 @Getter
-public class CouponResponseDTO {
+public class MyCouponResponseDTO {
 
-    private Long cid;
+    private Long mcpId;
     private Long memberMid;
     private Long branchBid;
     private String type;
@@ -18,8 +18,8 @@ public class CouponResponseDTO {
     private Timestamp paymentDate;
 
     @Builder
-    public CouponResponseDTO(CouponVO couponVO) {
-        this.cid = couponVO.getCid();
+    public MyCouponResponseDTO(MyCouponVO couponVO) {
+        this.mcpId = couponVO.getMcpId();
         this.memberMid = couponVO.getMemberMid();
         this.branchBid = couponVO.getBranchBid();
         this.type = couponVO.getType();
