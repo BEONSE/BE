@@ -6,6 +6,7 @@ import com.beonse2.member.dto.LoginDTO;
 import com.beonse2.member.dto.MemberDTO;
 import com.beonse2.member.dto.TokenDTO;
 import com.beonse2.member.mapper.MemberMapper;
+import com.beonse2.member.vo.Member;
 import com.beonse2.member.vo.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,31 +35,35 @@ public class MemberService {
 
     Timestamp sysDate = Timestamp.valueOf(localTime);
 
-    @Autowired
-    MemberMapper memberMapper;
+    private final MemberMapper memberMapper;
 
     /**
      * 유저 회원가입
      * @param member
      */
     @Transactional
-    public boolean join(MemberDTO member) {
+    public boolean save(MemberDTO member) {
         // 가입된 유저인지 확인
-        if (memberMapper.findByMember(member.getEmail()).isPresent()) {
-            System.out.println("!!!");
+        if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
+            System.out.println("이미 가입된 회원입니다");
             throw new CustomException("이미 가입된 회원입니다");
         }
 
         // 가입 안했으면 아래 진행
-        MemberDTO memberDTO = MemberDTO.builder()
+
+        member = MemberDTO.builder()
                 .email(member.getEmail())
                 .password(passwordEncoder.encode(member.getPassword()))
-                .role(Role.valueOf("ROLE_USER"))
-                .createdAt(sysDate)
-                .modifiedAt(sysDate)
+                .nickname(member.getNickname())
+                .name(member.getName())
+                .address(member.getAddress())
+                .role(member.getRole())
+//                .role(Role.valueOf("ROLE_USER"))
+/*                .createdAt(sysDate)
+                .modifiedAt(sysDate)*/
                 .build();
 
-        memberMapper.join(memberDTO);
+        memberMapper.save(member);
 
         return memberMapper.findByEmail(member.getEmail()).isPresent();
     }
@@ -70,7 +75,7 @@ public class MemberService {
      */
     public String login (LoginDTO loginDTO) {
 
-        MemberDTO memberDTO = memberMapper.findByMember(loginDTO.getEmail())
+        MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new CustomException("잘못된 아이디입니다"));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), memberDTO.getPassword())) {
@@ -107,12 +112,12 @@ public class MemberService {
 
     public TokenDTO tokenGenerator(String email) {
 
-        MemberDTO memberDTO = memberMapper.findByMember(email)
+        MemberDTO memberDTO = memberMapper.findByEmail(email)
                 .orElseThrow(() -> new CustomException("잘못된 아이디입니다"));
 
         return TokenDTO.builder()
-                .accessToken("Bearer" + jwtTokenProvider.createAcessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
-                .refreshToken("Bearer" + jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                .accessToken(jwtTokenProvider.createAcessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
                 .build();
     }
 

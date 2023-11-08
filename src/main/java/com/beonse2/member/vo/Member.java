@@ -1,5 +1,6 @@
 package com.beonse2.member.vo;
 
+import com.beonse2.member.dto.MemberDTO;
 import com.beonse2.member.vo.enums.Approval;
 import com.beonse2.member.vo.enums.Role;
 import lombok.*;
@@ -9,16 +10,11 @@ import java.io.File;
 import java.security.Timestamp;
 
 
-@Data
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Member {
+public class Member{
 
-
-    private Long id;//고유번호
+    private Long mid;//고유번호
     private String email;//email
     private String nickname;//닉네임
     private String password;//PW

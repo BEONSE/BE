@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ResponseService {
 
-
     public <T> SingleDataResponse<T> getSingleDataResponse(boolean success, String message, T data) {
         SingleDataResponse<T> response = new SingleDataResponse<>();
         response.setSuccess(success);

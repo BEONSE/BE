@@ -1,14 +1,11 @@
 package com.beonse2.config.jwt;
 
+import com.beonse2.member.service.MemberDetailsService;
 import com.beonse2.member.vo.enums.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
-
-import com.beonse2.member.service.MemberDetailsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,14 +16,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 @Component
 public class TokenProvider implements InitializingBean {
 
-   // private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+    // private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
     private final long accessTokenValidityInMilliseconds;
@@ -34,14 +29,13 @@ public class TokenProvider implements InitializingBean {
     private final String secret;
     private Key key;
 
-    @Autowired
     MemberDetailsService memberDetailsService;
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInSeconds,
             @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInSeconds
-    ){
+    ) {
         this.secret = secret;
         this.accessTokenValidityInMilliseconds = accessTokenValidityInSeconds * 1000;
         this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
@@ -55,8 +49,9 @@ public class TokenProvider implements InitializingBean {
 
     /**
      * 액세스 토큰 생성 메서드
+     *
      * @param email 발급받는 유저의 아이디
-     * @param role 발급받는 유저의 권한
+     * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createAcessToken(String email, Role role) {
@@ -76,11 +71,12 @@ public class TokenProvider implements InitializingBean {
 
     /**
      * 리프레시 토큰 생성 메서드
+     *
      * @param email 발급받는 유저의 아이디
-     * @param role 발급받는 유저의 권한
+     * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
-    public String createRefreshToken(String email, Role role){
+    public String createRefreshToken(String email, Role role) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
         // 토큰 만료기간
@@ -104,6 +100,7 @@ public class TokenProvider implements InitializingBean {
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
+
     // // 유저 이름 추출
     public String getEmail(String token) {
         return Jwts.parserBuilder()
@@ -123,6 +120,7 @@ public class TokenProvider implements InitializingBean {
         }
         return null;
     }
+
     /**
      * 토큰을 파싱하고 발생하는 예외를 처리, 문제가 있을경우 false 반환
      */
@@ -152,6 +150,7 @@ public class TokenProvider implements InitializingBean {
         // }
         // return false;
     }
+
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
