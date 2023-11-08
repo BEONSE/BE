@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Getter
 public class CouponResponseDTO {
 
-    private Long mcid;
+    private Long cid;
     private Long memberMid;
     private String type;
     private int price;
@@ -18,7 +18,7 @@ public class CouponResponseDTO {
 
     @Builder
     public CouponResponseDTO(CouponVO couponVO) {
-        this.mcid = couponVO.getMcid();
+        this.cid = couponVO.getCid();
         this.memberMid = couponVO.getMemberMid();
         this.type = couponVO.getType();
         this.price = couponVO.getPrice();
