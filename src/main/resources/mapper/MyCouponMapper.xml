@@ -1,0 +1,20 @@
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beonse2.domain.mycoupon.mapper.MyCouponMapper">
+
+    <insert id="saveMyCoupon" parameterType="com.beonse2.mycoupon.vo.MyCouponVO">
+        INSERT INTO mycoupon (mcpid, member_mid, branch_bid, type, price, is_used, payment_date)
+        VALUES (mycoupon_seq.NEXTVAL, 1, 1, #{type}, #{price}, #{is_used}, SYSTIMESTAMP)
+    </insert>
+
+    <select id="findAllByMemberMidAndMyCouponMcpidOrderByPaymentDateDesc" resultType="List<com.beonse2.domain.mycoupon.vo.MyCouponVO>" parameterType="int">
+        SELECT mcpid, member_mid, branch_bid, type, price, is_used, payment_date
+        FROM mycoupon
+        WHERE mcpid = 1
+    </select>
+
+
+</mapper>

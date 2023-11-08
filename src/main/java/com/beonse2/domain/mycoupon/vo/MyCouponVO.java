@@ -12,7 +12,7 @@ import static lombok.AccessLevel.*;
 @NoArgsConstructor(access = PROTECTED)
 public class MyCouponVO {
 
-    private Long mcpId;
+    private Long mcpid;
     private Long memberMid;
     private Long branchBid;
     private String type;
