@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Getter
 public class MyCouponResponseDTO {
 
-    private Long mcpId;
+    private Long mcpid;
     private Long memberMid;
     private Long branchBid;
     private String type;
@@ -19,7 +19,7 @@ public class MyCouponResponseDTO {
 
     @Builder
     public MyCouponResponseDTO(MyCouponVO couponVO) {
-        this.mcpId = couponVO.getMcpId();
+        this.mcpid = couponVO.getMcpid();
         this.memberMid = couponVO.getMemberMid();
         this.branchBid = couponVO.getBranchBid();
         this.type = couponVO.getType();

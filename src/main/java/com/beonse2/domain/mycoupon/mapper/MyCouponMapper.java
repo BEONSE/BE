@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface MyCouponMapper {
 
-    void saveCoupon(MyCouponVO couponVO);
+    void saveMyCoupon(MyCouponVO couponVO);
 
-    List<MyCouponVO> findAllByMemberIdAndCouponIdOrderByPaymentDateDesc(Long couponId);
+    List<MyCouponVO> findAllByMemberMidAndMyCouponMcpidOrderByPaymentDateDesc(Long couponId);
 }

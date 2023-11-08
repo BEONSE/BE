@@ -3,7 +3,7 @@ package com.beonse2.domain.mycoupon.controller;
 import com.beonse2.domain.mycoupon.dto.MyCouponRequestDTO;
 import com.beonse2.domain.mycoupon.dto.MyCouponResponseDTO;
 import com.beonse2.domain.mycoupon.service.MyCouponService;
-import com.beonse2.member.dto.MemberDTO;
+import com.beonse2.domain.member.dto.MemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,9 +26,9 @@ public class MyCouponController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @PostMapping("/payments/coupons")
-    public ResponseEntity<MyCouponResponseDTO> postCoupon(@AuthenticationPrincipal MemberDTO memberDTO,
+    public ResponseEntity<MyCouponResponseDTO> postMyCoupon(@AuthenticationPrincipal MemberDTO memberDTO,
                                                           @RequestBody MyCouponRequestDTO couponRequestDTO) {
-        return couponService.createCoupon(memberDTO, couponRequestDTO);
+        return couponService.createMyCoupon(memberDTO, couponRequestDTO);
     }
 
     @Operation(summary = "쿠폰 조회", description = "쿠폰 조회")
@@ -37,8 +37,8 @@ public class MyCouponController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @GetMapping("/mypage/coupons/{coupon-cid}")
-    public ResponseEntity<List<MyCouponResponseDTO>> getCouponList(@AuthenticationPrincipal MemberDTO memberDTO,
+    public ResponseEntity<List<MyCouponResponseDTO>> getMyCouponList(@AuthenticationPrincipal MemberDTO memberDTO,
                                                                    @PathVariable("coupon-cid") Long couponId) {
-        return couponService.findCouponList(memberDTO, couponId);
+        return couponService.findMyCouponList(memberDTO, couponId);
     }
 }
