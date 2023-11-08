@@ -3,7 +3,7 @@ package com.beonse2.domain.point.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.domain.point.dto.PointRequestDTO;
 import com.beonse2.domain.point.dto.PointResponseDTO;
-import com.beonse2.domain.point.repository.PointMapper;
+import com.beonse2.domain.point.mapper.PointMapper;
 import com.beonse2.domain.point.vo.PointVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
