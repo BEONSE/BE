@@ -2,6 +2,7 @@ package com.beonse2.domain.mate.board.controller;
 
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.service.MateBoardService;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -39,7 +40,19 @@ public class MateBoardController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @GetMapping
-    public ResponseEntity<List<MateBoardResponseDTO>> getBoardList() {
+    public ResponseEntity<List<MateBoardListResponseDTO>> getBoardList() {
         return mateBoardService.findBoardList();
     }
+
+    @Operation(summary = "메이트 게시글 단건 조회", description = "메이트 게시글 단건 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @GetMapping("/{mateBoard-id")
+    public ResponseEntity<MateBoardResponseDTO> getBoard(@PathVariable("mateBoard-id") Long mateBoardId) {
+        return mateBoardService.findBoard(mateBoardId);
+    }
+
+
 }

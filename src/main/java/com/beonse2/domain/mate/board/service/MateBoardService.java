@@ -1,10 +1,10 @@
 package com.beonse2.domain.mate.board.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.utils.success.SuccessCode;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.board.vo.MateBoardVO;
@@ -39,13 +39,22 @@ public class MateBoardService {
         return ResponseEntity.ok(new SuccessMessageDTO(SuccessCode.SUCCESS_CREATE_BOARD));
     }
 
-    public ResponseEntity<List<MateBoardResponseDTO>> findBoardList() {
+    public ResponseEntity<List<MateBoardListResponseDTO>> findBoardList() {
 
-        List<MateBoardResponseDTO> mateBoardResponseDTOS = mateBoardMapper.findAll();
+        List<MateBoardListResponseDTO> mateBoardResponseDTOS = mateBoardMapper.findAll();
         if (mateBoardResponseDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
 
         return ResponseEntity.ok(mateBoardResponseDTOS);
+    }
+
+    public ResponseEntity<MateBoardResponseDTO> findBoard(Long mateBoardId) {
+
+        MateBoardResponseDTO mateBoardResponseDTO = mateBoardMapper.findById(mateBoardId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BOARD)
+        );
+
+        return ResponseEntity.ok(mateBoardResponseDTO);
     }
 }
