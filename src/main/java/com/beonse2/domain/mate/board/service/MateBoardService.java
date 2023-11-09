@@ -1,8 +1,11 @@
 package com.beonse2.domain.mate.board.service;
 
+import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.utils.success.SuccessCode;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.board.vo.MateBoardVO;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -10,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +37,15 @@ public class MateBoardService {
         mateBoardMapper.saveMateBoard(mateBoardVO);
 
         return ResponseEntity.ok(new SuccessMessageDTO(SuccessCode.SUCCESS_CREATE_BOARD));
+    }
+
+    public ResponseEntity<List<MateBoardResponseDTO>> findBoardList() {
+
+        List<MateBoardResponseDTO> mateBoardResponseDTOS = mateBoardMapper.findAll();
+        if (mateBoardResponseDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_BOARD);
+        }
+
+        return ResponseEntity.ok(mateBoardResponseDTOS);
     }
 }
