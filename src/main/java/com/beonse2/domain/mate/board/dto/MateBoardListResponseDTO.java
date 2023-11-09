@@ -6,25 +6,25 @@ import lombok.Getter;
 import java.sql.Timestamp;
 
 @Getter
-public class MateBoardResponseDTO {
+public class MateBoardListResponseDTO {
 
     private Long mbid;
-    private String profileImage;
-    private String nickname;
-    private String paymentAmount;
+    private String nickame;
+    private Long paymentAmount;
     private String title;
     private String content;
+    private boolean status;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
 
     @Builder
-    public MateBoardResponseDTO(Long mbid, String profileImage, String nickname, String paymentAmount, String title, String content, Timestamp createdAt, Timestamp modifiedAt) {
+    public MateBoardListResponseDTO(Long mbid, String nickname, Long paymentAmount, String title, String content, boolean status, Timestamp createdAt, Timestamp modifiedAt) {
         this.mbid = mbid;
-        this.profileImage = profileImage;
-        this.nickname = nickname;
+        this.nickame = nickname;
         this.paymentAmount = paymentAmount;
         this.title = title;
         this.content = content;
+        this.status = status;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
