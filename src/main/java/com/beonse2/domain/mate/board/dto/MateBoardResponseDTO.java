@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public class MateBoardResponseDTO {
 
     private Long mbid;
-    private Long memberId;
+    private String nickame;
     private String title;
     private String content;
     private boolean status;
@@ -17,9 +17,9 @@ public class MateBoardResponseDTO {
     private Timestamp modifiedAt;
 
     @Builder
-    public MateBoardResponseDTO(Long mbid, Long memberId, String title, String content, boolean status, Timestamp createdAt, Timestamp modifiedAt) {
+    public MateBoardResponseDTO(Long mbid, String nickname, String title, String content, boolean status, Timestamp createdAt, Timestamp modifiedAt) {
         this.mbid = mbid;
-        this.memberId = memberId;
+        this.nickame = nickname;
         this.title = title;
         this.content = content;
         this.status = status;
