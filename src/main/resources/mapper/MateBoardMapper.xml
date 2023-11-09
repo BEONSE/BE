@@ -10,5 +10,10 @@
         VALUES (mateBoard_seq.NEXTVAL, 1, #{title}, #{content}, SYSTIMESTAMP, SYSTIMESTAMP)
     </insert>
 
+    <select id="findAll" resultType="List<com.beonse2.domain.mate.board.dto.MateBoardResponseDTO">
+        SELECT b.mbid, m.nickname, b.title, b.created_at
+        FROM mateboard b JOIN member m
+        ON b.member_id = m.mid
+    </select>
 
 </mapper>
