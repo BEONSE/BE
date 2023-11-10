@@ -2,6 +2,7 @@ package com.beonse2.domain.mate.board.mapper;
 
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardUpdateRequestDTO;
 import com.beonse2.domain.mate.board.vo.MateBoardVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,4 +17,8 @@ public interface MateBoardMapper {
     List<MateBoardListResponseDTO> findAll();
 
     Optional<MateBoardResponseDTO> findById(Long mateBoardId);
+
+    void updateBoardById(MateBoardUpdateRequestDTO mateBoardUpdateRequestDTO);
+
+    void deleteById(Long mateBoardId);
 }

@@ -4,6 +4,7 @@ import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardUpdateRequestDTO;
 import com.beonse2.domain.mate.board.service.MateBoardService;
 import com.beonse2.domain.member.dto.MemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,7 +41,7 @@ public class MateBoardController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @GetMapping
-    public ResponseEntity<List<MateBoardListResponseDTO>> getBoardList() {
+    public ResponseEntity<List<MateBoardListResponseDTO>> getMateBoardList() {
         return mateBoardService.findBoardList();
     }
 
@@ -49,10 +50,30 @@ public class MateBoardController {
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
-    @GetMapping("/{mateBoard-id")
-    public ResponseEntity<MateBoardResponseDTO> getBoard(@PathVariable("mateBoard-id") Long mateBoardId) {
-        return mateBoardService.findBoard(mateBoardId);
+    @GetMapping("/{mateBoard-id}")
+    public ResponseEntity<MateBoardResponseDTO> getMateBoard(@PathVariable("mateBoard-id") Long mateBoardId) {
+        return mateBoardService.findMateBoard(mateBoardId);
     }
 
+    @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @PatchMapping("/{mateBoard-id}")
+    public ResponseEntity<SuccessMessageDTO> patchMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
+                                                            @RequestBody MateBoardUpdateRequestDTO mateBoardUpdateRequestDTO) {
+        return mateBoardService.updateMateBoard(mateBoardId, mateBoardUpdateRequestDTO);
+    }
+
+    @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @PatchMapping("/remove/{mateBoard-id}")
+    public ResponseEntity<SuccessMessageDTO> deleteMateBoard(@PathVariable("mateBoard-id") Long mateBoardId) {
+        return mateBoardService.removeMateBoard(mateBoardId);
+    }
 
 }
