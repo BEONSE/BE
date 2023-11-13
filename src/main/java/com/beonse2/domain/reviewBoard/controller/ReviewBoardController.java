@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +31,10 @@ public class ReviewBoardController {
     ReviewBoardService reviewBoardService;
 
 
-
     @PostMapping("/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity createReviewBoard(@RequestBody ReviewBoardDTO reviewBoardDTO,
-                                            @RequestHeader(value="Authorization") String accessToken) {
+                                            @RequestHeader(value = "Authorization") String accessToken) {
         ResponseEntity responseEntity = null;
         System.out.println("responseEntity 1 " + responseEntity);
         try {
@@ -60,13 +60,13 @@ public class ReviewBoardController {
 
         try {
             ReviewBoardRequestDTO reviewBoardRequestDTO = ReviewBoardRequestDTO.builder().startPage(startPage).pageNum(pageNum).build();
-            System.out.println("reviewBoardRequestDTO : " + reviewBoardRequestDTO);
+            //   System.out.println("reviewBoardRequestDTO : " + reviewBoardRequestDTO);
 
             List<ReviewBoardDTO> reviewBoard = reviewBoardService.reviewBoardList(reviewBoardDTO);
-            System.out.println("reviewBoard : " + reviewBoard);
+            //    System.out.println("reviewBoard : " + reviewBoard);
 
             SingleDataResponse<List<ReviewBoardDTO>> response = responseService.getSingleDataResponse(true, "게시판 생성 성공", reviewBoard);
-            System.out.println("response : " + response);
+            //   System.out.println("response : " + response);
 
             // ResponseEntity를 생성하여 반환
             return ResponseEntity.ok(response);
@@ -111,10 +111,10 @@ public class ReviewBoardController {
 
         try {
             List<ReviewBoardDTO> reviewBoard = reviewBoardService.updateReviewBoard(rbId, updatedReviewBoardDTO, accessToken);
-            System.out.println("reviewBoard : " + reviewBoard);
+            //System.out.println("reviewBoard : " + reviewBoard);
 
             SingleDataResponse<List<ReviewBoardDTO>> response = responseService.getSingleDataResponse(true, "게시판 업데이트 성공", reviewBoard);
-            System.out.println("response1 : " + response);
+            //System.out.println("response1 : " + response);
 
             responseEntity = ResponseEntity.ok(response);
         } catch (IllegalStateException e) {
@@ -130,19 +130,35 @@ public class ReviewBoardController {
     }
 
 
-
     @PostMapping("/reviews/{reviewBoard-id}") //리뷰 삭제
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity deleteReviewBoard(@PathVariable(value = "reviewBoard-id", required = false) Long rbId,
-                                            @RequestBody ReviewBoardDTO updatedReviewBoardDTO,
+                                            @RequestBody ReviewBoardDTO deletedReviewBoardDTO,
                                             @RequestHeader(value = "Authorization") String accessToken) {
         ResponseEntity responseEntity = null;
 
         try {
-            List<ReviewBoardDTO> reviewBoard = reviewBoardService.updateReviewBoard(rbId, updatedReviewBoardDTO, accessToken);
+            reviewBoardService.deleteReviewBoard(rbId, deletedReviewBoardDTO, accessToken);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalStateException e) {
+            log.error(e.getMessage(), e);
+            return ResponseEntity.notFound().build();
+        } catch (AccessDeniedException e) {
+            log.error("게시판 삭제 실패", e);
+            BaseResponse response = responseService.getBaseResponse(false, "게시판 삭제 실패");
+            System.out.println("response2 : " + response);
+            responseEntity = ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        }
+
+        return responseEntity;
+    }
+        /*ResponseEntity responseEntity = null;
+
+        try {
+            List<ReviewBoardDTO> reviewBoard = reviewBoardService.deleteReviewBoard(rbId, updatedReviewBoardDTO, accessToken);
             System.out.println("reviewBoard : " + reviewBoard);
 
-            SingleDataResponse<List<ReviewBoardDTO>> response = responseService.getSingleDataResponse(true, "게시판 업데이트 성공", reviewBoard);
+            SingleDataResponse<List<ReviewBoardDTO>> response = responseService.getSingleDataResponse(true, "게시판 삭제 성공", reviewBoard);
             System.out.println("response1 : " + response);
 
             responseEntity = ResponseEntity.ok(response);
@@ -159,4 +175,5 @@ public class ReviewBoardController {
 
     }
 
+}*/
 }

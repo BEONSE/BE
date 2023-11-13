@@ -40,7 +40,7 @@ public class ReviewBoardService {
 
     public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {
         //전체 조회
-        System.out.println("reviewBoardMapper.reviewBoardList(reviewBoardRequestDTO) : " +  reviewBoardMapper.reviewBoardList(reviewBoardDTO));
+       // System.out.println("reviewBoardMapper.reviewBoardList(reviewBoardRequestDTO) : " +  reviewBoardMapper.reviewBoardList(reviewBoardDTO));
         return reviewBoardMapper.reviewBoardList(reviewBoardDTO);
     }
 
@@ -74,29 +74,35 @@ public class ReviewBoardService {
         return reviewBoardList;
     }
 
-    public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
-        String token = tokenProvider.resolveToken(accessToken);
-        String email = TokenProvider.getEmail(token);
+public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
+    String token = tokenProvider.resolveToken(accessToken);
+    String email = TokenProvider.getEmail(token);
+    System.out.println("getEmail(token)" + email);
 
-        // 리뷰 게시판이 사용자에게 속하는지 확인
-        List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
-        if (reviewBoardList != null && !reviewBoardList.isEmpty()) {
-            // 리뷰 게시판이 현재 사용자의 것인지 확인
-            for (ReviewBoardDTO reviewBoardDTO : reviewBoardList) {
-                if (email.equals(reviewBoardDTO.getWriter())) {
-                  //  reviewBoardDTO.setStatus();
+    // 리뷰 게시판이 사용자에게 속하는지 확인
+    List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
+    System.out.println("reviewBoardList del: " + reviewBoardList);
 
-                    // update 메서드를 호출하여 수정된 내용을 DB에 반영
-                    reviewBoardMapper.deleteReviewBoard(rbId);
-                } else {
-                    throw new AccessDeniedException("해당 리뷰 게시판에 대한 액세스가 거부되었습니다.");
-                }
+    if (reviewBoardList != null && !reviewBoardList.isEmpty()) {
+        for (ReviewBoardDTO reviewBoardDTO : reviewBoardList) {
+            if (email.equals(reviewBoardDTO.getWriter())) {
+                System.out.println("getWriter : " + deletedReviewBoardDTO.getWriter());
+                reviewBoardDTO.setStatus(deletedReviewBoardDTO.isStatus());
+                System.out.println("deletedReviewBoardDTO.isStatus() : " + deletedReviewBoardDTO.isStatus());
+
+                reviewBoardMapper.deleteReviewBoard(rbId);
+                System.out.println("rbId : " + rbId);
+            } else {
+                throw new AccessDeniedException("해당 리뷰 게시판에 대한 액세스가 거부되었습니다.");
             }
-        } else {
-            throw new IllegalStateException("해당 리뷰 게시판을 찾을 수 없습니다.");
         }
-        return reviewBoardList;
+
+    } else {
+        throw new IllegalStateException("해당 리뷰 게시판을 찾을 수 없습니다.");
     }
+
+    return reviewBoardList;
+}
 
 
 
