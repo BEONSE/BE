@@ -16,7 +16,7 @@ public enum ErrorCode {
     WRONG_CARD_NUMBER(HttpStatus.BAD_REQUEST.value(), "잘못된 카드번호 입니다."),
     NOT_FOUND_PAYMENT(HttpStatus.NOT_FOUND.value(), "결제 내역이 없습니다."),
 
-    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "만료된 토큰 입니다.");
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED.value(), "만료된 토큰 입니다."),
 
     NOT_FOUND_COUPON(HttpStatus.NOT_FOUND.value(), "보유중인 쿠폰이 없습니다."),
     UPDATE_NOT_NULL(HttpStatus.BAD_REQUEST.value(), "NULL로 수정할 수 없습니다.");
