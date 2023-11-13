@@ -12,5 +12,8 @@ public interface MemberMapper {
 
     Optional<MemberDTO> findByEmail(String email);
 
+
+    Optional<Object> findNameByEmail(String email);
+
 }
 

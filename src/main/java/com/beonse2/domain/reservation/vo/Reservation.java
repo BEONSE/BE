@@ -1,10 +1,10 @@
-package com.beonse2.reservation.vo;
+package com.beonse2.domain.reservation.vo;
 
 import java.security.Timestamp;
 
 public class Reservation {
 
-    private Long id;//id
+    private Long rvid;//id
 
     private Long memberId;
 

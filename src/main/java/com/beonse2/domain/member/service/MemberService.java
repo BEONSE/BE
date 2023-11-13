@@ -2,12 +2,12 @@ package com.beonse2.domain.member.service;
 
 import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.domain.member.vo.enums.Role;
-import com.beonse2.exception.CustomException;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +18,7 @@ import java.util.Date;
 import java.sql.Timestamp;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
@@ -43,7 +44,7 @@ public class MemberService {
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
             System.out.println("이미 가입된 회원입니다");
-            throw new CustomException("이미 가입된 회원입니다");
+            throw new RuntimeException("이미 가입된 회원입니다");
         }
 
         // 가입 안했으면 아래 진행
@@ -73,10 +74,10 @@ public class MemberService {
     public String login (LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
-                .orElseThrow(() -> new CustomException("잘못된 아이디입니다"));
+                .orElseThrow(() -> new RuntimeException("잘못된 아이디입니다"));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), memberDTO.getPassword())) {
-            throw new CustomException("잘못된 비밀번호입니다");
+            throw new RuntimeException("잘못된 비밀번호입니다");
         }
 
         return memberDTO.getEmail();
@@ -104,16 +105,23 @@ public class MemberService {
     public MemberDTO findByEmail(String email) {
         return memberMapper.findByEmail(email)
                 .orElseThrow(() ->
-                        new CustomException("중복된 유저 입니다."));
+                        new RuntimeException("중복된 유저 입니다."));
+    }
+
+    public String findNameByEmail(String email) {
+        return (String) memberMapper.findNameByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
     public TokenDTO tokenGenerator(String email) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(email)
-                .orElseThrow(() -> new CustomException("잘못된 아이디입니다"));
+                .orElseThrow(() -> new RuntimeException("잘못된 아이디입니다"));
 
         return TokenDTO.builder()
-                .accessToken(jwtTokenProvider.createAcessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+               /* .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))*/
+                 .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
                 .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
                 .build();
     }

@@ -48,37 +48,37 @@
         WHERE STATUS = 0 AND EMAIL = #{value}
     </select>
 
-<!--회원 정보 수정-->
-    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">
-        UPDATE MEMBER
-        SET
-            NICKNAME = #{nickname},
-        <if test="password != null and password != ''">
-            PASSWORD = #{password}
-        </if>
-       ,
-            ADDRESS = #{address},
-            IMAGE = #{image},
-            MODIFIED_AT = SYSDATE
-        WHERE MID = #{id}
-    </update>
+<!--&lt;!&ndash;회원 정보 수정&ndash;&gt;-->
+<!--    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">-->
+<!--        UPDATE MEMBER-->
+<!--        SET-->
+<!--            NICKNAME = #{nickname},-->
+<!--        <if test="password != null and password != ''">-->
+<!--            PASSWORD = #{password}-->
+<!--        </if>-->
+<!--       ,-->
+<!--            ADDRESS = #{address},-->
+<!--            IMAGE = #{image},-->
+<!--            MODIFIED_AT = SYSDATE-->
+<!--        WHERE MID = #{id}-->
+<!--    </update>-->
 
-<!--회원 정보 삭제(회원 탈퇴)-->
-    <delete id="deleteById" parameterType="long">
-        UPDATE MEMBER
-        SET
-            STATUS = 1
-        WHERE
-            MID = #{id}
-    </delete>
+<!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
+<!--    <delete id="deleteById" parameterType="long">-->
+<!--        UPDATE MEMBER-->
+<!--        SET-->
+<!--            STATUS = 1-->
+<!--        WHERE-->
+<!--            MID = #{id}-->
+<!--    </delete>-->
 
-<!--회원 수 카운팅 (ID 중복 체크)-->
-    <select id="duplicateEmail" parameterType="String" resultType="int">
-        SELECT
-            count(*)
-        FROM
-            MEMBER
-        WHERE
-            EMAIL = #{value}
-    </select>
+<!--&lt;!&ndash;회원 수 카운팅 (ID 중복 체크)&ndash;&gt;-->
+<!--    <select id="duplicateEmail" parameterType="String" resultType="int">-->
+<!--        SELECT-->
+<!--            count(*)-->
+<!--        FROM-->
+<!--            MEMBER-->
+<!--        WHERE-->
+<!--            EMAIL = #{value}-->
+<!--    </select>-->
 </mapper>
