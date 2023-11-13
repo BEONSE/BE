@@ -16,7 +16,6 @@ public class ReviewBoardDTO {
     private Long rbId; //고유 번호
     private String title;
     private String content;
-    //private String email;
     private String writer; //작성자
     private String branchName; //지점명
     private boolean status;
