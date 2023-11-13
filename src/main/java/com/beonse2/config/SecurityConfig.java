@@ -1,6 +1,6 @@
 package com.beonse2.config;
 
-import com.beonse2.config.filter.CorsFilter;
+
 import com.beonse2.config.jwt.JwtAccessDeniedHandler;
 import com.beonse2.config.jwt.JwtAuthenticationEntryPoint;
 import com.beonse2.config.jwt.JwtSecurityConfig;
@@ -24,14 +24,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
-    private final CorsFilter corsFilter;
+//    private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     // private final JwtFilter jwtFilter;
 
     public SecurityConfig(
             TokenProvider tokenProvider,
-            CorsFilter corsFilter,
+//            CorsFilter corsFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtAccessDeniedHandler jwtAccessDeniedHandler
             // JwtFilter jwtFilter
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     ) {
         this.tokenProvider = tokenProvider;
-        this.corsFilter = corsFilter;
+//        this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
         // this.jwtFilter = jwtFilter;
@@ -63,11 +63,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);  // jwt token으로 인증하므로 stateless 하도록 처리.
 
         http.authorizeRequests()
+                .antMatchers("/reviews/*").hasRole("USER")
                 .antMatchers("/api/v1/get").permitAll()
                 .antMatchers("/api/v1/login").permitAll()
                 .antMatchers("/api/v1/join").permitAll();
         http
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler);

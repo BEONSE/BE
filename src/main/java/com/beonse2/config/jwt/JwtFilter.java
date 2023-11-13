@@ -50,9 +50,9 @@ public class JwtFilter extends GenericFilterBean {
         String requestURI = httpServletRequest.getRequestURI();
 
         // 아래 uri로 접근시 토큰이 필요하지 않으므로 바로 접근시킴.
-        if (requestURI.equals("/api/v1/login")
-                || requestURI.equals("/api/v1/logout")
-                || requestURI.equals("/api/v1/join"))
+        if (requestURI.equals("/login")
+                || requestURI.equals("/logout")
+                || requestURI.equals("/join"))
         {
             chain.doFilter(request, response);
             return;

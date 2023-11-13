@@ -4,7 +4,6 @@ import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
-import com.beonse2.exception.CustomException;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
@@ -22,7 +21,6 @@ import javax.servlet.http.Cookie;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class MemberController {
 
 
@@ -34,16 +32,23 @@ public class MemberController {
 
     private final TokenProvider tokenProvider;
 
+    ResponseEntity responseEntity;
+
     //회원 가입
     @PostMapping("/join")
     public ResponseEntity<?> save(@RequestBody MemberDTO member) {
-        ResponseEntity responseEntity = null;
-
         try {
             memberService.save(member);
             System.out.println("Member : " + member);
             TokenDTO token = memberService.tokenGenerator(member.getEmail());
-            ResponseCookie responseCookie =
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
+
+            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
+            responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+           /* ResponseCookie responseCookie =
                     ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
                             .path("/")
                             .maxAge(14 * 24 * 60 * 60) // 14일
@@ -55,9 +60,9 @@ public class MemberController {
             SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
             responseEntity = ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);
+                    .body(response);*/
 
-        } catch (CustomException exception) {
+        } catch (RuntimeException exception) {
             BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 
@@ -67,11 +72,17 @@ public class MemberController {
 
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
-        ResponseEntity responseEntity = null;
         try {
             String userId = memberService.login(loginDto);
             TokenDTO token = memberService.tokenGenerator(userId);
-            ResponseCookie responseCookie =
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
+
+            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
+            responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+
+           /* ResponseCookie responseCookie =
                     ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
                             .path("/")
                             .maxAge(14 * 24 * 60 * 60) // 14일
@@ -82,9 +93,9 @@ public class MemberController {
             SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
             responseEntity = ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);
+                    .body(response);*/
 
-        } catch (CustomException exception) {
+        } catch (RuntimeException exception) {
             log.debug(exception.getMessage());
             BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
 
@@ -94,11 +105,10 @@ public class MemberController {
         return responseEntity;
     }
 
-    @PostMapping(value = "/logout")
+    /*@PostMapping(value = "/logout")
     public ResponseEntity logout(
             @CookieValue(value = HttpHeaders.SET_COOKIE) Cookie refreshCookie
     ) {
-        ResponseEntity responseEntity = null;
         try {
             ResponseCookie responseCookie =
                     ResponseCookie.from(HttpHeaders.SET_COOKIE, "")///new Cookie("refreshToken", token.getRefreshToken());
@@ -112,7 +122,7 @@ public class MemberController {
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                     .body(response);
 
-        } catch (CustomException exception) {
+        } catch (RuntimeException exception) {
             log.debug(exception.getMessage());
             BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
 
@@ -120,7 +130,7 @@ public class MemberController {
         }
 
         return responseEntity;
-    }
+    }*/
 
     /**
      * @param email email 전송을 위한 DTO
@@ -128,7 +138,6 @@ public class MemberController {
      */
     @GetMapping(value = "/get")
     public ResponseEntity isHaveUser(@RequestParam String email) {
-        ResponseEntity responseEntity = null;
         // Cookie cookie = new Cookie("name", value)
         try {
             boolean isHaveUser = memberService.haveMember(email);
@@ -137,7 +146,7 @@ public class MemberController {
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
 
 
-        } catch (CustomException exception) {
+        } catch (RuntimeException exception) {
             log.debug(exception.getMessage());
             BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

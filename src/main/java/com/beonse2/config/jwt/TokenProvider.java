@@ -1,11 +1,10 @@
 package com.beonse2.config.jwt;
 
-import com.beonse2.member.service.MemberDetailsService;
-import com.beonse2.member.vo.enums.Role;
+import com.beonse2.domain.member.service.MemberDetailsService;
+import com.beonse2.domain.member.vo.enums.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +26,10 @@ public class TokenProvider implements InitializingBean {
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
     private final String secret;
-    private Key key;
+    private static Key key;
 
-    MemberDetailsService memberDetailsService;
+    @Autowired
+    private MemberDetailsService memberDetailsService;
 
     public TokenProvider(
             @Value("${jwt.secret}") String secret,
@@ -54,9 +54,10 @@ public class TokenProvider implements InitializingBean {
      * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
-    public String createAcessToken(String email, Role role) {
+    public String createAccessToken(String email, Role role) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("role", role);
+        System.out.println("role : "+role);
         // 토큰 만료기간
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInMilliseconds);
@@ -95,14 +96,16 @@ public class TokenProvider implements InitializingBean {
      * Token에 담겨있는 정보를 이용해 Authentication 객체를 반환하는 메서드
      */
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails =
-                memberDetailsService.loadUserByUsername(this.getEmail(token));
 
+        UserDetails userDetails =
+                memberDetailsService.loadUserByUsername(getEmail(token));
+        System.out.println("getEmail(token) " + getEmail(token));
+        System.out.println("UserDetails: " + userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // // 유저 이름 추출
-    public String getEmail(String token) {
+    public static String getEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -124,7 +127,7 @@ public class TokenProvider implements InitializingBean {
     /**
      * 토큰을 파싱하고 발생하는 예외를 처리, 문제가 있을경우 false 반환
      */
-    public boolean validateToken(String token) {
+    public static boolean validateToken(String token) {
         // try {
         Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
