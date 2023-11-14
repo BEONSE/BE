@@ -21,7 +21,7 @@ public class ReviewBoardService {
     private final ReviewBoardMapper reviewBoardMapper;
     private final TokenProvider tokenProvider;
 
-    public ResponseEntity<SuccessMessageDTO> createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
+    public boolean createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
         String email = tokenProvider.getEmail(token);
 
@@ -35,10 +35,7 @@ public class ReviewBoardService {
 
         reviewBoardMapper.createReviewBoard(reviewBoardDTO);
 //        return reviewBoardMapper.findMyReviewId(reviewBoard.getRbId()).isPresent();
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .successMessage("게시글이 정상적으로 생성되었습니다.")
-                .build());
+        return true;
     }
 
     public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {
@@ -78,7 +75,7 @@ public class ReviewBoardService {
 
 public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
     String token = tokenProvider.resolveToken(accessToken);
-    String email = TokenProvider.getEmail(token);
+    String email = tokenProvider.getEmail(token);
     System.out.println("getEmail(token)" + email);
 
     // 리뷰 게시판이 사용자에게 속하는지 확인

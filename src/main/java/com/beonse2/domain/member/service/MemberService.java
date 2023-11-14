@@ -78,10 +78,10 @@ public class MemberService {
     public String login(LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
-                .orElseThrow(() -> new RuntimeException("잘못된 아이디입니다"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_MATCH_EMAIL));
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), memberDTO.getPassword())) {
-            throw new RuntimeException("잘못된 비밀번호입니다");
+            throw new CustomException(ErrorCode.NOT_MATCH_PASSWORD);
         }
 
         return memberDTO.getEmail();
