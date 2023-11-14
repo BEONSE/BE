@@ -1,6 +1,5 @@
 package com.beonse2.domain.member.vo.enums;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

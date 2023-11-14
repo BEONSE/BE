@@ -3,6 +3,7 @@ package com.beonse2.domain.reviewBoard.controller;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardRequestDTO;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;

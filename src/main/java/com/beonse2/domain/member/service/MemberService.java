@@ -1,5 +1,7 @@
 package com.beonse2.domain.member.service;
 
+import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.domain.member.vo.enums.Role;
 import com.beonse2.domain.member.dto.LoginDTO;
@@ -37,6 +39,7 @@ public class MemberService {
 
     /**
      * 유저 회원가입
+     *
      * @param member
      */
     @Transactional
@@ -44,7 +47,7 @@ public class MemberService {
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
             System.out.println("이미 가입된 회원입니다");
-            throw new RuntimeException("이미 가입된 회원입니다");
+            throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
         }
 
         // 가입 안했으면 아래 진행
@@ -68,10 +71,11 @@ public class MemberService {
 
     /**
      * 토큰 발급받는 메소드
+     *
      * @param loginDTO 로그인 하는 유저의 정보
      * @return result[0]: accessToken, result[1]: refreshToken
      */
-    public String login (LoginDTO loginDTO) {
+    public String login(LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new RuntimeException("잘못된 아이디입니다"));
@@ -86,19 +90,21 @@ public class MemberService {
 
     /**
      * 유저가 db에 있는지 확인하는 함수
+     *
      * @param email 유저의 아이디 입력
      * @return 유저가 있다면: true, 유저가 없다면: false
      */
     public boolean haveMember(String email) {
         if (memberMapper.findByEmail(email).isPresent()) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     /**
      * 유저의 아이디를 찾는 함수
+     *
      * @param email 유저의 아이디 입력
      * @return 유저의 아이디가 없다면 에러를 뱉고, 있다면 userId리턴
      */
@@ -119,10 +125,10 @@ public class MemberService {
                 .orElseThrow(() -> new RuntimeException("잘못된 아이디입니다"));
 
         return TokenDTO.builder()
-               /* .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
-                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))*/
-                 .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
-                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                /* .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                 .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))*/
+                .accessToken(jwtTokenProvider.createAccessToken(memberDTO))
+                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO))
                 .build();
     }
 

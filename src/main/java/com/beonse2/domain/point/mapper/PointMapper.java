@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface PointMapper {
 
-    void save(PointVO pointVO);
+    void savePoint(PointVO pointVO);
     
-    List<PointVO> findAllByMemberMidOrderByPaymentDateDesc(Long memberMid);
+    List<PointVO> findMyPayments(Long memberMid);
 }
