@@ -1,5 +1,6 @@
 package com.beonse2.config.jwt;
 
+import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.service.MemberDetailsService;
 import com.beonse2.domain.member.vo.enums.Role;
 import io.jsonwebtoken.*;
@@ -54,15 +55,14 @@ public class TokenProvider implements InitializingBean {
      * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
-    public String createAccessToken(String email, Role role) {
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("role", role);
-        System.out.println("role : "+role);
+    public String createAccessToken(MemberDTO memberDTO) {
+        Claims claims = Jwts.claims().setSubject(memberDTO.getEmail());
+        claims.put("memberDTO", memberDTO);
         // 토큰 만료기간
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInMilliseconds);
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(memberDTO.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(now) //토큰 발행 시간정보
                 .setExpiration(validity) // 토큰 만료일 설정
@@ -77,14 +77,14 @@ public class TokenProvider implements InitializingBean {
      * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
-    public String createRefreshToken(String email, Role role) {
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("role", role);
+    public String createRefreshToken(MemberDTO memberDTO) {
+        Claims claims = Jwts.claims().setSubject(memberDTO.getEmail());
+        claims.put("memberDTO", memberDTO);
         // 토큰 만료기간
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.refreshTokenValidityInMilliseconds);
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(memberDTO.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(now) //토큰 발행 시간정보
                 .setExpiration(validity) // 토큰 만료일 설정
@@ -105,7 +105,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     // // 유저 이름 추출
-    public static String getEmail(String token) {
+    public String getEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

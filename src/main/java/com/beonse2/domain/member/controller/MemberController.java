@@ -1,5 +1,7 @@
 package com.beonse2.domain.member.controller;
 
+import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
@@ -17,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Slf4j
 @RestController
@@ -37,36 +41,18 @@ public class MemberController {
     //회원 가입
     @PostMapping("/join")
     public ResponseEntity<?> save(@RequestBody MemberDTO member) {
-        try {
-            memberService.save(member);
-            System.out.println("Member : " + member);
-            TokenDTO token = memberService.tokenGenerator(member.getEmail());
+
+        memberService.save(member);
+        System.out.println("Member : " + member);
+        TokenDTO token = memberService.tokenGenerator(member.getEmail());
 
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
 
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
-           /* ResponseCookie responseCookie =
-                    ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
-                            .path("/")
-                            .maxAge(14 * 24 * 60 * 60) // 14일
-                            .httpOnly(true)
-                            // .httpOnly(true).secure(true)
-                            .build();
-            System.out.println("responseCookie : "  + responseCookie);
+        SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
+        responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
 
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);*/
-
-        } catch (RuntimeException exception) {
-            BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
-            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-
-        }
         return responseEntity;
     }
 

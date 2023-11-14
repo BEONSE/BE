@@ -3,6 +3,7 @@ package com.beonse2.domain.reviewBoard.controller;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardRequestDTO;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;
@@ -33,25 +34,25 @@ public class ReviewBoardController {
 
     @PostMapping("/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity createReviewBoard(@RequestBody ReviewBoardDTO reviewBoardDTO,
-                                            @RequestHeader(value="Authorization") String accessToken) {
-        ResponseEntity responseEntity = null;
-        System.out.println("responseEntity 1 " + responseEntity);
-        try {
-            boolean isSuccess = reviewBoardService.createReviewBoard(reviewBoardDTO, accessToken);
-            SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, "게시판 생성 성공", isSuccess);
-            System.out.println("response " + response);
-
-            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
-            System.out.println("responseEntity 2 " + responseEntity);
-            // ResponseEntity를 생성하여 반환
-            return ResponseEntity.ok(response);
-        } catch (IllegalStateException e) {
-            log.error(e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("게시판 생성 실패", e);
-        }
-        return responseEntity;
+    public ResponseEntity<SuccessMessageDTO> createReviewBoard(@RequestBody ReviewBoardDTO reviewBoardDTO,
+                                                               @RequestHeader(value="Authorization") String accessToken) {
+//        ResponseEntity responseEntity = null;
+//        System.out.println("responseEntity 1 " + responseEntity);
+//        try {
+//            boolean isSuccess = reviewBoardService.createReviewBoard(reviewBoardDTO, accessToken);
+//            SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, "게시판 생성 성공", isSuccess);
+//            System.out.println("response " + response);
+//
+//            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
+//            System.out.println("responseEntity 2 " + responseEntity);
+//            // ResponseEntity를 생성하여 반환
+//            return ResponseEntity.ok(response);
+//        } catch (IllegalStateException e) {
+//            log.error(e.getMessage(), e);
+//        } catch (Exception e) {
+//            log.error("게시판 생성 실패", e);
+//        }
+        return reviewBoardService.createReviewBoard(reviewBoardDTO, accessToken);
     }
 
     @GetMapping("/reviews") // 리뷰 전체 조회

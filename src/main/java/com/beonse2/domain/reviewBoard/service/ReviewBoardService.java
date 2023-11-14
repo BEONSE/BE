@@ -1,11 +1,14 @@
 package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import com.beonse2.domain.reviewBoard.vo.ReviewBoard;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewBoardService {
 
-    @Autowired
-    ReviewBoardMapper reviewBoardMapper;
+    private final ReviewBoardMapper reviewBoardMapper;
+    private final TokenProvider tokenProvider;
 
-    @Autowired
-    TokenProvider tokenProvider;
-
-    public boolean createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
+    public ResponseEntity<SuccessMessageDTO> createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
         String email = tokenProvider.getEmail(token);
 
@@ -35,12 +35,15 @@ public class ReviewBoardService {
 
         reviewBoardMapper.createReviewBoard(reviewBoardDTO);
 //        return reviewBoardMapper.findMyReviewId(reviewBoard.getRbId()).isPresent();
-        return true;
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .successMessage("게시글이 정상적으로 생성되었습니다.")
+                .build());
     }
 
     public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {
         //전체 조회
-        System.out.println("reviewBoardMapper.reviewBoardList(reviewBoardRequestDTO) : " +  reviewBoardMapper.reviewBoardList(reviewBoardDTO));
+        System.out.println("reviewBoardMapper.reviewBoardList(reviewBoardRequestDTO) : " + reviewBoardMapper.reviewBoardList(reviewBoardDTO));
         return reviewBoardMapper.reviewBoardList(reviewBoardDTO);
     }
 
@@ -50,7 +53,7 @@ public class ReviewBoardService {
 
     public List<ReviewBoardDTO> updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
-        String email = TokenProvider.getEmail(token);
+        String email = tokenProvider.getEmail(token);
 
         // 리뷰 게시판이 사용자에게 속하는지 확인
         List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
@@ -76,7 +79,7 @@ public class ReviewBoardService {
 
     public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
-        String email = TokenProvider.getEmail(token);
+        String email = tokenProvider.getEmail(token);
 
         // 리뷰 게시판이 사용자에게 속하는지 확인
         List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
@@ -84,7 +87,7 @@ public class ReviewBoardService {
             // 리뷰 게시판이 현재 사용자의 것인지 확인
             for (ReviewBoardDTO reviewBoardDTO : reviewBoardList) {
                 if (email.equals(reviewBoardDTO.getWriter())) {
-                  //  reviewBoardDTO.setStatus();
+                    //  reviewBoardDTO.setStatus();
 
                     // update 메서드를 호출하여 수정된 내용을 DB에 반영
                     reviewBoardMapper.deleteReviewBoard(rbId);
@@ -97,9 +100,6 @@ public class ReviewBoardService {
         }
         return reviewBoardList;
     }
-
-
-
 
 
 //    public MemberDTO isMemberCurrent(String email) {
