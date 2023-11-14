@@ -15,14 +15,15 @@ public class MateBoardVO {
     private String title;
     private String content;
     private boolean status;
+    private String branchName;
     private Timestamp createdAt;
     private Timestamp modifiedAt;
 
     @Builder
-    public MateBoardVO(Long memberMid, String title, String content, boolean status) {
+    public MateBoardVO(Long memberMid, String title, String content, boolean status, String branchName) {
         this.memberMid = memberMid;
         this.title = title;
         this.content = content;
-        this.status = status;
+        this.branchName = branchName;
     }
 }
