@@ -6,6 +6,7 @@ import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
@@ -40,7 +41,7 @@ public class MemberController {
 
     //회원 가입
     @PostMapping("/join")
-    public ResponseEntity<?> save(@RequestBody MemberDTO member) {
+    public ResponseEntity<SuccessMessageDTO> save(@RequestBody MemberDTO member) {
 
         memberService.save(member);
         System.out.println("Member : " + member);
@@ -50,23 +51,27 @@ public class MemberController {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
 
-        SingleDataResponse<String> response = responseService.getSingleDataResponse(true, member.getEmail(), token.getAccessToken());
-        responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+        responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .successMessage("성공적으로 회원가입이 완료되었습니다.")
+                .build());
 
         return responseEntity;
     }
 
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
-        try {
-            String userId = memberService.login(loginDto);
-            TokenDTO token = memberService.tokenGenerator(userId);
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
+        String userId = memberService.login(loginDto);
+        TokenDTO token = memberService.tokenGenerator(userId);
 
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK).headers(headers).body(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
+
+        responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("성공적으로 로그인이 되었습니다.")
+                .build());
 
            /* ResponseCookie responseCookie =
                     ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
@@ -80,13 +85,6 @@ public class MemberController {
             responseEntity = ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                     .body(response);*/
-
-        } catch (RuntimeException exception) {
-            log.debug(exception.getMessage());
-            BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
-
-            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
 
         return responseEntity;
     }
