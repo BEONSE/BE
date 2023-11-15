@@ -18,5 +18,6 @@
         <typeAlias alias="mateBoardListDTO" type="com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO" />
         <typeAlias alias="mateBoardDTO" type="com.beonse2.domain.mate.board.dto.MateBoardResponseDTO" />
         <typeAlias alias="mateBoardUpdateDTO" type="com.beonse2.domain.mate.board.dto.MateBoardRequestDTO" />
+        <typeAlias alias="mateCommentVo" type="com.beonse2.domain.mate.comment.vo.MateCommentVO" />
     </typeAliases>
 </configuration>
