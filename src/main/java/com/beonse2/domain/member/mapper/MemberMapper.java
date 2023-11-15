@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface MemberMapper {
 
     void save(MemberDTO member);
+    void saveBranch(MemberDTO member);
 
     Optional<MemberDTO> findByEmail(String email);
 

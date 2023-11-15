@@ -1,5 +1,6 @@
 package com.beonse2.domain.member.service;
 
+import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.TokenProvider;
@@ -26,14 +27,8 @@ public class MemberService {
 
     // 암호화
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final TokenProvider jwtTokenProvider;
 
-    // 회원가입 시 저장시간을 넣어줄 DateTime형
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
-    Date time = new Date();
-    String localTime = format.format(time);
-
-    Timestamp sysDate = Timestamp.valueOf(localTime);
+    private final JwtUtil jwtTokenProvider;
 
     private final MemberMapper memberMapper;
 
@@ -90,7 +85,6 @@ public class MemberService {
 
     /**
      * 유저가 db에 있는지 확인하는 함수
-     *
      * @param email 유저의 아이디 입력
      * @return 유저가 있다면: true, 유저가 없다면: false
      */
@@ -104,7 +98,6 @@ public class MemberService {
 
     /**
      * 유저의 아이디를 찾는 함수
-     *
      * @param email 유저의 아이디 입력
      * @return 유저의 아이디가 없다면 에러를 뱉고, 있다면 userId리턴
      */

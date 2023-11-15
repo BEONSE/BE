@@ -9,6 +9,9 @@
     </settings>
 
     <typeAliases>
+        <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
+        <typeAlias alias="member" type="com.beonse2.domain.member.dto.MemberDTO" />
+        <typeAlias alias="branch" type="com.beonse2.domain.branch.dto.BranchDTO" />
         <typeAlias alias="member" type="com.beonse2.domain.member.dto.MemberDTO" />
         <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
         <typeAlias alias="mateBoardVo" type="com.beonse2.domain.mate.board.vo.MateBoardVO" />

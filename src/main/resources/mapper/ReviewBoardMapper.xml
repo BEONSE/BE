@@ -17,36 +17,19 @@
     ]]>
     </sql>-->
 
-<!--    <resultMap id="boardMap" type="BoardDTO">-->
-<!--        <id column="RBID" property="rbId"/>-->
-<!--        <result column="MEMBER_MID" property="memberId" />-->
-<!--        <result column="BRANCH_BID" property="branchId" />-->
-<!--        <result column="TITLE" property="title" />-->
-<!--        <result column="CONTENT" property="content" />-->
-<!--        <result column="STATUS" property="status" />-->
-<!--        <result column="IMAGE" property="image" />-->
-<!--        <result column="CREATE_AT" property="createAt" />-->
-<!--        <result column="MODIFIED_AT" property="modifiedAt" />-->
-
-<!--        <association property="memberDTO" javaType="MemberDTO">-->
-<!--            <id column="MID" property="mId"/>-->
-<!--            <result column="NAME" property="name" />-->
-<!--        </association>-->
-<!--    </resultMap>-->
-
 <!-- 게시글 작성 -->
     <insert id="createReviewBoard" parameterType="com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO" >
         INSERT INTO REVIEWBOARD(RBID, MEMBER_MID, BRANCH_BID, TITLE, CONTENT, STATUS, IMAGE, CREATED_AT, MODIFIED_AT)
-        VALUES (REVIEWBOARD_SEQ.nextval, 1, 1, #{title}, #{content}, 0,
-                                    <choose>
-                                        <when test="image != null">
-                                            #{image},
-                                        </when>
-                                        <otherwise>
-                                            NULL,
-                                        </otherwise>
-                                    </choose>
-                                     sysdate, sysdate)
+        VALUES (REVIEWBOARD_SEQ.nextval, #{memberId}, #{branchId}, #{title}, #{content}, '0',
+        <choose>
+            <when test="image != null">
+                #{image},
+            </when>
+            <otherwise>
+                NULL,
+            </otherwise>
+        </choose>,
+        SYSTIMESTAMP, SYSTIMESTAMP)
     </insert>
 
 <!--게시글 조회-->

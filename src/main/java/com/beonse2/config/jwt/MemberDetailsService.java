@@ -1,4 +1,4 @@
-package com.beonse2.domain.member.service;
+package com.beonse2.config.jwt;
 
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
