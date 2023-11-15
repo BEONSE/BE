@@ -1,9 +1,9 @@
 package com.beonse2.domain.mate.comment.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.comment.dto.MateCommentRequestDTO;
 import com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO;
 import com.beonse2.domain.mate.comment.mapper.MateCommentMapper;
@@ -16,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -28,6 +28,7 @@ public class MateCommentService {
 
     private final MemberMapper memberMapper;
     private final MateCommentMapper mateCommentMapper;
+    private final MateBoardMapper mateBoardMapper;
     private final JwtUtil tokenProvider;
 
     @Transactional
@@ -64,5 +65,29 @@ public class MateCommentService {
         }
 
         return ResponseEntity.ok(mateComments);
+    }
+
+    public ResponseEntity<SuccessMessageDTO> removeMateComment(Long mateBoardId, Long mateCommentId, String accessToken) {
+
+        String token = tokenProvider.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        mateBoardMapper.findById(mateBoardId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BOARD)
+        );
+
+        mateCommentMapper.findById(mateCommentId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_COMMENT)
+        );
+
+        mateCommentMapper.deleteMateComment(mateCommentId);
+
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("댓글 삭제 완료.")
+                .build());
     }
 }

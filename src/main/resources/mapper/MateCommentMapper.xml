@@ -25,8 +25,25 @@
             JOIN member m
                 ON mc.member_mid = m.mid
         WHERE mateboard_mbid = #{value}
+        AND mc.status = '0'
         ORDER BY mc.created_at DESC
     </select>
+
+    <select id="findById" parameterType="long" resultType="mateCommentListDTO">
+        SELECT mc.mcid, mc.member_mid, mc.mateboard_mbid, m.nickname, m.payment_amount, mc.content, mc.created_at
+        FROM matecomment mc
+            JOIN mateboard mb
+                ON mc.mateboard_mbid = mb.mbid
+            JOIN member m
+                ON mc.member_mid = m.mid
+        WHERE mc.mcid = #{value}
+    </select>
+
+    <update id="deleteMateComment" parameterType="long">
+        UPDATE matecomment
+        SET status = '1'
+        WHERE mcid = #{value}
+    </update>
 
 </mapper>
 

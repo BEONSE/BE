@@ -32,4 +32,12 @@ public class MateCommentController {
         return mateCommentService.findMateCommentList(mateBoardId);
     }
 
+    @PatchMapping("/{mateComment-id}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<SuccessMessageDTO> deleteMateComment(@PathVariable("mateBoard-id") Long mateBoardId,
+                                                               @PathVariable("mateComment-id") Long mateCommentId,
+                                                               @RequestHeader(value = "Authorization") String accessToken) {
+        return mateCommentService.removeMateComment(mateBoardId, mateCommentId, accessToken);
+    }
+
 }

@@ -5,6 +5,7 @@ import com.beonse2.domain.mate.comment.vo.MateCommentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface MateCommentMapper {
@@ -14,4 +15,8 @@ public interface MateCommentMapper {
     int findCommentCount(Long mateBoardId);
 
     List<MateCommentResponseDTO> findAllMateComment(Long mateBoardId);
+
+    Optional<MateCommentResponseDTO> findById(Long mateCommentId);
+
+    void deleteMateComment(Long mateCommentId);
 }
