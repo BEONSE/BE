@@ -109,7 +109,7 @@ public class JwtUtil implements InitializingBean {
         // String token = request.getHeader("Authorization");
         // 가져온 Authorization Header 가 문자열이고, Bearer 로 시작해야 가져옴
         if (StringUtils.hasText(token) && token.startsWith("Bearer")) {
-            return token.substring(6);
+            return token.substring(7);
         }
         return null;
     }

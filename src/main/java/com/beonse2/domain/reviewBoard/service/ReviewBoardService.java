@@ -70,6 +70,7 @@ public class ReviewBoardService {
     }
 
 public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
+
     String token = jwtUtil.resolveToken(accessToken);
     String email = jwtUtil.getEmail(token);
     System.out.println("getEmail(token)" + email);

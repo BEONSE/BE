@@ -8,6 +8,7 @@ import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.board.vo.MateBoardVO;
+import com.beonse2.domain.mate.comment.mapper.MateCommentMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,7 @@ public class MateBoardService {
 
     private final MemberMapper memberMapper;
     private final MateBoardMapper mateBoardMapper;
+    private final MateCommentMapper mateCommentMapper;
     private final JwtUtil jwtUtil;
 
     @Transactional
@@ -59,9 +62,16 @@ public class MateBoardService {
     public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard() {
 
         List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard();
+        List<MateBoardListResponseDTO> mateBoardListResponseDTOS = new ArrayList<>();
 
         if (mateBoards.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
+        }
+
+        for (MateBoardListResponseDTO mateBoard : mateBoards) {
+            int commentCount = mateCommentMapper.findCommentCount(mateBoard.getMbid());
+
+            mateBoard.updateCommentCount(commentCount);
         }
 
         return ResponseEntity.ok(mateBoards);
@@ -78,6 +88,10 @@ public class MateBoardService {
         MateBoardResponseDTO mateBoardResponseDTO = mateBoardMapper.findById(mateBoardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
+
+        int commentCount = mateCommentMapper.findCommentCount(mateBoardId);
+
+        mateBoardResponseDTO.updateCommentCount(commentCount);
 
         return ResponseEntity.ok(mateBoardResponseDTO);
     }

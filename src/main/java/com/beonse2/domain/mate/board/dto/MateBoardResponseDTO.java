@@ -13,6 +13,7 @@ public class MateBoardResponseDTO {
     private String paymentAmount;
     private String createdAt;
     private String modifiedAt;
+    private int commentCount;
 
     @Builder
     public MateBoardResponseDTO(Long mbid, String title, String content, String nickname, String paymentAmount, String createdAt, String modifiedAt) {
@@ -23,5 +24,9 @@ public class MateBoardResponseDTO {
         this.paymentAmount = paymentAmount;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+    }
+
+    public void updateCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }

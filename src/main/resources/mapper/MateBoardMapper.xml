@@ -17,6 +17,7 @@
             JOIN member m
                 ON mb.member_mid = m.mid
         WHERE mb.status = '0'
+        ORDER BY mb.modified_at DESC
     </select>
 
     <select id="findById" resultType="mateBoardDTO" parameterType="long">
