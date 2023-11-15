@@ -21,7 +21,6 @@ public class JwtUtil implements InitializingBean {
 
     // private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    private static final String AUTHORITIES_KEY = "auth";
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
     private final String secret;
@@ -103,7 +102,7 @@ public class JwtUtil implements InitializingBean {
     }
 
     // // 유저 이름 추출
-    public static String getEmail(String token) {
+    public String getEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -117,7 +116,7 @@ public class JwtUtil implements InitializingBean {
         // String token = request.getHeader("Authorization");
         // 가져온 Authorization Header 가 문자열이고, Bearer 로 시작해야 가져옴
         if (StringUtils.hasText(token) && token.startsWith("Bearer")) {
-            return token.substring(6);
+            return token.substring(7);
         }
         return null;
     }
@@ -127,14 +126,14 @@ public class JwtUtil implements InitializingBean {
      */
     public static boolean validateToken(String token) {
 
-/*        Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        /*Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
 
         return !claims.getBody().getExpiration().before(new Date());*/
         boolean validate = false;
         try {
             JwtParser parser = Jwts.parser();
             //복호화하기 위해서 secretKey 넣어줌
-            parser.setSigningKey(AUTHORITIES_KEY.getBytes("UTF-8"));
+            parser.setSigningKey(key);
             Jws<Claims> jws = parser.parseClaimsJws(token);
             Claims claims = jws.getBody();
             //만료기간 확인 -> true : 유효, false : 만료

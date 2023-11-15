@@ -77,7 +77,7 @@ public class ReviewBoardService {
 
 public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
     String token = tokenProvider.resolveToken(accessToken);
-    String email = JwtUtil.getEmail(token);
+    String email = tokenProvider.getEmail(token);
     System.out.println("getEmail(token)" + email);
 
     // 리뷰 게시판이 사용자에게 속하는지 확인
