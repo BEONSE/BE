@@ -1,5 +1,6 @@
 package com.beonse2.domain.branch.vo;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,12 @@ public class Branch {
 
     private String introduction;//지점사 소개
 
-    private Timestamp createAt; //생성일
-    private Timestamp modifiedAt; //수정일
+    @Builder
+    public Branch(Long memberId, String name, String address, String image, String introduction) {
+        this.memberId = memberId;
+        this.name = name;
+        this.address = address;
+        this.image = image;
+        this.introduction = introduction;
+    }
 }

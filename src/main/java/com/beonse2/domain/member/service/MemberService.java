@@ -1,6 +1,6 @@
 package com.beonse2.domain.member.service;
 
-import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.domain.member.vo.enums.Role;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -24,14 +24,8 @@ public class MemberService {
 
     // 암호화
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final TokenProvider jwtTokenProvider;
 
-    // 회원가입 시 저장시간을 넣어줄 DateTime형
-    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:sss");
-    Date time = new Date();
-    String localTime = format.format(time);
-
-    Timestamp sysDate = Timestamp.valueOf(localTime);
+    private final JwtUtil jwtTokenProvider;
 
     private final MemberMapper memberMapper;
 
@@ -56,9 +50,6 @@ public class MemberService {
                 .name(member.getName())
                 .address(member.getAddress())
                 .role(member.getRole())
-//                .role(Role.valueOf("ROLE_USER"))
-/*                .createdAt(sysDate)
-                .modifiedAt(sysDate)*/
                 .build();
 
         memberMapper.save(member);
@@ -121,8 +112,8 @@ public class MemberService {
         return TokenDTO.builder()
                /* .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
                 .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))*/
-                 .accessToken(jwtTokenProvider.createAccessToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
-                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO.getEmail(), Role.valueOf(memberDTO.getRole().toString())))
+                .accessToken(jwtTokenProvider.createAccessToken(memberDTO))
+                .refreshToken(jwtTokenProvider.createRefreshToken(memberDTO))
                 .build();
     }
 

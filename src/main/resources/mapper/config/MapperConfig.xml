@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
+        <typeAlias alias="member" type="com.beonse2.domain.member.dto.MemberDTO" />
+        <typeAlias alias="branch" type="com.beonse2.domain.branch.dto.BranchDTO" />
+    </typeAliases>
+</configuration>

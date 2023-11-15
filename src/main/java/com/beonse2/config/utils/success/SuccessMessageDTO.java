@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class SuccessMessageDTO {
 
-    private final SuccessCode successCode;
+    private final int statusCode;
+    private final String successMessage;
 
     @Builder
-    public SuccessMessageDTO(SuccessCode successCode) {
-        this.successCode = successCode;
+    SuccessMessageDTO(int statusCode, String successMessage) {
+        this.statusCode = statusCode;
+        this.successMessage = successMessage;
     }
 }
