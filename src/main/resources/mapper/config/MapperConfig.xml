@@ -12,5 +12,7 @@
         <typeAlias alias="member" type="com.beonse2.domain.member.dto.MemberDTO" />
         <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
         <typeAlias alias="mateBoardVo" type="com.beonse2.domain.mate.board.vo.MateBoardVO" />
+        <typeAlias alias="mateBoardListDTO" type="com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO" />
+        <typeAlias alias="mateBoardDTO" type="com.beonse2.domain.mate.board.dto.MateBoardResponseDTO" />
     </typeAliases>
 </configuration>

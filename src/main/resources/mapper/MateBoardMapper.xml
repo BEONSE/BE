@@ -11,4 +11,20 @@
         VALUES (mateBoard_seq.NEXTVAL, #{memberMid}, #{title}, #{content}, #{branchName})
     </insert>
 
+    <select id="findAllMateBoard" resultType="mateBoardListDTO">
+        SELECT mb.mbid, mb.title, mb.modified_at, m.nickname, m.payment_amount
+        FROM mateboard mb
+            JOIN member m
+                ON mb.member_mid = m.mid
+    </select>
+
+    <select id="findById" resultType="mateBoardDTO" parameterType="long">
+        SELECT mb.mbid, mb.title, mb.content, mb.created_at, mb.modified_at, m.nickname, m.payment_amount
+        FROM mateboard mb
+            JOIN member m
+                ON mb.member_mid = m.mid
+        WHERE mb.mbid = #{ value }
+    </select>
+
+
 </mapper>
