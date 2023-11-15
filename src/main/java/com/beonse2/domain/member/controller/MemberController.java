@@ -1,9 +1,5 @@
 package com.beonse2.domain.member.controller;
 
-import com.beonse2.config.jwt.JwtUtil;
-import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
-import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
@@ -43,16 +39,6 @@ public class MemberController {
     public ResponseEntity<SuccessMessageDTO> save(@RequestBody MemberDTO member) {
         memberService.save(member);
         System.out.println("Member : " + member);
-   /*     TokenDTO token = memberService.tokenGenerator(member.getEmail());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송*/
-        responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .successMessage("성공적으로 회원가입이 완료되었습니다.")
-                .build());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
 
         responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
@@ -68,20 +54,6 @@ public class MemberController {
         String userId = memberService.login(loginDto);
         TokenDTO token = memberService.tokenGenerator(userId);
 
-           /* ResponseCookie responseCookie =
-                    ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
-                            .path("/")
-                            .maxAge(14 * 24 * 60 * 60) // 14일
-                            .httpOnly(true)
-                            // .secure(true)
-                            .build();
-
-        return responseEntity;
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);*/
-
         return ResponseEntity.ok(LoginResponseDTO.builder()
                 .accessToken(token.getAccessToken())
                 .refreshToken(token.getRefreshToken())
@@ -93,45 +65,15 @@ public class MemberController {
 
     @PostMapping(value = "/login2")
     public ResponseEntity login2(@RequestBody LoginDTO loginDto) {
+        String userId = memberService.login(loginDto);
+        TokenDTO token = memberService.tokenGenerator(userId);
 
-        @Operation(summary = "로그인", description = "로그인")
-        @ApiResponses({
-                @ApiResponse(responseCode = "200", description = "OK !!"),
-                @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
-        })
-        public ResponseEntity login (@RequestBody LoginDTO loginDto){
-            String userId = memberService.login(loginDto);
-            TokenDTO token = memberService.tokenGenerator(userId);
+        return ResponseEntity.ok().header("Authorization", token.getAccessToken())
+                .body(SuccessMessageDTO.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .successMessage("")
+                        .build());
 
-            return ResponseEntity.ok(LoginResponseDTO.builder()
-                    .accessToken(token.getAccessToken())
-                    .refreshToken(token.getRefreshToken())
-                    .successMessage("로그인 성공")
-                    .build());
-            String userId = memberService.login(loginDto);
-            TokenDTO token = memberService.tokenGenerator(userId);
-            HttpHeaders httpHeaders = new HttpHeaders();
-
-           /* ResponseCookie responseCookie =
-                    ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
-                            .path("/")
-                            .maxAge(14 * 24 * 60 * 60) // 14일
-                            .httpOnly(true)
-                            // .secure(true)
-                            .build();
-
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);*/
-            String accessToken = token.getAccessToken();
-
-            return ResponseEntity.ok().header("Authorization", token.getAccessToken())
-                    .body(SuccessMessageDTO.builder()
-                            .statusCode(HttpStatus.OK.value())
-                            .successMessage("")
-                            .build());
-        }
     }
 
     /*@PostMapping(value = "/logout")

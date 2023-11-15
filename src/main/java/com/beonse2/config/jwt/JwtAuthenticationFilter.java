@@ -5,7 +5,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SecurityException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
@@ -34,13 +33,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         // public static final String AUTHORIZATION_HEADER = "Authorization";
 
-    private final JwtUtil tokenProvider;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private MemberDetailsService memberDetailsService;
-
-    public JwtAuthenticationFilter(JwtUtil tokenProvider) {
-        this.tokenProvider = tokenProvider;
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -58,7 +54,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
         if (authorizationHeader != null && authorizationHeader.contains("Bearer")) {
             //헤더에 accessToken이 포함되어 있을 경우
-            accessToken = tokenProvider.resolveToken(authorizationHeader);
+            accessToken = jwtUtil.resolveToken(authorizationHeader);
         } else {
             //QueryString 형태로 넘어왔을 경우
             //<img src="battach/3?accessToken=xxxxx">
@@ -67,11 +63,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         try {
             //유효한 토큰인지 확인
-            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
+            if (StringUtils.hasText(accessToken) && jwtUtil.validateToken(accessToken)) {
                 if (JwtUtil.validateToken(accessToken)) { //토큰에서 email 가져오기
 
                     //인증 객체 생성 -> 생성이 되면 스프링 시큐리티가 인증한 것
-                    Authentication authentication = tokenProvider.getAuthentication(accessToken);
+                    Authentication authentication = jwtUtil.getAuthentication(accessToken);
 
                     //Spring Security에 인증 객체 등록 -> 토큰이 유효하면 시큐리티에서 인증 작업 끝남
                     SecurityContextHolder.getContext().setAuthentication(authentication);

@@ -1,8 +1,8 @@
 package com.beonse2.domain.mate.board.controller;
 
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
+import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.service.MateBoardService;
 import io.swagger.v3.oas.annotations.Operation;

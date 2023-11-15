@@ -19,9 +19,7 @@ import java.util.Date;
 @Component
 public class JwtUtil implements InitializingBean {
 
-    // private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
-    private static final String AUTHORITIES_KEY = "auth";
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
     private final String secret;
@@ -48,9 +46,6 @@ public class JwtUtil implements InitializingBean {
 
     /**
      * 액세스 토큰 생성 메서드
-     *
-  //   * @param email 발급받는 유저의 아이디
- //    * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createAccessToken(MemberDTO memberDTO) {
@@ -69,9 +64,6 @@ public class JwtUtil implements InitializingBean {
     }
     /**
      * 리프레시 토큰 생성 메서드
-     *
-  //   * @param email 발급받는 유저의 아이디
- //    * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createRefreshToken(MemberDTO memberDTO) {
@@ -103,7 +95,7 @@ public class JwtUtil implements InitializingBean {
     }
 
     // // 유저 이름 추출
-    public static String getEmail(String token) {
+    public String getEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -127,14 +119,11 @@ public class JwtUtil implements InitializingBean {
      */
     public static boolean validateToken(String token) {
 
-/*        Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-
-        return !claims.getBody().getExpiration().before(new Date());*/
         boolean validate = false;
         try {
             JwtParser parser = Jwts.parser();
             //복호화하기 위해서 secretKey 넣어줌
-            parser.setSigningKey(AUTHORITIES_KEY.getBytes("UTF-8"));
+            parser.setSigningKey(key);
             Jws<Claims> jws = parser.parseClaimsJws(token);
             Claims claims = jws.getBody();
             //만료기간 확인 -> true : 유효, false : 만료
