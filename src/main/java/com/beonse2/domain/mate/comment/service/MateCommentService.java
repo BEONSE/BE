@@ -5,6 +5,7 @@ import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.comment.dto.MateCommentRequestDTO;
+import com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO;
 import com.beonse2.domain.mate.comment.mapper.MateCommentMapper;
 import com.beonse2.domain.mate.comment.vo.MateCommentVO;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -51,5 +53,16 @@ public class MateCommentService {
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("댓글 작성 완료.")
                 .build());
+    }
+
+    public ResponseEntity<List<MateCommentResponseDTO>> findMateCommentList(Long mateBoardId) {
+
+        List<MateCommentResponseDTO> mateComments = mateCommentMapper.findAllMateComment(mateBoardId);
+
+        if (mateComments.isEmpty()) {
+            throw new CustomException(NOT_FOUND_COMMENT);
+        }
+
+        return ResponseEntity.ok(mateComments);
     }
 }

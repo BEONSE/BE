@@ -1,5 +1,6 @@
 package com.beonse2.domain.mate.comment.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class MateCommentResponseDTO {
     private String nickname;
     private int paymentAmount;
     private String content;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;
 
     @Builder

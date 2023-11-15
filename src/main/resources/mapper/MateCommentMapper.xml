@@ -17,5 +17,16 @@
         WHERE mateboard_mbid = #{value}
     </select>
 
+    <select id="findAllMateComment" parameterType="long" resultType="mateCommentListDTO">
+        SELECT mc.mcid, mc.member_mid, mc.mateboard_mbid, m.nickname, m.payment_amount, mc.content, mc.created_at
+        FROM matecomment mc
+            JOIN mateboard mb
+                ON mc.mateboard_mbid = mb.mbid
+            JOIN member m
+                ON mc.member_mid = m.mid
+        WHERE mateboard_mbid = #{value}
+        ORDER BY mc.created_at DESC
+    </select>
+
 </mapper>
 
