@@ -18,7 +18,7 @@
         ]]>
         </sql>-->
 
-    <!-- 회원 정보 저장 (회원 가입) -->
+    <!-- 가맹점 회원 가입 -->
     <insert id="save" parameterType="com.beonse2.domain.branch.vo.Branch" useGeneratedKeys="true">
         INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
         VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address},
@@ -40,4 +40,13 @@
         </choose>
                 SYSTIMESTAMP, SYSTIMESTAMP)
     </insert>
+
+    <!--가맹점 조회-->
+    <select id="findByMemberId" parameterType="long" resultType="com.beonse2.domain.branch.dto.BranchRequestDTO">
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION, B.CREATED_AT, B.MODIFIED_AT
+        FROM BRANCH B, MEMBER M
+        WHERE B.MEMBER_MID = M.MID
+        AND B.BID = #{ value }
+    </select>
+
 </mapper>

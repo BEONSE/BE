@@ -10,11 +10,7 @@ public interface MemberMapper {
 
     void save(MemberDTO member);
     void saveBranch(MemberDTO member);
-
     Optional<MemberDTO> findByEmail(String email);
-
-
-    Optional<Object> findNameByEmail(String email);
 
 }
 

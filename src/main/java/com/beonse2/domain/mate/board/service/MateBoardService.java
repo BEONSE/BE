@@ -1,8 +1,7 @@
 package com.beonse2.domain.mate.board.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
-import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
@@ -32,15 +31,15 @@ public class MateBoardService {
 
     private final MemberMapper memberMapper;
     private final MateBoardMapper mateBoardMapper;
-    private final TokenProvider tokenProvider;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public ResponseEntity<SuccessMessageDTO> createMateBoard(MateBoardRequestDTO mateBoardRequestDTO,
                                                              String accessToken) {
 
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
@@ -70,9 +69,9 @@ public class MateBoardService {
 
     public ResponseEntity<MateBoardResponseDTO> findMateBoard(Long mateBoardId, String accessToken) {
 
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
-        memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
@@ -88,6 +87,7 @@ public class MateBoardService {
                                                              String accessToken,
                                                              MateBoardRequestDTO mateBoardRequestDTO) {
 
+        String token = jwtUtil.resolveToken(accessToken);
         checkWriter(mateBoardId, accessToken);
 
         mateBoardRequestDTO = MateBoardRequestDTO.builder()
@@ -121,7 +121,7 @@ public class MateBoardService {
     private void checkWriter(Long mateBoardId, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
