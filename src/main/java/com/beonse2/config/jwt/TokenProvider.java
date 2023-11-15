@@ -1,8 +1,6 @@
 package com.beonse2.config.jwt;
 
 import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.service.MemberDetailsService;
-import com.beonse2.domain.member.vo.enums.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -128,30 +126,8 @@ public class TokenProvider implements InitializingBean {
      * 토큰을 파싱하고 발생하는 예외를 처리, 문제가 있을경우 false 반환
      */
     public static boolean validateToken(String token) {
-        // try {
         Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
-        // }
-        // catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-        //    logger.info("잘못된 JWT 서명입니다.");
-        //     // throw new JwtException("잘못된 서명");
-
-        // } catch (ExpiredJwtException e) {
-
-        //    logger.info("만료된 JWT 토큰입니다.");
-        // //    throw new JwtException("만료된 토큰");
-
-        // } catch (UnsupportedJwtException e) {
-
-        //    logger.info("지원되지 않는 JWT 토큰입니다.");
-        // //    throw new JwtException("지원되지 않는 토큰");
-
-        // } catch (IllegalArgumentException e) {
-
-        //    logger.info("JWT 토큰이 잘못되었습니다.");
-        // //    throw new JwtException("잘못된 토큰");
-        // }
-        // return false;
     }
 
     private Claims parseClaims(String accessToken) {
