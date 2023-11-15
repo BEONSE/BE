@@ -94,21 +94,10 @@ public class MemberController {
         TokenDTO token = memberService.tokenGenerator(userId);
         HttpHeaders httpHeaders = new HttpHeaders();
 
-           /* ResponseCookie responseCookie =
-                    ResponseCookie.from(HttpHeaders.SET_COOKIE, token.getRefreshToken())///new Cookie("refreshToken", token.getRefreshToken());
-                            .path("/")
-                            .maxAge(14 * 24 * 60 * 60) // 14일
-                            .httpOnly(true)
-                            // .secure(true)
-                            .build();
-
-            SingleDataResponse<String> response = responseService.getSingleDataResponse(true, userId, token.getAccessToken());
-            responseEntity = ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);*/
-        String accessToken = token.getAccessToken();
-
-        return ResponseEntity.ok().header("Authorization", token.getAccessToken())
+        return ResponseEntity.ok()
+                .header("AccessToken", token.getAccessToken())
+                .header("RefreshToken", token.getRefreshToken())
+                .header("Origin", "http://localhost:3000")
                 .body(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("")

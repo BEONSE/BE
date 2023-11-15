@@ -12,6 +12,7 @@ import com.beonse2.domain.mate.board.vo.MateBoardVO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class MateBoardService {
 
     private final MemberMapper memberMapper;
@@ -86,19 +88,49 @@ public class MateBoardService {
                                                              String accessToken,
                                                              MateBoardRequestDTO mateBoardRequestDTO) {
 
+        checkWriter(mateBoardId, accessToken);
+
+        mateBoardRequestDTO = MateBoardRequestDTO.builder()
+                .mbid(mateBoardId)
+                .title(mateBoardRequestDTO.getTitle())
+                .content(mateBoardRequestDTO.getContent())
+                .branchName(mateBoardRequestDTO.getBranchName())
+                .build();
+
+        mateBoardMapper.updateMateBoard(mateBoardRequestDTO);
+
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("게시글이 수정되었습니다.")
+                .build());
+    }
+
+    @Transactional
+    public ResponseEntity<SuccessMessageDTO> removeMateBoard(Long mateBoardId, String accessToken) {
+
+        checkWriter(mateBoardId, accessToken);
+
+        mateBoardMapper.deleteById(mateBoardId);
+
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("게시글이 삭제되었습니다.")
+                .build());
+    }
+
+    private void checkWriter(Long mateBoardId, String accessToken) {
         String token = tokenProvider.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        mateBoardMapper.findById(mateBoardId).orElseThrow(
+        MateBoardResponseDTO findMateBoard = mateBoardMapper.findById(mateBoardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
 
-//        mateBoardMapper.updateMateBoard()
-
-
-        return null;
+        if (!findMateBoard.getNickname().equals(findMember.getNickname())) {
+            throw new CustomException(NOT_MATCH_USER);
+        }
     }
 }
