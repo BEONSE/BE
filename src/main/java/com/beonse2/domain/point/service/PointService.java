@@ -1,8 +1,7 @@
 package com.beonse2.domain.point.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
-import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
@@ -29,15 +28,15 @@ import static com.beonse2.config.exception.ErrorCode.*;
 public class PointService {
 
     private final PointMapper pointMapper;
-    private final TokenProvider tokenProvider;
+    private final JwtUtil jwtUtil;
     private final MemberMapper memberMapper;
 
     @Transactional
     public ResponseEntity<SuccessMessageDTO> createPoint(PointRequestDTO pointRequestDTO, String accessToken) {
 
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
@@ -73,9 +72,9 @@ public class PointService {
 
     public ResponseEntity<List<PointResponseDTO>> findPointList(String accessToken) {
 
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 

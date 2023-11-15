@@ -19,7 +19,6 @@ import java.util.Date;
 @Component
 public class JwtUtil implements InitializingBean {
 
-    // private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private final long accessTokenValidityInMilliseconds;
     private final long refreshTokenValidityInMilliseconds;
@@ -47,9 +46,6 @@ public class JwtUtil implements InitializingBean {
 
     /**
      * 액세스 토큰 생성 메서드
-     *
-  //   * @param email 발급받는 유저의 아이디
- //    * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createAccessToken(MemberDTO memberDTO) {
@@ -68,9 +64,6 @@ public class JwtUtil implements InitializingBean {
     }
     /**
      * 리프레시 토큰 생성 메서드
-     *
-  //   * @param email 발급받는 유저의 아이디
- //    * @param role  발급받는 유저의 권한
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createRefreshToken(MemberDTO memberDTO) {
@@ -126,9 +119,6 @@ public class JwtUtil implements InitializingBean {
      */
     public static boolean validateToken(String token) {
 
-        /*Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-
-        return !claims.getBody().getExpiration().before(new Date());*/
         boolean validate = false;
         try {
             JwtParser parser = Jwts.parser();

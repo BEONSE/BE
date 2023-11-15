@@ -37,7 +37,6 @@ public class MemberDetailsService implements UserDetailsService {
     }
 
     private MemberDTO addAuthorities(MemberDTO memberDTO) {
-       // memberDTO.setAuthorities(List.of(new SimpleGrantedAuthority(memberDTO.getRole().toString())));
         memberDTO.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(memberDTO.getRole().toString())));
         return memberDTO;
     }

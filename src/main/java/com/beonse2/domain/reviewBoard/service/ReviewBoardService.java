@@ -1,15 +1,9 @@
 package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.jwt.JwtUtil;
-import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.config.jwt.TokenProvider;
-import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +15,11 @@ public class ReviewBoardService {
 
     private final ReviewBoardMapper reviewBoardMapper;
 
-    private final JwtUtil tokenProvider;
+    private final JwtUtil jwtUtil;
 
     public boolean createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
-        String token = tokenProvider.resolveToken(accessToken);
-        String email = tokenProvider.getEmail(token);
+        String token = jwtUtil.resolveToken(accessToken);
+        String email = jwtUtil.getEmail(token);
 
         reviewBoardDTO = ReviewBoardDTO.builder()
                 .title(reviewBoardDTO.getTitle())
@@ -50,8 +44,8 @@ public class ReviewBoardService {
     }
 
     public List<ReviewBoardDTO> updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {
-        String token = tokenProvider.resolveToken(accessToken);
-        String email = tokenProvider.getEmail(token);
+        String token = jwtUtil.resolveToken(accessToken);
+        String email = jwtUtil.getEmail(token);
 
         // 리뷰 게시판이 사용자에게 속하는지 확인
         List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
@@ -76,8 +70,9 @@ public class ReviewBoardService {
     }
 
 public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
-    String token = tokenProvider.resolveToken(accessToken);
-    String email = tokenProvider.getEmail(token);
+
+    String token = jwtUtil.resolveToken(accessToken);
+    String email = jwtUtil.getEmail(token);
     System.out.println("getEmail(token)" + email);
 
     // 리뷰 게시판이 사용자에게 속하는지 확인

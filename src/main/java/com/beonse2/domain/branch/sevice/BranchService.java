@@ -32,8 +32,6 @@ public class BranchService {
 
     private final MemberMapper memberMapper;
 
-    private final MemberService memberService;
-
     public boolean save(BranchRequestDTO branchRequestDTO) {
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(branchRequestDTO.getEmail()).isPresent()) {
@@ -50,6 +48,7 @@ public class BranchService {
                 .build();
 
         memberMapper.saveBranch(member);
+
         //response로 멤버 아이디  findbyEmail찾음
 
         MemberDTO findMember = memberMapper.findByEmail(branchRequestDTO.getEmail()).orElseThrow(
@@ -68,5 +67,10 @@ public class BranchService {
         branchMapper.save(branch);
 
         return memberMapper.findByEmail(member.getEmail()).isPresent();
+    }
+
+    public BranchRequestDTO findByEmail(String email) {
+        return branchMapper.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
 }

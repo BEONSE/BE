@@ -1,6 +1,5 @@
 package com.beonse2.domain.member.controller;
 
-import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
@@ -25,10 +24,9 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
 
-
     private final MemberService memberService;
+
     private final ResponseService responseService;
-    private final TokenProvider tokenProvider;
     ResponseEntity responseEntity;
 
     //회원 가입
@@ -39,7 +37,6 @@ public class MemberController {
     })
     @PostMapping("/join")
     public ResponseEntity<SuccessMessageDTO> save(@RequestBody MemberDTO member) {
-
         memberService.save(member);
         System.out.println("Member : " + member);
         TokenDTO token = memberService.tokenGenerator(member.getEmail());
