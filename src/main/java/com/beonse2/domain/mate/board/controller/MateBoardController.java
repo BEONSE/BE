@@ -56,4 +56,18 @@ public class MateBoardController {
                                                              @RequestHeader(value = "Authorization") String accessToken) {
         return mateBoardService.findMateBoard(mateBoardId, accessToken);
     }
+
+
+    @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @PatchMapping("/{mateBoard-id}")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<SuccessMessageDTO> patchMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
+                                                            @RequestHeader(value = "Authorization") String accessToken,
+                                                            @RequestBody MateBoardRequestDTO mateBoardRequestDTO) {
+        return mateBoardService.updateMateBoard(mateBoardId, accessToken, mateBoardRequestDTO);
+    }
 }

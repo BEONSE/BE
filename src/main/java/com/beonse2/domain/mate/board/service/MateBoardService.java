@@ -70,7 +70,7 @@ public class MateBoardService {
 
         String token = tokenProvider.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
@@ -79,5 +79,26 @@ public class MateBoardService {
         );
 
         return ResponseEntity.ok(mateBoardResponseDTO);
+    }
+
+    @Transactional
+    public ResponseEntity<SuccessMessageDTO> updateMateBoard(Long mateBoardId,
+                                                             String accessToken,
+                                                             MateBoardRequestDTO mateBoardRequestDTO) {
+
+        String token = tokenProvider.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        mateBoardMapper.findById(mateBoardId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BOARD)
+        );
+
+//        mateBoardMapper.updateMateBoard()
+
+
+        return null;
     }
 }
