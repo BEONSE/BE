@@ -55,6 +55,7 @@ public class ReviewBoardController {
         return responseEntity;
     }
 
+
     @GetMapping("/reviews") // 리뷰 전체 조회
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity reviewBoardList(@RequestParam(defaultValue = "1") int startPage, @RequestParam(defaultValue = "1") int pageNum, ReviewBoardDTO reviewBoardDTO) {

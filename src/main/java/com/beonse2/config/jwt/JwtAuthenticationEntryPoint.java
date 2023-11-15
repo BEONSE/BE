@@ -14,7 +14,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint { //인가(Authorization)가 실패 했을 때 실행
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED); //401 에러
 
         /*response.setCharacterEncoding("utf-8");

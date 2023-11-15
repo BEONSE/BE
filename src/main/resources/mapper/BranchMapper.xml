@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.branch.mapper.BranchMapper">
+
+    <!--    <sql id="branchColumns">
+        <![CDATA[
+              bid
+            , memberId
+            , name
+            , address
+            , image
+            , introduction
+            ,isApproval
+            , createAt
+            , modifiedAt
+        ]]>
+        </sql>-->
+
+    <!-- 회원 정보 저장 (회원 가입) -->
+    <insert id="save" parameterType="com.beonse2.domain.branch.vo.Branch" useGeneratedKeys="true">
+        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
+        VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address},
+        <choose>
+            <when test="image != null">
+                #{image},
+            </when>
+            <otherwise>
+                NULL,
+            </otherwise>
+        </choose>,
+        <choose>
+            <when test="introduction != null">
+                #{introduction},
+            </when>
+            <otherwise>
+                NULL,
+            </otherwise>
+        </choose>
+                SYSTIMESTAMP, SYSTIMESTAMP)
+    </insert>
+</mapper>

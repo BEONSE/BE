@@ -1,6 +1,7 @@
 package com.beonse2.domain.member.dto;
 
 import com.beonse2.domain.member.vo.enums.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,7 +31,9 @@ public class MemberDTO implements UserDetails {
     private Long paymentAmount;//누적 결제 내역
     private boolean status;//회원 삭제
     private File image;//프로필 사진
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;//생성일
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp modifiedAt;//수정일
 
     //security 이용 코드
