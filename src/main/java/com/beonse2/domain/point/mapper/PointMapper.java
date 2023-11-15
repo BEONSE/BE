@@ -9,6 +9,6 @@ import java.util.List;
 public interface PointMapper {
 
     void savePoint(PointVO pointVO);
-
+    
     List<PointVO> findMyPayments(Long memberMid);
 }

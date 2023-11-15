@@ -2,6 +2,8 @@ package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.config.jwt.TokenProvider;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,6 @@ public class ReviewBoardService {
 
     public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {
         //전체 조회
-       // System.out.println("reviewBoardMapper.reviewBoardList(reviewBoardRequestDTO) : " +  reviewBoardMapper.reviewBoardList(reviewBoardDTO));
         return reviewBoardMapper.reviewBoardList(reviewBoardDTO);
     }
 
@@ -103,9 +104,6 @@ public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedR
 
     return reviewBoardList;
 }
-
-
-
 
 
 //    public MemberDTO isMemberCurrent(String email) {

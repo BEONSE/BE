@@ -20,7 +20,6 @@ public class PointResponseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp paymentDate;
 
-
     @Builder
     public PointResponseDTO(PointVO pointVO) {
         this.pid = pointVO.getPid();

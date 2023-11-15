@@ -91,6 +91,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //모든 요청 사이트 허용
         configuration.addAllowedOrigin("*");
         //모든 요청 헤더 허용
+
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://localhost:8080");
+        configuration.addAllowedOrigin("https://localhost:3000");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         //요청 헤더의 Authorization를 이용해서 사용자 인증(로그인 처리)하지 않음

@@ -1,7 +1,8 @@
 package com.beonse2.domain.point.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.exception.ErrorCode;
+import com.beonse2.config.jwt.TokenProvider;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
@@ -28,8 +29,7 @@ import static com.beonse2.config.exception.ErrorCode.*;
 public class PointService {
 
     private final PointMapper pointMapper;
-
-    private final JwtUtil tokenProvider;
+    private final TokenProvider tokenProvider;
     private final MemberMapper memberMapper;
 
     @Transactional
@@ -40,6 +40,7 @@ public class PointService {
         MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
+
 
         if (!(pointRequestDTO.getPaymentPrice() == 10000 || pointRequestDTO.getPaymentPrice() == 30000 || pointRequestDTO.getPaymentPrice() == 50000)) {
             throw new CustomException(NOT_MATCH_PAYMENT_PRICE);
@@ -63,12 +64,6 @@ public class PointService {
                 .cardNumber(pointRequestDTO.getCardNumber())
                 .build());
 
-        PointVO pointVO = PointVO.builder()
-                .points(points)
-                .paymentPrice(pointRequestDTO.getPaymentPrice())
-                .cardName(pointRequestDTO.getCardName())
-                .cardNumber(pointRequestDTO.getCardNumber())
-                .build();
 
         return ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())

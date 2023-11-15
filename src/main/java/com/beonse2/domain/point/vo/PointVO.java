@@ -1,6 +1,5 @@
 package com.beonse2.domain.point.vo;
 
-import com.beonse2.domain.point.dto.PointRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
