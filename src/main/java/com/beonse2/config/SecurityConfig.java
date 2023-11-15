@@ -86,9 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        //모든 요청 사이트 허용
-//        configuration.addAllowedOrigin("*");
-
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://localhost:3000");
@@ -96,10 +93,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //모든 요청 헤더 허용
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        //요청 헤더의 Authorization를 이용해서 사용자 인증(로그인 처리)하지 않음
-   //   configuration.setAllowCredentials(false);
         configuration.setAllowCredentials(true);
-        //모든 URL 요청에 대해서 위 내용을 적용
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -39,6 +39,11 @@ public class MemberController {
     public ResponseEntity<SuccessMessageDTO> save(@RequestBody MemberDTO member) {
         memberService.save(member);
         System.out.println("Member : " + member);
+        TokenDTO token = memberService.tokenGenerator(member.getEmail());
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
 
         responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
@@ -48,6 +53,11 @@ public class MemberController {
         return responseEntity;
     }
 
+    @Operation(summary = "로그인", description = "로그인")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
 
@@ -62,46 +72,21 @@ public class MemberController {
                 .build());
     }
 
-
     @PostMapping(value = "/login2")
     public ResponseEntity login2(@RequestBody LoginDTO loginDto) {
+
         String userId = memberService.login(loginDto);
         TokenDTO token = memberService.tokenGenerator(userId);
 
-        return ResponseEntity.ok().header("Authorization", token.getAccessToken())
+        return ResponseEntity.ok()
+                .header("AccessToken", token.getAccessToken())
+                .header("RefreshToken", token.getRefreshToken())
+                .header("Origin", "http://localhost:3000")
                 .body(SuccessMessageDTO.builder()
-                        .statusCode(HttpStatus.OK.value())
-                        .successMessage("")
-                        .build());
-
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("")
+                .build());
     }
-
-    /*@PostMapping(value = "/logout")
-    public ResponseEntity logout(
-            @CookieValue(value = HttpHeaders.SET_COOKIE) Cookie refreshCookie
-    ) {
-        try {
-            ResponseCookie responseCookie =
-                    ResponseCookie.from(HttpHeaders.SET_COOKIE, "")///new Cookie("refreshToken", token.getRefreshToken());
-                            .path("/")
-                            .httpOnly(true)
-                            .secure(true)
-                            .maxAge(0).build();
-            BaseResponse response =
-                    responseService.getBaseResponse(true, "로그아웃 성공");
-            responseEntity = ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
-                    .body(response);
-
-        } catch (RuntimeException exception) {
-            log.debug(exception.getMessage());
-            BaseResponse response = responseService.getBaseResponse(false, exception.getMessage());
-
-            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        }
-
-        return responseEntity;
-    }*/
 
     /**
      * @param email email 전송을 위한 DTO

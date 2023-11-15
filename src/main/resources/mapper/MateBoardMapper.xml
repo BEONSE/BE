@@ -16,6 +16,7 @@
         FROM mateboard mb
             JOIN member m
                 ON mb.member_mid = m.mid
+        WHERE mb.status = '0'
     </select>
 
     <select id="findById" resultType="mateBoardDTO" parameterType="long">
@@ -23,9 +24,21 @@
         FROM mateboard mb
             JOIN member m
                 ON mb.member_mid = m.mid
-        WHERE mb.mbid = #{ value }
+        WHERE mb.mbid = #{value}
+        AND mb.status = '0'
     </select>
 
+    <update id="updateMateBoard" parameterType="mateBoardUpdateDTO">
+        UPDATE mateboard
+        SET title = #{title}, content = #{content}, branch_name = #{branchName}
+        WHERE mbid = #{mbid}
+    </update>
+
+    <update id="deleteById" parameterType="long">
+        UPDATE mateboard
+        SET status = '1'
+        WHERE mbid = #{value}
+    </update>
 
 </mapper>
 

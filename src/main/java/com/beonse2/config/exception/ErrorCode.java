@@ -21,7 +21,9 @@ public enum ErrorCode {
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND.value(), "회원을 찾을 수 없습니다."),
     DUPLICATE_MEMBER(HttpStatus.BAD_REQUEST.value(), "이미 가입된 회원입니다"),
     NOT_MATCH_EMAIL(HttpStatus.BAD_REQUEST.value(), "입력한 이메일의 회원이 없습니다."),
-    NOT_MATCH_PASSWORD(HttpStatus.NOT_FOUND.value(), "잘못된 비밀번호입니다.");
+    NOT_MATCH_PASSWORD(HttpStatus.NOT_FOUND.value(), "잘못된 비밀번호입니다."),
+    FAILED_UPDATE(HttpStatus.BAD_REQUEST.value(), "수정에 실패했습니다."),
+    NOT_MATCH_USER(HttpStatus.BAD_REQUEST.value(), "작성자가 아닙니다.");
 
 
     private final int statusCode;

@@ -16,4 +16,8 @@ public interface MateBoardMapper {
     List<MateBoardListResponseDTO> findAllMateBoard();
 
     Optional<MateBoardResponseDTO> findById(Long mateBoardId);
+
+    void updateMateBoard(MateBoardRequestDTO mateBoardRequestDTO);
+
+    void deleteById(Long mateBoardId);
 }
