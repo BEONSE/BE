@@ -20,4 +20,12 @@
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberId}, #{branchId}, #{reservationTime}, '0')
     </insert>
 
+    <select id="findMyReservations" parameterType="Long" resultType="com.beonse2.domain.reservation.dto.ReservationResponseDTO">
+        SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+        FROM RESERVATION R, BRANCH B
+        WHERE R.BRANCH_BID = B.BID
+        AND R.BRANCH_BID = #{branchBid}
+        ORDER BY R.RVID DESC
+    </select>
+
 </mapper>
