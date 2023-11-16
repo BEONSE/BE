@@ -5,7 +5,7 @@
 
 <mapper namespace="com.beonse2.domain.point.mapper.PointMapper">
 
-    <insert id="save" parameterType="pointVo">
+    <insert id="savePoint" parameterType="pointVo">
         INSERT INTO point (pid, member_mid, points, payment_price, card_name, card_number, payment_date)
         VALUES (point_seq.NEXTVAL, 1, #{points}, #{paymentPrice}, #{cardName}, #{cardNumber}, SYSTIMESTAMP)
     </insert>
