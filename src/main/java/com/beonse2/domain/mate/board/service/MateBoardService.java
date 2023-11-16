@@ -62,7 +62,6 @@ public class MateBoardService {
     public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard() {
 
         List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard();
-        List<MateBoardListResponseDTO> mateBoardListResponseDTOS = new ArrayList<>();
 
         if (mateBoards.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
@@ -133,7 +132,7 @@ public class MateBoardService {
     }
 
     private void checkWriter(Long mateBoardId, String accessToken) {
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
