@@ -133,7 +133,7 @@ public class MateBoardService {
     }
 
     private void checkWriter(Long mateBoardId, String accessToken) {
-        String token = tokenProvider.resolveToken(accessToken);
+        String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)

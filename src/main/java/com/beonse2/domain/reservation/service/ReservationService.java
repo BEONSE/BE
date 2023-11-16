@@ -19,6 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.List;
+
+import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_RESERVATION;
 
 @Slf4j
 @Service
@@ -34,19 +38,16 @@ public class ReservationService {
     private final BranchMapper branchMapper;
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> save(ReservationResponseDTO reservationResponseDTO, String accessToken) {
+    public ResponseEntity<SuccessMessageDTO> save(Long branchId, ReservationResponseDTO reservationResponseDTO, String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
-               () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
-        );
-        System.out.println("findMember : " + findMember);
-
-        BranchRequestDTO findBranch = branchMapper.findByMemberId(reservationResponseDTO.getBranchId()).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
+               () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        System.out.println("findBranch : " + findBranch);
+        BranchRequestDTO findBranch = branchMapper.findByMemberId(branchId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_BRANCH)
+        );
 
         Reservation reservation = Reservation.builder()
                 .branchId(findBranch.getBid())
@@ -60,5 +61,26 @@ public class ReservationService {
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("예약이 완료되었습니다.")
                 .build());
+    }
+
+    public ResponseEntity<List<ReservationResponseDTO>> reservationList (Long branchId,
+                                                                         String accessToken) {
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        branchMapper.findByMemberId(branchId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_BRANCH)
+        );
+
+        List<ReservationResponseDTO> reservationList = reservationMapper.findMyReservations(findMember.getMid());
+
+        if(reservationList.isEmpty()) {
+            throw  new CustomException(NOT_FOUND_RESERVATION);
+        }
+
+        return ResponseEntity.ok(reservationList);
     }
 }
