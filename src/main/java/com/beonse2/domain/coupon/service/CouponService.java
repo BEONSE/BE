@@ -15,11 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_COUPON;
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -68,5 +66,34 @@ public class CouponService {
         }
 
         return ResponseEntity.ok(couponResponseDTOS);
+    }
+
+    @Transactional
+    public ResponseEntity<SuccessMessageDTO> updateCoupon(Long couponId, String accessToken, CouponRequestDTO couponRequestDTO) {
+
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO memberDTO = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        CouponResponseDTO findCoupon = couponMapper.findById(couponId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_COUPON)
+        );
+
+        if (!memberDTO.getMid().equals(findCoupon.getMemberMid())) {
+            throw new CustomException(NOT_MATCH_USER);
+        }
+
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("couponId", couponId);
+        searchMap.put("branchName", couponRequestDTO.getBranchName());
+
+        couponMapper.updateCoupon(searchMap);
+
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("쿠폰 사용 완료")
+                .build());
     }
 }

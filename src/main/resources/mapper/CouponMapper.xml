@@ -19,4 +19,16 @@
         ORDER BY type DESC
     </select>
 
+    <select id="findById" parameterType="long" resultType="couponResponseDTO">
+        SELECT cid, member_mid, type, price, is_used, payment_date
+        FROM coupon
+        WHERE cid = #{value}
+    </select>
+
+    <update id="updateCoupon" parameterType="map">
+        UPDATE coupon
+        SET branch_name = #{branchName}
+        WHERE cid = #{couponId}
+    </update>
+
 </mapper>

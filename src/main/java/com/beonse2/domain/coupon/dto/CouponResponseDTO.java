@@ -16,6 +16,7 @@ public class CouponResponseDTO {
     private String type;
     private String price;
     private boolean isUsed;
+    private String branchName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp paymentDate;
 
@@ -27,5 +28,13 @@ public class CouponResponseDTO {
         this.price = price;
         this.isUsed = isUsed;
         this.paymentDate = paymentDate;
+    }
+
+    public void updateBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public void updateStatus(boolean isUsed) {
+        this.isUsed = isUsed;
     }
 }
