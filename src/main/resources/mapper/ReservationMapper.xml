@@ -15,12 +15,12 @@
     </sql>-->
 
 <!-- 게시글 작성 -->
-    <insert id="createReservation" parameterType="com.beonse2.domain.reservation.vo.Reservation" >
+    <insert id="createReservation" parameterType="reservation" >
         INSERT INTO RESERVATION (RVID, MEMBER_MID, BRANCH_BID, RESERVATION_TIME, STATUS)
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberId}, #{branchId}, #{reservationTime}, '0')
     </insert>
 
-    <select id="findMyReservations" parameterType="Long" resultType="com.beonse2.domain.reservation.dto.ReservationResponseDTO">
+    <select id="findMyReservations" parameterType="Long" resultType="reservationResponseDTO">
         SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
         FROM RESERVATION R, BRANCH B
         WHERE R.BRANCH_BID = B.BID

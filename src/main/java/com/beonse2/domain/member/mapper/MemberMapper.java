@@ -12,5 +12,8 @@ public interface MemberMapper {
     void saveBranch(MemberDTO member);
     Optional<MemberDTO> findByEmail(String email);
 
+    void updatePayment(int paymentAmount);
+
+    void updatePoint(int point);
 }
 

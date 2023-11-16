@@ -20,7 +20,7 @@ public class Member{
     private String name;//이름
     private String address;//주소
     private Role role;//권한
-    private Long paymentAmount;//누적 결제 내역
+    private int paymentAmount;//누적 결제 내역
     private boolean status;//회원 삭제
     private File image;//프로필 사진
     private Approval isApproval;//승인 여부

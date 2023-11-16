@@ -17,7 +17,7 @@ public class Reservation {
 
     private Long branchId;
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private Timestamp reservationTime; //예약 시간
 
     private boolean status; //예약 상태
