@@ -10,14 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/branches/{branch-id}/reservation")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -27,10 +27,24 @@ public class ReservationController {
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
-    @PostMapping("/reservation")
+    @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessMessageDTO> createReservation (@RequestBody ReservationResponseDTO reservationResponseDTO,
+    public ResponseEntity<SuccessMessageDTO> createReservation (@PathVariable("branch-id") Long branchId,
+                                                                @RequestBody ReservationResponseDTO reservationResponseDTO,
                                                                 @RequestHeader(value = "Authorization") String accessToken) {
-        return reservationService.save(reservationResponseDTO, accessToken);
+        return reservationService.save(branchId, reservationResponseDTO, accessToken);
     }
+
+    @Operation(summary = "세차 예약 조회", description = "세차 예약 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<ReservationResponseDTO>> reservationList(@PathVariable("branch-id") Long branchId,
+                                                                        @RequestHeader(value = "Authorization") String accessToken) {
+        return reservationService.reservationList(branchId, accessToken);
+    }
+
 }
