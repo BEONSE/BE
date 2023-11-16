@@ -14,7 +14,7 @@
     <select id="findCommentCount" parameterType="long" resultType="int">
         SELECT COUNT(*)
         FROM matecomment
-        WHERE mateboard_mbid = #{value}
+        WHERE mateboard_mbid = #{value} AND status = '0'
     </select>
 
     <select id="findAllMateComment" parameterType="long" resultType="mateCommentListDTO">
