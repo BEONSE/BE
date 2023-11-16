@@ -18,6 +18,7 @@ public class MateBoardListResponseDTO {
     private String nickname;
     private int paymentAmount;
     private int commentCount;
+    private int grade;
 
     @Builder
     public MateBoardListResponseDTO(Long mbid, String title, Timestamp modifiedAt, String nickname, int paymentAmount) {
@@ -30,5 +31,9 @@ public class MateBoardListResponseDTO {
 
     public void updateCommentCount(int commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public void updateGrade(int grade) {
+        this.grade = grade;
     }
 }

@@ -7,14 +7,14 @@
 <mapper namespace="com.beonse2.domain.mate.comment.mapper.MateCommentMapper">
 
     <insert id="saveMateComment" parameterType="mateCommentVo">
-        INSERT INTO matecomment(mcid, member_mid, mateboard_mbid, content, created_at)
-        VALUES (mateComment_seq.NEXTVAL, #{memberMid}, #{mateBoardMbid}, #{content}, #{createdAt})
+        INSERT INTO matecomment(mcid, member_mid, mateboard_mbid, content)
+        VALUES (mateComment_seq.NEXTVAL, #{memberMid}, #{mateBoardMbid}, #{content})
     </insert>
 
     <select id="findCommentCount" parameterType="long" resultType="int">
         SELECT COUNT(*)
         FROM matecomment
-        WHERE mateboard_mbid = #{value}
+        WHERE mateboard_mbid = #{value} AND status = '0'
     </select>
 
     <select id="findAllMateComment" parameterType="long" resultType="mateCommentListDTO">
