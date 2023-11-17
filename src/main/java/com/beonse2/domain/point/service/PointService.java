@@ -40,7 +40,6 @@ public class PointService {
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-
         if (!(pointRequestDTO.getPaymentPrice() == 10000 || pointRequestDTO.getPaymentPrice() == 30000 || pointRequestDTO.getPaymentPrice() == 50000)) {
             throw new CustomException(NOT_MATCH_PAYMENT_PRICE);
         }
@@ -55,13 +54,21 @@ public class PointService {
 
         int points = (int) (pointRequestDTO.getPaymentPrice() * 1.1);
 
+        int memberPayment = findMember.getPaymentAmount() + pointRequestDTO.getPaymentPrice();
+
+        int memberPoint = findMember.getPoints() + points;
+
         pointMapper.savePoint(PointVO.builder()
-                .points(points)
+               // .points(points)
+                .points(memberPoint)
                 .memberMid(findMember.getMid())
-                .paymentPrice(pointRequestDTO.getPaymentPrice())
+                .paymentPrice(memberPayment)
+//                .paymentPrice(pointRequestDTO.getPaymentPrice())
                 .cardName(pointRequestDTO.getCardName())
                 .cardNumber(pointRequestDTO.getCardNumber())
                 .build());
+
+        memberMapper.updatePayment(memberPayment);
 
 
         return ResponseEntity.ok(SuccessMessageDTO.builder()

@@ -39,18 +39,11 @@ public class MemberController {
     public ResponseEntity<SuccessMessageDTO> save(@RequestBody MemberDTO member) {
         memberService.save(member);
         System.out.println("Member : " + member);
-        TokenDTO token = memberService.tokenGenerator(member.getEmail());
 
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
-
-        responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("성공적으로 회원가입이 완료되었습니다.")
                 .build());
-
-        return responseEntity;
     }
 
     @Operation(summary = "로그인", description = "로그인")
@@ -96,10 +89,9 @@ public class MemberController {
      */
     @GetMapping(value = "/get")
     public ResponseEntity isHaveUser(@RequestParam String email) {
-        // Cookie cookie = new Cookie("name", value)
         try {
             boolean isHaveUser = memberService.haveMember(email);
-            String message = isHaveUser ? "회원가입된 유저입니다." : "회원가입 안된 유저입니다.";
+            String message = isHaveUser ? "회원가입된 유저입니다." : "회원가입 안 된 유저입니다.";
             SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, message, isHaveUser);
             responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -110,6 +102,6 @@ public class MemberController {
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
         return responseEntity;
-
     }
+
 }

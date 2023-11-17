@@ -28,9 +28,10 @@ public class MemberDTO implements UserDetails {
     private String password; //비밀번호
     private String address;//주소
     private Role role; // 권한
-    private Long paymentAmount;//누적 결제 내역
+    private int paymentAmount;//누적 결제 내역
     private boolean status;//회원 삭제
     private File image;//프로필 사진
+    private int points;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;//생성일
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")

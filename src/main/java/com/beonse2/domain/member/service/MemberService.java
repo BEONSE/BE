@@ -8,6 +8,7 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

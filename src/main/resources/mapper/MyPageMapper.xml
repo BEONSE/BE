@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.myPage.mapper.MyPageMapper">
+
+<!--    <sql id="memberColumns">
+    <![CDATA[
+          mid
+        , email
+        , nickname
+        , password
+        , name
+        , address
+        , role
+        , paymentAmount
+        , status
+        , image
+        ,isApproval
+        , createAt
+        , modifiedAt
+    ]]>
+    </sql>-->
+
+<!--내 정보 : 이미지, 등급(결제금액) , 닉네임, 보유 포인트-->
+
+    <select id="findById" parameterType="Long" resultType="myPage" >
+        SELECT M.MID, P.PID, M.NICKNAME, M.PAYMENT_AMOUNT, M.IMAGE, P.POINTS, P.PAYMENT_PRICE
+        FROM MEMBER M, POINT P
+        WHERE M.MID = P.MEMBER_MID
+        AND M.MID = ${ mid }
+--         AND ROWNUM = 1
+    </select>
+
+</mapper>

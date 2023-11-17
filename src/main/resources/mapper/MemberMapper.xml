@@ -4,99 +4,106 @@
 
 <mapper namespace="com.beonse2.domain.member.mapper.MemberMapper">
 
-<!--    <sql id="memberColumns">
-    <![CDATA[
-          mid
-        , email
-        , nickname
-        , password
-        , name
-        , address
-        , role
-        , paymentAmount
-        , status
-        , image
-        ,isApproval
-        , createAt
-        , modifiedAt
-    ]]>
-    </sql>-->
+    <!--    <sql id="memberColumns">
+        <![CDATA[
+              mid
+            , email
+            , nickname
+            , password
+            , name
+            , address
+            , role
+            , paymentAmount
+            , status
+            , image
+            ,isApproval
+            , createAt
+            , modifiedAt
+        ]]>
+        </sql>-->
 
-<!-- 회원 정보 저장 (회원 가입) -->
-    <insert id="save" parameterType="member" useGeneratedKeys="true" keyProperty="email">
+    <!-- 회원 정보 저장 (회원 가입) -->
+    <insert id="save" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
         INSERT INTO MEMBER VALUES
-                               (MEMBER_SEQ.nextval,
-                                   #{email},
-                                   #{nickname},
-                                   #{password},
-                                   #{name},
-                                   #{address},
-                                   #{role},
-                                   0,
-                                   0,
-                                   NULL,
-                                   NULL,
-                                   SYSDATE,
-                                SYSDATE)
+            (MEMBER_SEQ.nextval,
+             #{email},
+             #{nickname},
+             #{password},
+             #{name},
+             #{address},
+             #{role},
+             #{paymentAmount},
+             '0',
+             NULL,
+             NULL,
+             SYSDATE,
+             SYSDATE)
     </insert>
 
-<!-- 지점사 회원 정보 저장 (회원 가입) -->
-    <insert id="saveBranch" parameterType="member" useGeneratedKeys="true" keyProperty="email">
+    <!-- 지점사 회원 정보 저장 (회원 가입) -->
+    <insert id="saveBranch" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
         INSERT INTO MEMBER VALUES
-                               (MEMBER_SEQ.nextval,
-                                   #{email},
-                                   #{name},
-                                   #{password},
-                                   #{name},
-                                   #{address},
-                                   'ROLE_BRANCH',
-                                   0,
-                                   '0',
-                                   NULL,
-                                   '승인 대기',
-                                   SYSTIMESTAMP,
-                                SYSTIMESTAMP)
+            (MEMBER_SEQ.nextval,
+             #{email},
+             #{name},
+             #{password},
+             #{name},
+             #{address},
+             'ROLE_BRANCH',
+             #{paymentAmount},
+             '0',
+             NULL,
+             '승인 대기',
+             SYSTIMESTAMP,
+             SYSTIMESTAMP)
     </insert>
 
-<!--회원 상세정보 조회-->
+    <!--회원 상세정보 조회-->
 
-    <select id="findByEmail" parameterType="string" resultType="member" >
+    <select id="findByEmail" parameterType="string" resultType="memberDTO" >
         SELECT *
         FROM MEMBER
         WHERE STATUS = 0 AND EMAIL = #{value}
     </select>
 
-<!--&lt;!&ndash;회원 정보 수정&ndash;&gt;-->
-<!--    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">-->
-<!--        UPDATE MEMBER-->
-<!--        SET-->
-<!--            NICKNAME = #{nickname},-->
-<!--        <if test="password != null and password != ''">-->
-<!--            PASSWORD = #{password}-->
-<!--        </if>-->
-<!--       ,-->
-<!--            ADDRESS = #{address},-->
-<!--            IMAGE = #{image},-->
-<!--            MODIFIED_AT = SYSDATE-->
-<!--        WHERE MID = #{id}-->
-<!--    </update>-->
+    <!--누적 결제 내역-->
+    <update id="updatePayment" parameterType="int">
+        UPDATE MEMBER
+        SET PAYMENT_AMOUNT = #{paymentAmount}
+        WHERE MID = #{mid}
+    </update>
 
-<!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
-<!--    <delete id="deleteById" parameterType="long">-->
-<!--        UPDATE MEMBER-->
-<!--        SET-->
-<!--            STATUS = 1-->
-<!--        WHERE-->
-<!--            MID = #{id}-->
-<!--    </delete>-->
+    <!--&lt;!&ndash;회원 정보 수정&ndash;&gt;-->
+    <!--    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">-->
+    <!--        UPDATE MEMBER-->
+    <!--        SET-->
+    <!--            NICKNAME = #{nickname},-->
+    <!--        <if test="password != null and password != ''">-->
+    <!--            PASSWORD = #{password}-->
+    <!--        </if>-->
+    <!--       ,-->
+    <!--            ADDRESS = #{address},-->
+    <!--            IMAGE = #{image},-->
+    <!--            MODIFIED_AT = SYSDATE-->
+    <!--        WHERE MID = #{id}-->
+    <!--    </update>-->
 
-<!--&lt;!&ndash;회원 수 카운팅 (ID 중복 체크)&ndash;&gt;-->
-<!--    <select id="duplicateEmail" parameterType="String" resultType="int">-->
-<!--        SELECT-->
-<!--            count(*)-->
-<!--        FROM-->
-<!--            MEMBER-->
-<!--        WHERE-->
-<!--            EMAIL = #{value}-->
-<!--    </select>-->
+    <!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
+    <!--    <delete id="deleteById" parameterType="long">-->
+    <!--        UPDATE MEMBER-->
+    <!--        SET-->
+    <!--            STATUS = 1-->
+    <!--        WHERE-->
+    <!--            MID = #{id}-->
+    <!--    </delete>-->
+
+    <!--&lt;!&ndash;회원 수 카운팅 (ID 중복 체크)&ndash;&gt;-->
+    <!--    <select id="duplicateEmail" parameterType="String" resultType="int">-->
+    <!--        SELECT-->
+    <!--            count(*)-->
+    <!--        FROM-->
+    <!--            MEMBER-->
+    <!--        WHERE-->
+    <!--            EMAIL = #{value}-->
+    <!--    </select>-->
 </mapper>
