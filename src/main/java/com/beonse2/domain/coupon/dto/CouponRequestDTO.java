@@ -8,5 +8,6 @@ public class CouponRequestDTO {
     private String type;
     private int price;
     private String branchName;
+    private int quantity;
 
 }

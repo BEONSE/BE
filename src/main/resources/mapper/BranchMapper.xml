@@ -56,4 +56,11 @@
         WHERE name = #{branchName}
     </select>
 
+    <!--전체 가맹점 이름 조회-->
+    <select id="findAllBranchName" resultType="string">
+        SELECT name
+        FROM BRANCH
+        ORDER BY name
+    </select>
+
 </mapper>

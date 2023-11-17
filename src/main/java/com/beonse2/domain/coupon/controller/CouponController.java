@@ -38,7 +38,6 @@ public class CouponController {
     public ResponseEntity<SuccessMessageDTO> patchCoupon(@PathVariable("coupon-id") Long couponId,
                                                          @RequestHeader("Authorization") String accessToken,
                                                          @RequestBody CouponRequestDTO couponRequestDTO) {
-        log.info("여기", couponRequestDTO.getBranchName());
         return couponService.updateCoupon(couponId, accessToken, couponRequestDTO);
     }
 }
