@@ -51,7 +51,18 @@ public class JwtUtil implements InitializingBean {
      */
     public String createAccessToken(MemberDTO memberDTO) {
         Claims claims = Jwts.claims().setSubject(memberDTO.getEmail());
-        claims.put("memberDTO", memberDTO);
+
+        SetTokenDTO token = SetTokenDTO.builder()
+                .mid(memberDTO.getMid())
+                .email(memberDTO.getEmail())
+                .nickname(memberDTO.getNickname())
+                .name(memberDTO.getName())
+                .password(memberDTO.getPassword())
+                .role(memberDTO.getRole())
+                .build();
+
+        claims.put("member", token);
+
         // 토큰 만료기간
         Date now = new Date();
         Date validity = new Date(now.getTime() + this.accessTokenValidityInMilliseconds);
