@@ -32,27 +32,13 @@ public class ReviewBoardController {
     ReviewBoardService reviewBoardService;
 
 
-    @PostMapping("/reviews") //리뷰작성
+    @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity createReviewBoard(@RequestBody ReviewBoardDTO reviewBoardDTO,
-                                            @RequestHeader(value = "Authorization") String accessToken) {
-        ResponseEntity responseEntity = null;
-        System.out.println("responseEntity 1 " + responseEntity);
-        try {
-            boolean isSuccess = reviewBoardService.createReviewBoard(reviewBoardDTO, accessToken);
-            SingleDataResponse<Boolean> response = responseService.getSingleDataResponse(true, "게시판 생성 성공", isSuccess);
-            System.out.println("response " + response);
-
-            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(response);
-            System.out.println("responseEntity 2 " + responseEntity);
-            // ResponseEntity를 생성하여 반환
-            return ResponseEntity.ok(response);
-        } catch (IllegalStateException e) {
-            log.error(e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("게시판 생성 실패", e);
-        }
-        return responseEntity;
+    public ResponseEntity<SuccessMessageDTO> createReviewBoard(@PathVariable("coupon-id") Long couponId,
+                                                               @RequestBody ReviewBoardDTO reviewBoardDTO,
+                                                               @RequestHeader(value = "Authorization") String accessToken) {
+        SuccessMessageDTO success = reviewBoardService.createReviewBoard(couponId, reviewBoardDTO, accessToken);
+        return ResponseEntity.ok(success);
     }
 
 

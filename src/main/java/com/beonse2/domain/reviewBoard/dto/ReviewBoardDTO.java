@@ -4,7 +4,6 @@ import lombok.*;
 
 import java.io.File;
 import java.security.Timestamp;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,8 +11,9 @@ import java.time.LocalDateTime;
 public class ReviewBoardDTO {
 
     private Long rbId; //고유 번호
-    private Long memberId;
-    private Long branchId;
+    private Long memberMid;
+    private Long branchBid;
+    private Long couponCid;
     private String title;
     private String content;
     private String writer; //작성자
@@ -24,8 +24,11 @@ public class ReviewBoardDTO {
     private Timestamp modifiedAt;//수정일
 
     @Builder
-    public ReviewBoardDTO(Long rbId, String title, String content, String writer, String branchName, boolean status, File image, Timestamp createdAt, Timestamp modifiedAt) {
+    public ReviewBoardDTO(Long rbId, Long memberMid, Long branchBid, Long couponCid, String title, String content, String writer, String branchName, boolean status, File image, Timestamp createdAt, Timestamp modifiedAt) {
         this.rbId = rbId;
+        this.memberMid = memberMid;
+        this.branchBid = branchBid;
+        this.couponCid = couponCid;
         this.title = title;
         this.content = content;
         this.writer = writer;

@@ -78,7 +78,7 @@ public class MemberController {
                 .header("Origin", "http://localhost:3000")
                 .body(LoginResponseDTO.builder()
                         .statusCode(HttpStatus.OK.value())
-                        .successMessage("")
+                        .successMessage("로그인 성공")
                         .nickname(memberDTO.getNickname())
                         .build());
     }

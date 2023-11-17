@@ -1,11 +1,11 @@
 package com.beonse2.domain.branch.dto;
 
-import com.beonse2.domain.member.vo.enums.Role;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.File;
-import java.sql.Timestamp;
 
 @Getter
 @Setter

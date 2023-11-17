@@ -14,14 +14,14 @@ public class CouponResponseDTO {
     private Long cid;
     private Long memberMid;
     private String type;
-    private String price;
+    private int price;
     private boolean isUsed;
     private String branchName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp paymentDate;
 
     @Builder
-    public CouponResponseDTO(Long cid, Long memberMid, String type, String price, boolean isUsed, Timestamp paymentDate) {
+    public CouponResponseDTO(Long cid, Long memberMid, String type, int price, boolean isUsed, Timestamp paymentDate) {
         this.cid = cid;
         this.memberMid = memberMid;
         this.type = type;
