@@ -15,10 +15,10 @@ public interface MemberMapper {
 
     Optional<MemberDTO> findByEmail(String email);
 
-    void updatePayment(int paymentAmount);
+    void updatePayment(MemberDTO member);
 
     void updateInfo(MemberEditDTO memberEditDTO);
 
-    void updatePoint(int point);
+    void updatePoint(MemberDTO member);
 }
 

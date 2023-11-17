@@ -58,18 +58,19 @@ public class PointService {
 
         int memberPoint = findMember.getPoints() + points;
 
+        findMember.updateAmounts(memberPayment, memberPoint);
+
         pointMapper.savePoint(PointVO.builder()
-               // .points(points)
-                .points(memberPoint)
+                .points(points)
+//                .points(memberPoint)
                 .memberMid(findMember.getMid())
-                .paymentPrice(memberPayment)
-//                .paymentPrice(pointRequestDTO.getPaymentPrice())
+//                .paymentPrice(memberPayment)
+                .paymentPrice(pointRequestDTO.getPaymentPrice())
                 .cardName(pointRequestDTO.getCardName())
                 .cardNumber(pointRequestDTO.getCardNumber())
                 .build());
 
-        memberMapper.updatePayment(memberPayment);
-
+        memberMapper.updatePayment(findMember);
 
         return ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())

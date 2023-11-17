@@ -21,6 +21,7 @@ public class Member{
     private String address;//주소
     private Role role;//권한
     private int paymentAmount;//누적 결제 내역
+    private int pointAmount;//보유 포인트
     private boolean status;//회원 삭제
     private File image;//프로필 사진
     private Approval isApproval;//승인 여부

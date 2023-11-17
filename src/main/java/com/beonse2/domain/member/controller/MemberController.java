@@ -46,28 +46,28 @@ public class MemberController {
                 .build());
     }
 
-    @Operation(summary = "로그인", description = "로그인")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
-    })
+//    @Operation(summary = "로그인", description = "로그인")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "OK !!"),
+//            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+//    })
+//    @PostMapping(value = "/login")
+//    public ResponseEntity login(@RequestBody LoginDTO loginDto) {
+//
+//        MemberDTO memberDTO = memberService.login(loginDto);
+//        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
+//
+//        return ResponseEntity.ok(LoginResponseDTO.builder()
+//                .accessToken(token.getAccessToken())
+//                .refreshToken(token.getRefreshToken())
+//                .statusCode(HttpStatus.OK.value())
+//                .successMessage("로그인 성공")
+//                .nickname(memberDTO.getNickname())
+//                .build());
+//    }
+
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
-
-        MemberDTO memberDTO = memberService.login(loginDto);
-        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
-
-        return ResponseEntity.ok(LoginResponseDTO.builder()
-                .accessToken(token.getAccessToken())
-                .refreshToken(token.getRefreshToken())
-                .statusCode(HttpStatus.OK.value())
-                .successMessage("로그인 성공")
-                .nickname(memberDTO.getNickname())
-                .build());
-    }
-
-    @PostMapping(value = "/login2")
-    public ResponseEntity login2(@RequestBody LoginDTO loginDto) {
 
         MemberDTO memberDTO = memberService.login(loginDto);
         TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
