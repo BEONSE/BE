@@ -45,6 +45,11 @@ public class CouponService {
 
         couponMapper.saveCoupon(couponVO);
 
+        int pointPayment = findMember.getPointAmount() - couponRequestDTO.getPrice();
+        findMember.updateAmounts(0, pointPayment);
+
+        memberMapper.updatePoint(findMember);
+
         return ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("쿠폰 구매 성공.")
