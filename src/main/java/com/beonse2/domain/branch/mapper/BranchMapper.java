@@ -13,4 +13,6 @@ public interface BranchMapper {
     void save(Branch branch);
 
     Optional<BranchRequestDTO> findByMemberId(Long memberId);
+
+
 }

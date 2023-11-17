@@ -101,4 +101,22 @@ public class CouponService {
                 .successMessage("쿠폰 사용 완료")
                 .build());
     }
+
+    public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(String accessToken) {
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember =  memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BRANCH)
+        );
+
+        String branchName = findMember.getNickname();
+
+        List<CouponResponseDTO> findCoupon = couponMapper.findUseAllCoupon(branchName);
+
+        if (findMember.getNickname().isEmpty()) {
+            throw new CustomException(NOT_FOUND_COUPON);
+        }
+
+        return ResponseEntity.ok(findCoupon);
+    }
 }

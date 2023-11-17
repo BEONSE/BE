@@ -5,6 +5,9 @@ import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
+import com.beonse2.domain.coupon.dto.CouponRequestDTO;
+import com.beonse2.domain.coupon.dto.CouponResponseDTO;
+import com.beonse2.domain.coupon.service.CouponService;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.service.MemberService;
@@ -16,9 +19,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -29,8 +33,7 @@ public class BranchController {
 
     private final MemberService memberService;
 
-    private final ResponseService responseService;
-    ResponseEntity responseEntity;
+    private final CouponService couponService;
 
     @Operation(summary = "회원 가입", description = "회원 가입")
     @ApiResponses({
@@ -42,17 +45,21 @@ public class BranchController {
         branchService.save(branchRequestDTO);
         System.out.println("branchRequestDTO : " + branchRequestDTO);
 
-        TokenDTO token = memberService.tokenGenerator(branchRequestDTO.getEmail());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token.getAccessToken()); // "Bearer"를 붙여서 전송
-
-        responseEntity = ResponseEntity.ok(SuccessMessageDTO.builder()
+        return  ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("성공적으로 회원가입이 완료되었습니다.")
                 .build());
 
-        return responseEntity;
+
     }
 
+//    @GetMapping("/branches/members") //회원 관리
+
+    @GetMapping("/branches") //전체 쿠폰 사용 내역 조회
+    @PreAuthorize("hasRole('BRANCH')")
+    public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(@RequestHeader("Authorization") String accessToken) {
+        return couponService.findUseAllCoupon(accessToken);
+    }
+
+//    @GetMapping("/branches/{member-id}") //단일 회원 쿠폰 결제
 }

@@ -17,4 +17,6 @@ public interface CouponMapper {
     Optional<CouponResponseDTO> findById(Long couponId);
 
     void updateCoupon(Map<String, Object> searchMap);
+
+    List<CouponResponseDTO> findUseAllCoupon(String branchName);
 }

@@ -31,4 +31,11 @@
         WHERE cid = #{couponId}
     </update>
 
+    <select id="findUseAllCoupon" parameterType="String" resultType="couponResponseDTO">
+        SELECT *
+        FROM coupon
+        WHERE branch_name = #{branchName}
+        ORDER BY type DESC
+    </select>
+
 </mapper>
