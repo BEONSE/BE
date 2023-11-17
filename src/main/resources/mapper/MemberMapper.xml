@@ -74,6 +74,13 @@
         WHERE MID = #{mid}
     </update>
 
+    <!--쿠폰 구매-->
+    <update id="updatePoint" parameterType="memberDTO">
+        UPDATE MEMBER
+        SET POINT_AMOUNT = #{pointAmount}
+        WHERE MID = #{mid}
+    </update>
+
     <!--&lt;!&ndash;회원 정보 수정&ndash;&gt;-->
     <!--    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">-->
     <!--        UPDATE MEMBER-->

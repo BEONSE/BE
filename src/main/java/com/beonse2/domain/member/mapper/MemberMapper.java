@@ -14,6 +14,6 @@ public interface MemberMapper {
 
     void updatePayment(MemberDTO member);
 
-    void updatePoint(int point);
+    void updatePoint(MemberDTO member);
 }
 
