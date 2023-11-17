@@ -73,20 +73,25 @@
         WHERE MID = #{mid}
     </update>
 
-    <!--&lt;!&ndash;회원 정보 수정&ndash;&gt;-->
-    <!--    <update id="update" parameterType="com.beonse2.domain.member.dto.MemberDTO">-->
-    <!--        UPDATE MEMBER-->
-    <!--        SET-->
-    <!--            NICKNAME = #{nickname},-->
-    <!--        <if test="password != null and password != ''">-->
-    <!--            PASSWORD = #{password}-->
-    <!--        </if>-->
-    <!--       ,-->
-    <!--            ADDRESS = #{address},-->
-    <!--            IMAGE = #{image},-->
-    <!--            MODIFIED_AT = SYSDATE-->
-    <!--        WHERE MID = #{id}-->
-    <!--    </update>-->
+    <!--회원 정보 수정-->
+        <update id="updateInfo" parameterType="memberEditDTO">
+            UPDATE MEMBER
+            SET
+                NICKNAME = #{nickname},
+                PASSWORD = #{password},
+                ADDRESS = #{address},
+                MODIFIED_AT = SYSTIMESTAMP,
+            <choose>
+                <when test="image != null">
+                    IMAGE =  #{image}
+                </when>
+                <otherwise>
+                    IMAGE =  NULL
+                </otherwise>
+            </choose>
+
+            WHERE MID = #{mid}
+        </update>
 
     <!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
     <!--    <delete id="deleteById" parameterType="long">-->

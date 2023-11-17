@@ -5,6 +5,7 @@ import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
+import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+
+import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +33,6 @@ public class MemberService {
 
     /**
      * 유저 회원가입
-     *
      * @param member
      */
     @Transactional
@@ -107,6 +111,34 @@ public class MemberService {
                 .accessToken(jwtUtil.createAccessToken(memberDTO))
                 .refreshToken(jwtUtil.createRefreshToken(memberDTO))
                 .build();
+    }
+
+    public ResponseEntity<MemberEditDTO> updateInfo (MemberEditDTO memberEditDTO, String accessToken) {
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        Long mid = findMember.getMid();
+        String email = findMember.getEmail();
+        if (email.equals(memberEditDTO.getEmail())) {
+            memberEditDTO = MemberEditDTO.builder()
+                    .mid(mid)
+                    .email(email)
+                    .nickname(memberEditDTO.getNickname())
+                    .password(passwordEncoder.encode(memberEditDTO.getPassword()))
+                    .address(memberEditDTO.getAddress())
+                    .image(memberEditDTO.getImage())
+                    .modifiedAt(findMember.getModifiedAt())
+                    .build();
+        } else {
+            throw new CustomException(NOT_FOUND_MEMBER);
+        }
+
+        memberMapper.updateInfo(memberEditDTO);
+
+        return ResponseEntity.ok(memberEditDTO);
     }
 
 }
