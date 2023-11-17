@@ -37,4 +37,6 @@ public class MyPageService {
 
         return ResponseEntity.ok(mid);
     }
+
+
 }
