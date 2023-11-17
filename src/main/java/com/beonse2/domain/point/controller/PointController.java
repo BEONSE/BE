@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,5 +44,11 @@ public class PointController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<PointResponseDTO>> getPointList(@RequestHeader(value = "Authorization") String accessToken) {
         return pointService.findPointList(accessToken);
+    }
+
+    @GetMapping("/points")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<Map<String, Integer>> getPointAmount(@RequestHeader("Authorization") String accessToken) {
+        return pointService.findPoint(accessToken);
     }
 }

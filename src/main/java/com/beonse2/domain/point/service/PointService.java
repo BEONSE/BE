@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -56,7 +58,7 @@ public class PointService {
 
         int memberPayment = findMember.getPaymentAmount() + pointRequestDTO.getPaymentPrice();
 
-        int memberPoint = findMember.getPoints() + points;
+        int memberPoint = findMember.getPointAmount() + points;
 
         findMember.updateAmounts(memberPayment, memberPoint);
 
@@ -103,4 +105,18 @@ public class PointService {
 
         return ResponseEntity.ok(pointResponseDTOS);
     }
+
+    public ResponseEntity<Map<String, Integer>> findPoint(String accessToken) {
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        map.put("point", findMember.getPointAmount());
+
+        return ResponseEntity.ok(map);
+    }
+
 }
