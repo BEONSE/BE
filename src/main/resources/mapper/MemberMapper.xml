@@ -82,24 +82,24 @@
     </update>
 
     <!--회원 정보 수정-->
-        <update id="updateInfo" parameterType="memberEditDTO">
-            UPDATE MEMBER
-            SET
-                NICKNAME = #{nickname},
-                PASSWORD = #{password},
-                ADDRESS = #{address},
-                MODIFIED_AT = SYSTIMESTAMP,
-            <choose>
-                <when test="image != null">
-                    IMAGE =  #{image}
-                </when>
-                <otherwise>
-                    IMAGE =  NULL
-                </otherwise>
-            </choose>
+    <update id="updateInfo" parameterType="memberEditDTO">
+        UPDATE MEMBER
+        SET
+            NICKNAME = #{nickname},
+            PASSWORD = #{password},
+            ADDRESS = #{address},
+            MODIFIED_AT = SYSTIMESTAMP,
+        <choose>
+            <when test="image != null">
+                IMAGE =  #{image}
+            </when>
+            <otherwise>
+                IMAGE =  NULL
+            </otherwise>
+        </choose>
 
-            WHERE MID = #{mid}
-        </update>
+        WHERE MID = #{mid}
+    </update>
 
     <!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
     <!--    <delete id="deleteById" parameterType="long">-->

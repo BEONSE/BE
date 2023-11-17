@@ -19,7 +19,7 @@
 
 <!-- 게시글 작성 -->
     <insert id="createReviewBoard" parameterType="reviewBoardDTO" >
-        INSERT INTO REVIEWBOARD(RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE)
+        INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE)
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberMid}, #{branchBid}, #{couponCid}, #{title}, #{content},
         <choose>
             <when test="image != null">
