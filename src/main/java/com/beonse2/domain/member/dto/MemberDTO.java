@@ -29,6 +29,7 @@ public class MemberDTO implements UserDetails {
     private String address;//주소
     private Role role; // 권한
     private int paymentAmount;//누적 결제 내역
+    private int pointAmount;//보유 포인트
     private boolean status;//회원 삭제
     private File image;//프로필 사진
     private int points;
@@ -78,5 +79,10 @@ public class MemberDTO implements UserDetails {
     @Override
     public boolean isEnabled() {// 계정 활성화(사용가능) 여부 (true: 활성화)
         return true;
+    }
+
+    public void updateAmounts(int memberPayment, int memberPoint) {
+        this.paymentAmount = memberPayment;
+        this.pointAmount = memberPoint;
     }
 }
