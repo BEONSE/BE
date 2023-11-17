@@ -63,4 +63,10 @@
         ORDER BY name
     </select>
 
+    <select id="findByAllBranch" resultType="branchListDTO">
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION
+        FROM BRANCH B, MEMBER M
+        WHERE B.MEMBER_MID = M.MID
+          AND M.ROLE = 'ROLE_BRANCH'
+    </select>
 </mapper>

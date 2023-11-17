@@ -2,6 +2,7 @@ package com.beonse2.domain.branch.controller;
 
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
@@ -10,6 +11,7 @@ import com.beonse2.domain.coupon.service.CouponService;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.service.MemberService;
+import com.beonse2.domain.member.vo.enums.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -52,8 +54,6 @@ public class BranchController {
 
     }
 
-//    @GetMapping("/branches/members") //회원 관리
-
     @GetMapping("/branches") //전체 쿠폰 사용 내역 조회
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(@RequestHeader("Authorization") String accessToken) {
@@ -65,10 +65,16 @@ public class BranchController {
     public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(@PathVariable("member-id") Long memberId,
                                                                        @RequestHeader("Authorization") String accessToken) {
         return couponService.findUseMemberCoupon(memberId, accessToken);
+    }
 
     @GetMapping("/branches/names")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<String>> findBranchNames() {
         return branchService.findBranchNames();
+    }
+
+    @GetMapping("/branches/map")
+    public ResponseEntity<List<BranchListDTO>> findByAllBranch (Role role) {
+        return branchService.findByAllBranch(role);
     }
 }

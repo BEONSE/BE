@@ -3,11 +3,13 @@ package com.beonse2.domain.branch.sevice;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.branch.vo.Branch;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
+import com.beonse2.domain.member.vo.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,7 +27,7 @@ public class BranchService {
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    private final JwtUtil jwtTokenProvider;
+    private final JwtUtil jwtUtil;
 
     private final BranchMapper branchMapper;
 
@@ -77,5 +79,16 @@ public class BranchService {
         }
 
         return ResponseEntity.ok(branchNames);
+    }
+
+    public ResponseEntity<List<BranchListDTO>> findByAllBranch (Role role) {
+
+        List<BranchListDTO> branches = branchMapper.findByAllBranch(role);
+
+        if(branches.isEmpty()) {
+            throw new CustomException(NOT_FOUND_BRANCH);
+        }
+
+        return ResponseEntity.ok(branches);
     }
 }

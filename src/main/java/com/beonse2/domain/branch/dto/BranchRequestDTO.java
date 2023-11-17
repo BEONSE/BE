@@ -12,7 +12,7 @@ public class BranchRequestDTO {
 
     private String email; //email -> id
 
-    private String name;
+    private String name; //대표자명
 
     private String password; //비밀번호
 
