@@ -19,4 +19,6 @@ public interface CouponMapper {
     void updateCoupon(Map<String, Object> searchMap);
 
     List<CouponResponseDTO> findUseAllCoupon(String branchName);
+
+    void updateCouponWriteReview(CouponResponseDTO couponResponseDTO);
 }

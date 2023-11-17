@@ -9,7 +9,7 @@ import java.util.Optional;
 @Mapper
 public interface MyPageMapper {
 
-    List<MyPage> findById(Long mid);
+    Optional<MyPage> findById(Long mid);
 
     void updateEdit(MyPage myPage);
 

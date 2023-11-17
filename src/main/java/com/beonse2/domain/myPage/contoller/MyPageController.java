@@ -27,7 +27,7 @@ public class MyPageController {
     private final MemberService memberService;
 
     @GetMapping //내 정보
-    public  ResponseEntity<List<MyPage>> myInfo (@RequestHeader(value = "Authorization") String accessToken) {
+    public  ResponseEntity<MyPage> myInfo (@RequestHeader(value = "Authorization") String accessToken) {
         return myPageService.myInfo(accessToken);
     }
 

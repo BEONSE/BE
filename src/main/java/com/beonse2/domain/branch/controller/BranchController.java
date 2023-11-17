@@ -2,7 +2,6 @@ package com.beonse2.domain.branch.controller;
 
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;

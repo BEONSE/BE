@@ -49,4 +49,11 @@
         AND B.BID = #{ value }
     </select>
 
+    <!--가맹점 조회-->
+    <select id="findByBranchName" parameterType="string" resultType="long">
+        SELECT bid
+        FROM BRANCH
+        WHERE name = #{branchName}
+    </select>
+
 </mapper>

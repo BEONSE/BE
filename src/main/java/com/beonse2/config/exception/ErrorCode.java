@@ -29,8 +29,10 @@ public enum ErrorCode {
     FAILED_UPDATE(HttpStatus.BAD_REQUEST.value(), "수정에 실패했습니다."),
     NOT_MATCH_USER(HttpStatus.FORBIDDEN.value(), "작성자가 아닙니다."),
     NOT_MATCH_BRANCH(HttpStatus.FORBIDDEN.value(), "일치하는 가맹점이 없습니다."),
-    NOT_FOUND_INFO(HttpStatus.NOT_FOUND.value(), "회원 정보를 찾을 수 없습니다.");
-
+    NOT_FOUND_INFO(HttpStatus.NOT_FOUND.value(), "회원 정보를 찾을 수 없습니다."), 
+    NOT_FOUND_INFO(HttpStatus.NOT_FOUND.value(), "회원 정보를 찾을 수 없습니다."),
+    DONT_WRITE_REVIEW(HttpStatus.FORBIDDEN.value(), "쿠폰 사용자만 리뷰를 작성할 수 있습니다."),
+    ALREADY_WRITTEN_REVIEW(HttpStatus.FORBIDDEN.value(), "이미 리뷰를 작성한 쿠폰입니다.");
 
     private final int statusCode;
     private final String errorMessage;
