@@ -29,5 +29,6 @@
         <typeAlias alias="myPage" type="com.beonse2.domain.myPage.vo.MyPage" />
         <typeAlias alias="couponVo" type="com.beonse2.domain.coupon.vo.CouponVO" />
         <typeAlias alias="couponResponseDTO" type="com.beonse2.domain.coupon.dto.CouponResponseDTO" />
+        <typeAlias alias="branchListDTO" type="com.beonse2.domain.branch.dto.BranchListDTO" />
     </typeAliases>
 </configuration>
