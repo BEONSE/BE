@@ -12,27 +12,25 @@ public class MyPage {
 
     private Long mid;
 
-    private Long pid;
-
     private String nickname;
 
     private File image;
 
     private int paymentAmount;
 
-    private int paymentPrice;
+    private int pointAmount;
 
-    private String grade;
-
-    private int points;
+    private int grade;
 
     @Builder
-    public MyPage(String nickname, File image, int paymentAmount, int paymentPrice, String grade, int points) {
+    public MyPage(String nickname, File image, int paymentAmount, int pointAmount) {
         this.nickname = nickname;
         this.image = image;
         this.paymentAmount = paymentAmount;
-        this.paymentPrice = paymentPrice;
+        this.pointAmount = pointAmount;
+    }
+
+    public void updateGrade(int grade) {
         this.grade = grade;
-        this.points = points;
     }
 }

@@ -20,7 +20,7 @@
     </select>
 
     <select id="findById" parameterType="long" resultType="couponResponseDTO">
-        SELECT cid, member_mid, type, price, is_used, payment_date
+        SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
         FROM coupon
         WHERE cid = #{value}
     </select>
@@ -29,6 +29,12 @@
         UPDATE coupon
         SET branch_name = #{branchName}
         WHERE cid = #{couponId}
+    </update>
+
+    <update id="updateCouponWriteReview" parameterType="couponResponseDTO">
+        UPDATE coupon
+        SET is_used = #{isUsed}
+        WHERE cid = #{cid}
     </update>
 
 </mapper>

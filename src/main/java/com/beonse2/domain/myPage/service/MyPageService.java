@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_INFO;
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
@@ -26,15 +25,19 @@ public class MyPageService {
 
     private final MyPageMapper myPageMapper;
 
-    public ResponseEntity<List<MyPage>> myInfo (String accessToken) {
+    public ResponseEntity<MyPage> myInfo (String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        List<MyPage> mid = myPageMapper.findById(findMember.getMid());
+        MyPage myPage = myPageMapper.findById(findMember.getMid()).orElseThrow(
+                () -> new CustomException(NOT_FOUND_INFO)
+        );
 
-        return ResponseEntity.ok(mid);
+        myPage.updateGrade(myPage.getPaymentAmount() < 150000 ? 3 : myPage.getPaymentAmount() < 300000 ? 2 : 1);
+
+        return ResponseEntity.ok(myPage);
     }
 }

@@ -1,37 +1,80 @@
 package com.beonse2.domain.reviewBoard.service;
 
+import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.mapper.BranchMapper;
+import com.beonse2.domain.coupon.dto.CouponResponseDTO;
+import com.beonse2.domain.coupon.mapper.CouponMapper;
+import com.beonse2.domain.coupon.vo.CouponVO;
+import com.beonse2.domain.member.dto.MemberDTO;
+import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewBoardService {
 
     private final ReviewBoardMapper reviewBoardMapper;
-
+    private final MemberMapper memberMapper;
+    private final CouponMapper couponMapper;
+    private final BranchMapper branchMapper;
     private final JwtUtil jwtUtil;
 
-    public boolean createReviewBoard(ReviewBoardDTO reviewBoardDTO, String accessToken) {
+    public SuccessMessageDTO createReviewBoard(Long couponId,
+                                               ReviewBoardDTO reviewBoardDTO,
+                                               String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
-        String email = jwtUtil.getEmail(token);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        CouponResponseDTO couponResponseDTO = couponMapper.findById(couponId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_COUPON)
+        );
+
+        if (couponResponseDTO.getBranchName() == null) {
+            throw new CustomException(DONT_WRITE_REVIEW);
+        }
+
+        if (couponResponseDTO.isUsed()) {
+            throw new CustomException(ALREADY_WRITTEN_REVIEW);
+        }
+
+        Long branchId = branchMapper.findByBranchName(couponResponseDTO.getBranchName());
 
         reviewBoardDTO = ReviewBoardDTO.builder()
+                .memberMid(findMember.getMid())
+                .branchBid(branchId)
+                .couponCid(couponResponseDTO.getCid())
                 .title(reviewBoardDTO.getTitle())
                 .content(reviewBoardDTO.getContent())
-                .writer(email)
-                .branchName(email)
+                .writer(findMember.getNickname())
                 .image(reviewBoardDTO.getImage())
                 .build();
 
         reviewBoardMapper.createReviewBoard(reviewBoardDTO);
-//        return reviewBoardMapper.findMyReviewId(reviewBoard.getRbId()).isPresent();
-        return true;
+
+        couponResponseDTO.updateStatus(true);
+
+        couponMapper.updateCouponWriteReview(couponResponseDTO);
+
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("리뷰 작성")
+                .build();
     }
 
     public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {

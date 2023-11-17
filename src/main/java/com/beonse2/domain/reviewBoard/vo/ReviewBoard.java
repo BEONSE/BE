@@ -13,9 +13,11 @@ public class ReviewBoard {
 
     private Long rbId; //고유 번호
 
-    private Long memberId;//회원 번호
+    private Long memberMid;//회원 번호
 
-    private Long branchId;//가맹점 번호
+    private Long branchBid;//가맹점 번호
+
+    private Long couponCid;//쿠폰 번호
 
     private String title;//제목
 
