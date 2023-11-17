@@ -31,6 +31,13 @@
         WHERE cid = #{couponId}
     </update>
 
+    <select id="findUseAllCoupon" parameterType="String" resultType="couponResponseDTO">
+        SELECT *
+        FROM coupon
+        WHERE branch_name = #{branchName}
+        ORDER BY type DESC
+    </select>
+
     <update id="updateCouponWriteReview" parameterType="couponResponseDTO">
         UPDATE coupon
         SET is_used = #{isUsed}
