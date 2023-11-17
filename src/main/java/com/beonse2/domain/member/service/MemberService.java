@@ -61,7 +61,7 @@ public class MemberService {
      * @param loginDTO 로그인 하는 유저의 정보
      * @return result[0]: accessToken, result[1]: refreshToken
      */
-    public String login(LoginDTO loginDTO) {
+    public MemberDTO login(LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_MATCH_EMAIL));
@@ -70,7 +70,7 @@ public class MemberService {
             throw new CustomException(ErrorCode.NOT_MATCH_PASSWORD);
         }
 
-        return memberDTO.getEmail();
+        return memberDTO;
 
     }
 

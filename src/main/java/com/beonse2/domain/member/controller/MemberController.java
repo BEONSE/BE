@@ -54,31 +54,33 @@ public class MemberController {
     @PostMapping(value = "/login")
     public ResponseEntity login(@RequestBody LoginDTO loginDto) {
 
-        String userId = memberService.login(loginDto);
-        TokenDTO token = memberService.tokenGenerator(userId);
+        MemberDTO memberDTO = memberService.login(loginDto);
+        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
 
         return ResponseEntity.ok(LoginResponseDTO.builder()
                 .accessToken(token.getAccessToken())
                 .refreshToken(token.getRefreshToken())
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("로그인 성공")
+                .nickname(memberDTO.getNickname())
                 .build());
     }
 
     @PostMapping(value = "/login2")
     public ResponseEntity login2(@RequestBody LoginDTO loginDto) {
 
-        String userId = memberService.login(loginDto);
-        TokenDTO token = memberService.tokenGenerator(userId);
+        MemberDTO memberDTO = memberService.login(loginDto);
+        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
 
         return ResponseEntity.ok()
                 .header("AccessToken", token.getAccessToken())
                 .header("RefreshToken", token.getRefreshToken())
                 .header("Origin", "http://localhost:3000")
-                .body(SuccessMessageDTO.builder()
-                .statusCode(HttpStatus.OK.value())
-                .successMessage("")
-                .build());
+                .body(LoginResponseDTO.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .successMessage("")
+                        .nickname(memberDTO.getNickname())
+                        .build());
     }
 
     /**

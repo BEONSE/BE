@@ -21,7 +21,7 @@
     </select>
 
     <select id="findById" resultType="mateBoardDTO" parameterType="long">
-        SELECT mb.mbid, mb.title, mb.content, mb.created_at, mb.modified_at, m.nickname, m.payment_amount
+        SELECT mb.mbid, mb.title, mb.content, m.nickname, m.payment_amount, mb.created_at, mb.modified_at
         FROM mateboard mb
             JOIN member m
                 ON mb.member_mid = m.mid

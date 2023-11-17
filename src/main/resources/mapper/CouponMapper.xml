@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.coupon.mapper.CouponMapper">
+
+    <insert id="saveCoupon" parameterType="couponVo">
+        INSERT INTO coupon(cid, member_mid, type, price)
+        VALUES (coupon_seq.NEXTVAL, #{memberMid}, #{type}, #{price})
+    </insert>
+
+    <select id="findAllCoupon" parameterType="long" resultType="couponResponseDTO">
+        SELECT cid, member_mid, type, price, is_used, payment_date
+        FROM coupon
+        WHERE member_mid = #{value}
+        GROUP BY cid, member_mid, type, price, is_used, payment_date
+        ORDER BY type DESC
+    </select>
+
+    <select id="findById" parameterType="long" resultType="couponResponseDTO">
+        SELECT cid, member_mid, type, price, is_used, payment_date
+        FROM coupon
+        WHERE cid = #{value}
+    </select>
+
+    <update id="updateCoupon" parameterType="map">
+        UPDATE coupon
+        SET branch_name = #{branchName}
+        WHERE cid = #{couponId}
+    </update>
+
+</mapper>

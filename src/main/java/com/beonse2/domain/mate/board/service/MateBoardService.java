@@ -62,7 +62,6 @@ public class MateBoardService {
     public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard() {
 
         List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard();
-        List<MateBoardListResponseDTO> mateBoardListResponseDTOS = new ArrayList<>();
 
         if (mateBoards.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
@@ -72,6 +71,7 @@ public class MateBoardService {
             int commentCount = mateCommentMapper.findCommentCount(mateBoard.getMbid());
 
             mateBoard.updateCommentCount(commentCount);
+            mateBoard.updateGrade(mateBoard.getPaymentAmount() < 150000 ? 3 : mateBoard.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
         return ResponseEntity.ok(mateBoards);
@@ -92,6 +92,7 @@ public class MateBoardService {
         int commentCount = mateCommentMapper.findCommentCount(mateBoardId);
 
         mateBoardResponseDTO.updateCommentCount(commentCount);
+        mateBoardResponseDTO.updateGrade(mateBoardResponseDTO.getPaymentAmount() < 150000 ? 3 : mateBoardResponseDTO.getPaymentAmount() < 300000 ? 2 : 1);
 
         return ResponseEntity.ok(mateBoardResponseDTO);
     }
