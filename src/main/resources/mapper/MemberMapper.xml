@@ -67,9 +67,10 @@
     </select>
 
     <!--누적 결제 내역-->
-    <update id="updatePayment" parameterType="int">
+    <update id="updatePayment" parameterType="memberDTO">
         UPDATE MEMBER
-        SET PAYMENT_AMOUNT = #{paymentAmount}
+        SET PAYMENT_AMOUNT = #{paymentAmount},
+            POINT_AMOUNT = #{pointAmount}
         WHERE MID = #{mid}
     </update>
 
