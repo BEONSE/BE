@@ -60,7 +60,11 @@ public class BranchController {
         return couponService.findUseAllCoupon(accessToken);
     }
 
-//    @GetMapping("/branches/{member-id}") //단일 회원 쿠폰 결제
+    @GetMapping("/branches/{member-id}") //단일 회원 쿠폰 결제
+    @PreAuthorize("hasRole('BRANCH')")
+    public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(@PathVariable("member-id") Long memberId,
+                                                                       @RequestHeader("Authorization") String accessToken) {
+        return couponService.findUseMemberCoupon(memberId, accessToken);
 
     @GetMapping("/branches/names")
     @PreAuthorize("hasRole('USER')")

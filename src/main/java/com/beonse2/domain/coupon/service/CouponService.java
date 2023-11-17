@@ -3,6 +3,7 @@ package com.beonse2.domain.coupon.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.mapper.CouponMapper;
@@ -26,6 +27,7 @@ public class CouponService {
 
     private final CouponMapper couponMapper;
     private final MemberMapper memberMapper;
+    private final BranchMapper branchMapper;
     private final JwtUtil jwtUtil;
 
     @Transactional
@@ -119,6 +121,30 @@ public class CouponService {
             throw new CustomException(NOT_FOUND_COUPON);
         }
 
+        return ResponseEntity.ok(findCoupon);
+    }
+
+    public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(Long memberId, String accessToken) {
+
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember =  memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BRANCH)
+        );
+
+        String branchName = findMember.getNickname();
+
+        List<CouponResponseDTO> findCoupon = couponMapper.findUseAllCoupon(branchName);
+
+        for (CouponResponseDTO couponResponseDTO : findCoupon) {
+            if (!couponResponseDTO.getMemberMid().equals(memberId)) {
+                throw new CustomException(NOT_FOUND_MEMBER);
+            }
+        }
+
+        if (findMember.getNickname().isEmpty()) {
+            throw new CustomException(NOT_FOUND_COUPON);
+        }
         return ResponseEntity.ok(findCoupon);
     }
 }

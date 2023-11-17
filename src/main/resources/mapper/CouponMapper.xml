@@ -38,6 +38,14 @@
         ORDER BY type DESC
     </select>
 
+    <select id="findUseMemberCoupon" parameterType="map" resultType="couponResponseDTO">
+        SELECT *
+        FROM coupon
+        WHERE branch_name = #{branchName}
+        AND  member_mid = #{memberMid}
+        ORDER BY type DESC
+    </select>
+
     <update id="updateCouponWriteReview" parameterType="couponResponseDTO">
         UPDATE coupon
         SET is_used = #{isUsed}
