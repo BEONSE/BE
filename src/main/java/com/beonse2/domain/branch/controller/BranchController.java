@@ -44,7 +44,7 @@ public class BranchController {
         branchService.save(branchRequestDTO);
         System.out.println("branchRequestDTO : " + branchRequestDTO);
 
-        return  ResponseEntity.ok(SuccessMessageDTO.builder()
+        return ResponseEntity.ok(SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("성공적으로 회원가입이 완료되었습니다.")
                 .build());
@@ -65,5 +65,10 @@ public class BranchController {
     public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(@PathVariable("member-id") Long memberId,
                                                                        @RequestHeader("Authorization") String accessToken) {
         return couponService.findUseMemberCoupon(memberId, accessToken);
+
+    @GetMapping("/branches/names")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<String>> findBranchNames() {
+        return branchService.findBranchNames();
     }
 }

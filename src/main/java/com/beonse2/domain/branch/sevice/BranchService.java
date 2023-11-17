@@ -9,9 +9,14 @@ import com.beonse2.domain.branch.vo.Branch;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,7 +51,7 @@ public class BranchService {
         //response로 멤버 아이디  findbyEmail찾음
 
         MemberDTO findMember = memberMapper.findByEmail(branchRequestDTO.getEmail()).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
+                () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
         //가맹점 빌드 저장
@@ -63,6 +68,14 @@ public class BranchService {
         return memberMapper.findByEmail(member.getEmail()).isPresent();
     }
 
+    public ResponseEntity<List<String>> findBranchNames() {
 
+        List<String> branchNames = branchMapper.findAllBranchName();
 
+        if (branchNames.isEmpty()) {
+            throw new CustomException(NOT_FOUND_BRANCH_NAMES);
+        }
+
+        return ResponseEntity.ok(branchNames);
+    }
 }
