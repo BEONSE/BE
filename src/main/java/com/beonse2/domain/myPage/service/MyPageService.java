@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_INFO;
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
 
@@ -25,7 +23,7 @@ public class MyPageService {
 
     private final MyPageMapper myPageMapper;
 
-    public ResponseEntity<MyPage> myInfo (String accessToken) {
+    public ResponseEntity<MyPage> myInfo(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(

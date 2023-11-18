@@ -4,7 +4,6 @@ import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.service.CouponService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
