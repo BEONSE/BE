@@ -12,9 +12,17 @@ public class MyPage {
 
     private Long mid;
 
+    private String email;
+
+    private String password;
+
+    private String name;
+
     private String nickname;
 
     private File image;
+
+    private String address;
 
     private int paymentAmount;
 
@@ -23,9 +31,13 @@ public class MyPage {
     private int grade;
 
     @Builder
-    public MyPage(String nickname, File image, int paymentAmount, int pointAmount) {
+    public MyPage(String email, String password, String name, String nickname, File image, String address, int paymentAmount, int pointAmount) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
         this.nickname = nickname;
         this.image = image;
+        this.address = address;
         this.paymentAmount = paymentAmount;
         this.pointAmount = pointAmount;
     }

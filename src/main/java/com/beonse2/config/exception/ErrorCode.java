@@ -27,7 +27,7 @@ public enum ErrorCode {
     NOT_MATCH_EMAIL(HttpStatus.BAD_REQUEST.value(), "입력한 이메일의 회원이 없습니다."),
     NOT_MATCH_PASSWORD(HttpStatus.NOT_FOUND.value(), "잘못된 비밀번호입니다."),
     FAILED_UPDATE(HttpStatus.BAD_REQUEST.value(), "수정에 실패했습니다."),
-    NOT_MATCH_USER(HttpStatus.FORBIDDEN.value(), "작성자가 아닙니다."),
+    NOT_MATCH_USER(HttpStatus.FORBIDDEN.value(), "권한이 없습니다."),
     NOT_MATCH_BRANCH(HttpStatus.FORBIDDEN.value(), "일치하는 가맹점이 없습니다."),
     NOT_FOUND_INFO(HttpStatus.NOT_FOUND.value(), "회원 정보를 찾을 수 없습니다."), 
     DONT_WRITE_REVIEW(HttpStatus.FORBIDDEN.value(), "쿠폰 사용자만 리뷰를 작성할 수 있습니다."),
