@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -22,13 +24,14 @@ public class MyPageController {
     private final MemberService memberService;
 
     @GetMapping //내 정보
-    public  ResponseEntity<MyPage> myInfo (@RequestHeader(value = "Authorization") String accessToken) {
+    public ResponseEntity<MyPage> myInfo(@RequestHeader(value = "Authorization") String accessToken) {
         return myPageService.myInfo(accessToken);
     }
 
     @PatchMapping("/info") //회원정보 수정
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<MemberEditDTO> updateInfo(@RequestBody MemberEditDTO memberEditDTO, @RequestHeader(value = "Authorization")  String accessToken) {
+    public ResponseEntity<MemberEditDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
+                                                    MemberEditDTO memberEditDTO) throws IOException {
         return memberService.updateInfo(memberEditDTO, accessToken);
     }
 

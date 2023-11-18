@@ -64,6 +64,10 @@ public class MateCommentService {
             throw new CustomException(NOT_FOUND_COMMENT);
         }
 
+        for (MateCommentResponseDTO mateComment : mateComments) {
+            mateComment.updateGrade(mateComment.getPaymentAmount() < 150000 ? 3 : mateComment.getPaymentAmount() < 300000 ? 2 : 1);
+        }
+
         return ResponseEntity.ok(mateComments);
     }
 

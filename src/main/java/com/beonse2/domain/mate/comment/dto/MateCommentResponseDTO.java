@@ -17,6 +17,7 @@ public class MateCommentResponseDTO {
     private String nickname;
     private int paymentAmount;
     private String content;
+    private int grade;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;
 
@@ -29,5 +30,9 @@ public class MateCommentResponseDTO {
         this.paymentAmount = paymentAmount;
         this.content = content;
         this.createdAt = createdAt;
+    }
+
+    public void updateGrade(int grade) {
+        this.grade = grade;
     }
 }

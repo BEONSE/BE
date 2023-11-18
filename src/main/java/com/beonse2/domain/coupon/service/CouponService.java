@@ -3,6 +3,8 @@ package com.beonse2.domain.coupon.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.dto.BranchDTO;
+import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
@@ -147,4 +149,5 @@ public class CouponService {
         }
         return ResponseEntity.ok(findCoupon);
     }
+
 }

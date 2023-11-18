@@ -25,7 +25,7 @@
 <!--내 정보 : 이미지, 등급(결제금액) , 닉네임, 보유 포인트-->
 
     <select id="findById" parameterType="Long" resultType="myPage" >
-        SELECT MID, EMAIL, NAME, PASSWORD, NICKNAME, PAYMENT_AMOUNT, IMAGE, ADDRESS, POINT_AMOUNT, PAYMENT_AMOUNT
+        SELECT MID, EMAIL, NAME, PASSWORD, NICKNAME, PAYMENT_AMOUNT, IMAGE IMAGE_DATA, ORIGINAL_FILE_NAME, IMAGE_TYPE ADDRESS, POINT_AMOUNT, PAYMENT_AMOUNT
         FROM MEMBER
         WHERE MID = #{mid}
     </select>

@@ -1,7 +1,9 @@
 package com.beonse2.domain.branch.mapper;
 
+import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
+import com.beonse2.domain.branch.dto.ImageDTO;
 import com.beonse2.domain.branch.vo.Branch;
 import com.beonse2.domain.member.vo.enums.Role;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,6 +21,15 @@ public interface BranchMapper {
 
     List<String> findAllBranchName();
 
-    List<BranchListDTO> findByAllBranch(Role role);
+    List<BranchListDTO> findByAllBranch();
 
+    List<BranchListDTO> searchBranches(String name);
+
+    void updateBranchInfo(Branch branch);
+
+    void saveImage(ImageDTO imageDTO);
+
+    Optional<BranchDTO> findById(Long branchId);
+
+    List<ImageDTO> findImage(Long branchId);
 }

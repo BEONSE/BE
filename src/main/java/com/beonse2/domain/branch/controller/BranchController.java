@@ -2,6 +2,7 @@ package com.beonse2.domain.branch.controller;
 
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
@@ -22,7 +23,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -50,14 +53,19 @@ public class BranchController {
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("성공적으로 회원가입이 완료되었습니다.")
                 .build());
-
-
     }
 
     @GetMapping("/branches") //전체 쿠폰 사용 내역 조회
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(@RequestHeader("Authorization") String accessToken) {
         return couponService.findUseAllCoupon(accessToken);
+    }
+
+    @GetMapping("/branches/info/{branch-id}") //가맹점 상세 조회
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<BranchDTO> findBranch(@PathVariable("branch-id") Long branchId,
+                                                @RequestHeader("Authorization") String accessToken) {
+        return branchService.findBranch(branchId, accessToken);
     }
 
     @GetMapping("/branches/{member-id}") //단일 회원 쿠폰 결제
@@ -74,7 +82,20 @@ public class BranchController {
     }
 
     @GetMapping("/branches/map")
-    public ResponseEntity<List<BranchListDTO>> findByAllBranch (Role role) {
-        return branchService.findByAllBranch(role);
+    public ResponseEntity<List<BranchListDTO>> findByAllBranch() {
+        return branchService.findByAllBranch();
+    }
+
+    @GetMapping("/branches/search")
+    public ResponseEntity<List<BranchListDTO>> getBranchSearch(String name) {
+        return branchService.findBranchSearch(name);
+    }
+
+    @PatchMapping("/branches/info") //단일 회원 쿠폰 결제
+    @PreAuthorize("hasRole('BRANCH')")
+    public ResponseEntity<SuccessMessageDTO> patchBranch(@RequestPart List<MultipartFile> image,
+                                                         @RequestPart BranchRequestDTO branchRequestDTO,
+                                                         @RequestHeader("Authorization") String accessToken) throws IOException {
+        return branchService.updateBranch(accessToken, image, branchRequestDTO);
     }
 }

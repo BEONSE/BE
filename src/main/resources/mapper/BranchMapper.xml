@@ -20,8 +20,8 @@
 
     <!-- 가맹점 회원 가입 -->
     <insert id="save" parameterType="branch" useGeneratedKeys="true">
-        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
-        VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address},
+        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, LAT, LNG IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
+        VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address}, #{lat}, #{lng}
         <choose>
             <when test="image != null">
                 #{image},
@@ -41,12 +41,17 @@
                 SYSTIMESTAMP, SYSTIMESTAMP)
     </insert>
 
+    <insert id="saveImage" parameterType="imageDTO">
+        INSERT INTO branchimage(bmid, branch_bid, image, original_file_name, image_type)
+        VALUES (branchimage_seq.NEXTVAL, #{branchBid}, #{imageData}, #{originalFileName}, #{imageType})
+    </insert>
+
     <!--가맹점 조회-->
     <select id="findByMemberId" parameterType="long" resultType="branchRequestDTO">
         SELECT B.BID, B.MEMBER_MID, M.EMAIL, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION, B.CREATED_AT, B.MODIFIED_AT
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
-        AND B.BID = #{ value }
+        AND B.MEMBER_MID = #{ value }
     </select>
 
     <!--가맹점 조회-->
@@ -65,9 +70,39 @@
 
     <!--전체 가맹정 리스트-->
     <select id="findByAllBranch" resultType="branchListDTO">
-        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.IMAGE, B.INTRODUCTION
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND M.ROLE = 'ROLE_BRANCH'
+        ORDER BY name
+    </select>
+
+    <select id="searchBranches" parameterType="string" resultType="branchListDTO">
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.IMAGE, B.INTRODUCTION
+        FROM BRANCH B,
+             MEMBER M
+        WHERE B.MEMBER_MID = M.MID
+          AND B.name LIKE '%'||#{name}||'%'
+        ORDER BY name
+    </select>
+
+    <update id="updateBranchInfo" parameterType="branch">
+        UPDATE branch
+        SET name         = #{branchName},
+            introduction = #{introduction},
+            address      = #{address}
+        WHERE bid = #{bid}
+    </update>
+
+    <select id="findById" parameterType="long" resultType="branchDTO">
+        SELECT bid, member_mid, name branch_name, introduction
+        FROM branch
+        WHERE bid = #{branchId}
+    </select>
+
+    <select id="findImage" parameterType="long" resultType="imageDTO">
+        SELECT bmid, branch_bid, image image_data, original_file_name, image_type
+        FROM branchimage
+        WHERE branch_bid = #{branchId}
     </select>
 </mapper>

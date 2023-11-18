@@ -19,21 +19,22 @@
 
 <!-- 게시글 작성 -->
     <insert id="createReviewBoard" parameterType="reviewBoardDTO" >
-        INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE)
+        INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE, ORIGINAL_FILE_NAME, IMAGE_TYPE)
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberMid}, #{branchBid}, #{couponCid}, #{title}, #{content},
-        <choose>
-            <when test="image != null">
-                #{image},
-            </when>
-            <otherwise>
-                NULL
-            </otherwise>
-        </choose>)
+            <choose>
+                <when test="image != null">
+                    #{imageData, jdbcType=BLOB}, #{originalFileName}, #{imageType})
+                </when>
+                <otherwise>
+                    null, null, null)
+                </otherwise>
+            </choose>
     </insert>
 
 <!--게시글 조회-->
-    <select id="reviewBoardList" parameterType="Long" resultType="reviewBoardDTO">
-        SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, B.NAME AS BRANCHNAME, R.TITLE, R.CONTENT, R.STATUS, R.IMAGE, R.CREATED_AT, R.MODIFIED_AT
+    <select id="reviewBoardList" resultType="reviewBoardDTO">
+        SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, B.NAME AS BRANCHNAME, R.TITLE, R.CONTENT,
+               R.STATUS, R.IMAGE IMAGE_DATA, R.ORIGINAL_FILE_NAME,R.IMAGE_TYPE, R.CREATED_AT, R.MODIFIED_AT
         FROM REVIEWBOARD R, MEMBER M, BRANCH B
         WHERE R.MEMBER_MID = M.MID
         AND R.BRANCH_BID = B.BID
