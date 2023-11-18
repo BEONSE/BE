@@ -18,16 +18,22 @@ public class BranchRequestDTO {
 
     private String address;//주소
 
+    private double lat; // 위도
+
+    private double lng; // 경도
+
     private String branchName;//가맹점명
 
     private String introduction;//지점사 소개
 
     @Builder
-    public BranchRequestDTO(String email, String name, String password, String address, String branchName, String introduction) {
+    public BranchRequestDTO(String email, String name, String password, String address, double lat, double lng, String branchName, String introduction) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.address = address;
+        this.lat = lat;
+        this.lng = lng;
         this.branchName = branchName;
         this.introduction = introduction;
     }

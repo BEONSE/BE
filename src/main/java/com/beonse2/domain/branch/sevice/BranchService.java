@@ -61,6 +61,8 @@ public class BranchService {
                 .memberId(findMember.getMid())
                 .name(branchRequestDTO.getBranchName())
                 .address(branchRequestDTO.getAddress())
+                .lat(branchRequestDTO.getLat())
+                .lng(branchRequestDTO.getLng())
                 .introduction(branchRequestDTO.getIntroduction())
                 .build();
 

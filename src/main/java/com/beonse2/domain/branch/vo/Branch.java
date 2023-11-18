@@ -18,15 +18,21 @@ public class Branch {
 
     private String address;
 
+    private double lat;
+
+    private double lng;
+
     private String image;
 
     private String introduction;//지점사 소개
 
     @Builder
-    public Branch(Long memberId, String name, String address, String image, String introduction) {
+    public Branch(Long memberId, String name, String address, double lat, double lng, String image, String introduction) {
         this.memberId = memberId;
         this.name = name;
         this.address = address;
+        this.lat = lat;
+        this.lng = lng;
         this.image = image;
         this.introduction = introduction;
     }
