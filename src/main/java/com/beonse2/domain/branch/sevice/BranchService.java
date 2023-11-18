@@ -1,7 +1,6 @@
 package com.beonse2.domain.branch.sevice;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchDTO;
@@ -11,9 +10,7 @@ import com.beonse2.domain.branch.dto.ImageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.branch.vo.Branch;
 import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
-import com.beonse2.domain.member.vo.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 

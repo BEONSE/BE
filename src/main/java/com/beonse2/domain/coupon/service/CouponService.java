@@ -3,8 +3,6 @@ package com.beonse2.domain.coupon.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.branch.dto.BranchDTO;
-import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
@@ -18,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -111,7 +111,7 @@ public class CouponService {
     public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
-        MemberDTO findMember =  memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BRANCH)
         );
 
@@ -130,7 +130,7 @@ public class CouponService {
 
         String token = jwtUtil.resolveToken(accessToken);
 
-        MemberDTO findMember =  memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BRANCH)
         );
 

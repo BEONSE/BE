@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Timestamp;
-
 @Getter
 @NoArgsConstructor
 public class Branch {

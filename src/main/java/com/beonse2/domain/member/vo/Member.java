@@ -2,8 +2,8 @@ package com.beonse2.domain.member.vo;
 
 import com.beonse2.domain.member.vo.enums.Approval;
 import com.beonse2.domain.member.vo.enums.Role;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.security.Timestamp;
@@ -11,7 +11,7 @@ import java.security.Timestamp;
 
 @Getter
 @NoArgsConstructor
-public class Member{
+public class Member {
 
     private Long mid;//고유번호
     private String email;//email

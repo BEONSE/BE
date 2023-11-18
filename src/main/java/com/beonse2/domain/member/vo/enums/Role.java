@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public enum Role {
-    ROLE_USER("일반회원") ,
+    ROLE_USER("일반회원"),
     ROLE_BRANCH("지점사"),
     ROLE_ADMIN("관리자");
 

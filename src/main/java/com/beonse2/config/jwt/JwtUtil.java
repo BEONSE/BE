@@ -1,7 +1,6 @@
 package com.beonse2.config.jwt;
 
 import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.dto.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -47,6 +46,7 @@ public class JwtUtil implements InitializingBean {
 
     /**
      * 액세스 토큰 생성 메서드
+     *
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createAccessToken(MemberDTO memberDTO) {
@@ -74,8 +74,10 @@ public class JwtUtil implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS512) // 암호화
                 .compact();
     }
+
     /**
      * 리프레시 토큰 생성 메서드
+     *
      * @return 발급받은 토큰을 리턴해줌
      */
     public String createRefreshToken(MemberDTO memberDTO) {
@@ -111,7 +113,7 @@ public class JwtUtil implements InitializingBean {
         String userId = getEmail(token);
         UserDetails userDetails =
                 memberDetailsService.loadUserByUsername(userId);
-        System.out.println("getEmail(token) " +userId);
+        System.out.println("getEmail(token) " + userId);
         System.out.println("UserDetails: " + userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
