@@ -14,7 +14,7 @@ public interface ReviewBoardMapper {
 
     List<ReviewBoardDTO> findByReviewBoardId(Long rbId);
 
-    List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO);//전체 리스트 조회
+    List<ReviewBoardDTO> reviewBoardList();//전체 리스트 조회
 
     void updateReviewBoard (ReviewBoardDTO reviewBoardDTO);
 

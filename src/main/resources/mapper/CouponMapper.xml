@@ -12,10 +12,10 @@
     </insert>
 
     <select id="findAllCoupon" parameterType="long" resultType="couponResponseDTO">
-        SELECT cid, member_mid, type, price, is_used, payment_date
+        SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
         FROM coupon
         WHERE member_mid = #{value}
-        GROUP BY cid, member_mid, type, price, is_used, payment_date
+        GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
         ORDER BY type DESC
     </select>
 

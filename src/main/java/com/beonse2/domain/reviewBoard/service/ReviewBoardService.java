@@ -14,9 +14,12 @@ import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +37,7 @@ public class ReviewBoardService {
 
     public SuccessMessageDTO createReviewBoard(Long couponId,
                                                ReviewBoardDTO reviewBoardDTO,
-                                               String accessToken) {
+                                               String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -52,18 +55,24 @@ public class ReviewBoardService {
         if (couponResponseDTO.isUsed()) {
             throw new CustomException(ALREADY_WRITTEN_REVIEW);
         }
-
         Long branchId = branchMapper.findByBranchName(couponResponseDTO.getBranchName());
 
-        reviewBoardDTO = ReviewBoardDTO.builder()
-                .memberMid(findMember.getMid())
-                .branchBid(branchId)
-                .couponCid(couponResponseDTO.getCid())
-                .title(reviewBoardDTO.getTitle())
-                .content(reviewBoardDTO.getContent())
-                .writer(findMember.getNickname())
-                .image(reviewBoardDTO.getImage())
-                .build();
+        if (reviewBoardDTO.getImage() != null && !reviewBoardDTO.getImage().isEmpty()) {
+            MultipartFile image = reviewBoardDTO.getImage();
+
+            reviewBoardDTO = ReviewBoardDTO.builder()
+                    .memberMid(findMember.getMid())
+                    .branchBid(branchId)
+                    .couponCid(couponResponseDTO.getCid())
+                    .title(reviewBoardDTO.getTitle())
+                    .content(reviewBoardDTO.getContent())
+                    .writer(findMember.getNickname())
+                    .image(reviewBoardDTO.getImage())
+                    .originalFileName(image.getOriginalFilename())
+                    .imageType(image.getContentType())
+                    .imageData(image.getBytes())
+                    .build();
+        }
 
         reviewBoardMapper.createReviewBoard(reviewBoardDTO);
 
@@ -77,13 +86,14 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public List<ReviewBoardDTO> reviewBoardList(ReviewBoardDTO reviewBoardDTO) {
-        //전체 조회
-        return reviewBoardMapper.reviewBoardList(reviewBoardDTO);
-    }
+    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(int startPage, int pageNum) {
+        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList();
 
-    public List<ReviewBoardDTO> findMyReviewBoardId(Long rbId) {
-        return reviewBoardMapper.findByReviewBoardId(rbId);
+        if (reviewBoardDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_BOARD);
+        }
+
+        return ResponseEntity.ok(reviewBoardDTOS);
     }
 
     public List<ReviewBoardDTO> updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {
@@ -112,36 +122,36 @@ public class ReviewBoardService {
         return reviewBoardList;
     }
 
-public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
+    public List<ReviewBoardDTO> deleteReviewBoard(Long rbId, ReviewBoardDTO deletedReviewBoardDTO, String accessToken) {
 
-    String token = jwtUtil.resolveToken(accessToken);
-    String email = jwtUtil.getEmail(token);
-    System.out.println("getEmail(token)" + email);
+        String token = jwtUtil.resolveToken(accessToken);
+        String email = jwtUtil.getEmail(token);
+        System.out.println("getEmail(token)" + email);
 
-    // 리뷰 게시판이 사용자에게 속하는지 확인
-    List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
-    System.out.println("reviewBoardList del: " + reviewBoardList);
+        // 리뷰 게시판이 사용자에게 속하는지 확인
+        List<ReviewBoardDTO> reviewBoardList = reviewBoardMapper.findByReviewBoardId(rbId);
+        System.out.println("reviewBoardList del: " + reviewBoardList);
 
-    if (reviewBoardList != null && !reviewBoardList.isEmpty()) {
-        for (ReviewBoardDTO reviewBoardDTO : reviewBoardList) {
-            if (email.equals(reviewBoardDTO.getWriter())) {
-                System.out.println("getWriter : " + deletedReviewBoardDTO.getWriter());
-                reviewBoardDTO.setStatus(deletedReviewBoardDTO.isStatus());
-                System.out.println("deletedReviewBoardDTO.isStatus() : " + deletedReviewBoardDTO.isStatus());
+        if (reviewBoardList != null && !reviewBoardList.isEmpty()) {
+            for (ReviewBoardDTO reviewBoardDTO : reviewBoardList) {
+                if (email.equals(reviewBoardDTO.getWriter())) {
+                    System.out.println("getWriter : " + deletedReviewBoardDTO.getWriter());
+                    reviewBoardDTO.setStatus(deletedReviewBoardDTO.isStatus());
+                    System.out.println("deletedReviewBoardDTO.isStatus() : " + deletedReviewBoardDTO.isStatus());
 
-                reviewBoardMapper.deleteReviewBoard(rbId);
-                System.out.println("rbId : " + rbId);
-            } else {
-                throw new AccessDeniedException("해당 리뷰 게시판에 대한 액세스가 거부되었습니다.");
+                    reviewBoardMapper.deleteReviewBoard(rbId);
+                    System.out.println("rbId : " + rbId);
+                } else {
+                    throw new AccessDeniedException("해당 리뷰 게시판에 대한 액세스가 거부되었습니다.");
+                }
             }
+
+        } else {
+            throw new IllegalStateException("해당 리뷰 게시판을 찾을 수 없습니다.");
         }
 
-    } else {
-        throw new IllegalStateException("해당 리뷰 게시판을 찾을 수 없습니다.");
+        return reviewBoardList;
     }
-
-    return reviewBoardList;
-}
 
 
 //    public MemberDTO isMemberCurrent(String email) {

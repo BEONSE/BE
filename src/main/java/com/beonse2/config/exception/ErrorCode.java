@@ -32,7 +32,8 @@ public enum ErrorCode {
     NOT_FOUND_INFO(HttpStatus.NOT_FOUND.value(), "회원 정보를 찾을 수 없습니다."), 
     DONT_WRITE_REVIEW(HttpStatus.FORBIDDEN.value(), "쿠폰 사용자만 리뷰를 작성할 수 있습니다."),
     ALREADY_WRITTEN_REVIEW(HttpStatus.FORBIDDEN.value(), "이미 리뷰를 작성한 쿠폰입니다."),
-    NOT_FOUND_BRANCH_NAMES(HttpStatus.NOT_FOUND.value(), "지점명을 찾을 수 없습니다.");
+    NOT_FOUND_BRANCH_NAMES(HttpStatus.NOT_FOUND.value(), "지점명을 찾을 수 없습니다."),
+    NOT_FOUND_IMAGE(HttpStatus.NOT_FOUND.value(), "이미지가 없습니다.");
 
     private final int statusCode;
     private final String errorMessage;

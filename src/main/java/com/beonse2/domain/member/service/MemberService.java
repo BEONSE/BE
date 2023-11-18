@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_USER;
@@ -114,7 +117,7 @@ public class MemberService {
                 .build();
     }
 
-    public ResponseEntity<MemberEditDTO> updateInfo(MemberEditDTO memberEditDTO, String accessToken) {
+    public ResponseEntity<MemberEditDTO> updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -131,15 +134,22 @@ public class MemberService {
         }
 
         if (email.equals(memberEditDTO.getEmail())) {
-            memberEditDTO = MemberEditDTO.builder()
-                    .mid(mid)
-                    .email(email)
-                    .nickname(memberEditDTO.getNickname())
-                    .address(memberEditDTO.getAddress())
-                    .password(password)
-                    .image(memberEditDTO.getImage())
-                    .modifiedAt(findMember.getModifiedAt())
-                    .build();
+            if (memberEditDTO.getImage() != null && !memberEditDTO.getImage().isEmpty()) {
+                MultipartFile image = memberEditDTO.getImage();
+
+                memberEditDTO = MemberEditDTO.builder()
+                        .mid(mid)
+                        .email(email)
+                        .nickname(memberEditDTO.getNickname())
+                        .address(memberEditDTO.getAddress())
+                        .password(password)
+                        .image(memberEditDTO.getImage())
+                        .originalFileName(image.getOriginalFilename())
+                        .imageType(image.getContentType())
+                        .imageData(image.getBytes())
+                        .modifiedAt(findMember.getModifiedAt())
+                        .build();
+            }
         } else {
             throw new CustomException(NOT_MATCH_USER);
         }

@@ -91,14 +91,26 @@
             MODIFIED_AT = SYSTIMESTAMP,
         <choose>
             <when test="image != null">
-                IMAGE =  #{image}
+                IMAGE =  #{imageData, jdbcType=BLOB},
+                ORIGINAL_FILE_NAME = #{originalFileName},
+                IMAGE_TYPE = #{imageType}
             </when>
             <otherwise>
-                IMAGE =  NULL
+                IMAGE =  NULL,
+                ORIGINAL_FILE_NAME = NULL,
+                IMAGE_TYPE = NULL
             </otherwise>
         </choose>
 
         WHERE MID = #{mid}
+    </update>
+
+    <!--가맹점 회원 정보 수정-->
+    <update id="updateBranchInfo" parameterType="branch">
+        UPDATE MEMBER
+        SET PASSWORD = #{password},
+            ADDRESS = #{address}
+        WHERE MID = #{memberId}
     </update>
 
     <!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
