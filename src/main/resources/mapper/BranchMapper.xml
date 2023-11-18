@@ -63,6 +63,7 @@
         ORDER BY name
     </select>
 
+    <!--전체 가맹정 리스트-->
     <select id="findByAllBranch" resultType="branchListDTO">
         SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION
         FROM BRANCH B, MEMBER M

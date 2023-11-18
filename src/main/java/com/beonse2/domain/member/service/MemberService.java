@@ -1,8 +1,8 @@
 package com.beonse2.domain.member.service;
 
-import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
+import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.domain.member.dto.LoginDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
@@ -10,14 +10,12 @@ import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_USER;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,6 +31,7 @@ public class MemberService {
 
     /**
      * 유저 회원가입
+     *
      * @param member
      */
     @Transactional
@@ -80,6 +79,7 @@ public class MemberService {
 
     /**
      * 유저가 db에 있는지 확인하는 함수
+     *
      * @param email 유저의 아이디 입력
      * @return 유저가 있다면: true, 유저가 없다면: false
      */
@@ -93,6 +93,7 @@ public class MemberService {
 
     /**
      * 유저의 아이디를 찾는 함수
+     *
      * @param email 유저의 아이디 입력
      * @return 유저의 아이디가 없다면 에러를 뱉고, 있다면 userId리턴
      */
@@ -113,7 +114,7 @@ public class MemberService {
                 .build();
     }
 
-    public ResponseEntity<MemberEditDTO> updateInfo (MemberEditDTO memberEditDTO, String accessToken) {
+    public ResponseEntity<MemberEditDTO> updateInfo(MemberEditDTO memberEditDTO, String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -122,18 +123,25 @@ public class MemberService {
 
         Long mid = findMember.getMid();
         String email = findMember.getEmail();
+        String password;
+        if (memberEditDTO.getPassword().isEmpty()) {
+            password = findMember.getPassword();
+        } else {
+            password = passwordEncoder.encode(memberEditDTO.getPassword());
+        }
+
         if (email.equals(memberEditDTO.getEmail())) {
             memberEditDTO = MemberEditDTO.builder()
                     .mid(mid)
                     .email(email)
                     .nickname(memberEditDTO.getNickname())
-                    .password(passwordEncoder.encode(memberEditDTO.getPassword()))
                     .address(memberEditDTO.getAddress())
+                    .password(password)
                     .image(memberEditDTO.getImage())
                     .modifiedAt(findMember.getModifiedAt())
                     .build();
         } else {
-            throw new CustomException(NOT_FOUND_MEMBER);
+            throw new CustomException(NOT_MATCH_USER);
         }
 
         memberMapper.updateInfo(memberEditDTO);
@@ -141,4 +149,6 @@ public class MemberService {
         return ResponseEntity.ok(memberEditDTO);
     }
 
+
 }
+
