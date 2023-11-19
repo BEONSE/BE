@@ -2,10 +2,10 @@ package com.beonse2.domain.member.vo;
 
 import com.beonse2.domain.member.vo.enums.Approval;
 import com.beonse2.domain.member.vo.enums.Role;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.File;
 import java.security.Timestamp;
 
 
@@ -23,7 +23,7 @@ public class Member{
     private int paymentAmount;//누적 결제 내역
     private int pointAmount;//보유 포인트
     private boolean status;//회원 삭제
-    private File image;//프로필 사진
+    private MultipartFile image;//프로필 사진
     private Approval isApproval;//승인 여부
     private Timestamp createdAt;//생성일
     private Timestamp modifiedAt;//수정일

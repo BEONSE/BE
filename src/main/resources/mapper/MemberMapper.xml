@@ -24,7 +24,7 @@
 
     <!-- 회원 정보 저장 (회원 가입) -->
     <insert id="save" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
-        INSERT INTO MEMBER VALUES
+        INSERT INTO MEMBER (MID, EMAIL, NICKNAME, PASSWORD, NAME, ADDRESS, ROLE, PAYMENT_AMOUNT, STATUS, IMAGE, CREATED_AT, MODIFIED_AT) VALUES
             (MEMBER_SEQ.nextval,
              #{email},
              #{nickname},
@@ -35,14 +35,13 @@
              #{paymentAmount},
              '0',
              NULL,
-             NULL,
              SYSDATE,
              SYSDATE)
     </insert>
 
     <!-- 지점사 회원 정보 저장 (회원 가입) -->
     <insert id="saveBranch" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
-        INSERT INTO MEMBER VALUES
+        INSERT INTO MEMBER (MID, EMAIL, NICKNAME, PASSWORD, NAME, ADDRESS, ROLE, PAYMENT_AMOUNT,STATUS, IMAGE, IS_APPROVAL, CREATED_AT, MODIFIED_AT) VALUES
             (MEMBER_SEQ.nextval,
              #{email},
              #{name},

@@ -20,8 +20,8 @@
 
     <!-- 가맹점 회원 가입 -->
     <insert id="save" parameterType="branch" useGeneratedKeys="true">
-        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, LAT, LNG IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
-        VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address}, #{lat}, #{lng}
+        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, LAT, LNG, IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
+        VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address}, #{lat}, #{lng},
         <choose>
             <when test="image != null">
                 #{image},
@@ -29,7 +29,7 @@
             <otherwise>
                 NULL,
             </otherwise>
-        </choose>,
+        </choose>
         <choose>
             <when test="introduction != null">
                 #{introduction},
