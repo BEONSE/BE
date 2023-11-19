@@ -23,5 +23,7 @@ public interface MemberMapper {
     void updateBranchInfo(Branch branch);
 
     void updatePoint(MemberDTO member);
+
+    Optional<MemberDTO> findByNickname(String nickname);
 }
 
