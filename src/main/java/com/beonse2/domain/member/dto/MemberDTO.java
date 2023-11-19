@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -31,7 +32,7 @@ public class MemberDTO implements UserDetails {
     private int paymentAmount;//누적 결제 내역
     private int pointAmount;//보유 포인트
     private boolean status;//회원 삭제
-    private File image;//프로필 사진
+    private MultipartFile image;//프로필 사진
     private int points;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;//생성일

@@ -63,7 +63,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests()
-                .antMatchers("/reviews/*").hasRole("USER")
                 .antMatchers("/reservation/*").hasRole("USER")
                 .antMatchers("/api/v1/get").permitAll()
                 .antMatchers("/api/v1/login").permitAll()
