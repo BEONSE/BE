@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.admin.mapper.AdminMapper">
+    <update id="updateAcceptApproval" parameterType="long">
+        UPDATE member
+        SET is_approval = '가입 승인'
+        WHERE mid = #{value}
+    </update>
+
+    <update id="updateRejectApproval" parameterType="long">
+        UPDATE member
+        SET is_approval = '가입 거절'
+        WHERE mid = #{value}
+    </update>
+</mapper>

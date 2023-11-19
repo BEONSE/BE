@@ -32,6 +32,7 @@ public class MemberDTO implements UserDetails {
     private int paymentAmount;//누적 결제 내역
     private int pointAmount;//보유 포인트
     private boolean status;//회원 삭제
+    private String isApproval;
     private MultipartFile image;//프로필 사진
     private int points;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
