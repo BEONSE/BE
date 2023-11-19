@@ -1,13 +1,11 @@
 package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.mapper.CouponMapper;
-import com.beonse2.domain.coupon.vo.CouponVO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
@@ -21,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 

@@ -42,7 +42,7 @@ public class ReservationService {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
-               () -> new CustomException(NOT_FOUND_MEMBER)
+                () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
         BranchRequestDTO findBranch = branchMapper.findByMemberId(branchId).orElseThrow(
@@ -63,8 +63,8 @@ public class ReservationService {
                 .build());
     }
 
-    public ResponseEntity<List<ReservationResponseDTO>> reservationList (Long branchId,
-                                                                         String accessToken) {
+    public ResponseEntity<List<ReservationResponseDTO>> reservationList(Long branchId,
+                                                                        String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -77,8 +77,8 @@ public class ReservationService {
 
         List<ReservationResponseDTO> reservationList = reservationMapper.findMyReservations(findMember.getMid());
 
-        if(reservationList.isEmpty()) {
-            throw  new CustomException(NOT_FOUND_RESERVATION);
+        if (reservationList.isEmpty()) {
+            throw new CustomException(NOT_FOUND_RESERVATION);
         }
 
         return ResponseEntity.ok(reservationList);

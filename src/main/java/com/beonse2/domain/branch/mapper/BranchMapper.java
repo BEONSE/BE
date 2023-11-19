@@ -5,7 +5,6 @@ import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.dto.ImageDTO;
 import com.beonse2.domain.branch.vo.Branch;
-import com.beonse2.domain.member.vo.enums.Role;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

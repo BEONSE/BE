@@ -1,6 +1,5 @@
 package com.beonse2.domain.reviewBoard.vo;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +28,6 @@ public class ReviewBoard {
 
     private Timestamp createdAt;//작성일
 
-    private  Timestamp modifiedAt;//수정일
+    private Timestamp modifiedAt;//수정일
 
 }

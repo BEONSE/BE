@@ -58,25 +58,25 @@ public class MemberDTO implements UserDetails {
         return this.email;
     }
 
-   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonExpired() {// 사용자 계정 만료 여부 (true: 만료안됨)
         return true;
     }
 
-   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isAccountNonLocked() {//사용자 잠겨있는지 (true: 잠기지 않음)
         return true;
     }
 
-   // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {//비밀번호 만료여부 (true: 만료안됨)
         return true;
     }
 
-  //  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {// 계정 활성화(사용가능) 여부 (true: 활성화)
         return true;

@@ -1,24 +1,18 @@
 package com.beonse2.domain.branch.controller;
 
-import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchListDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
-import com.beonse2.domain.coupon.dto.CouponRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.service.CouponService;
-import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.dto.TokenDTO;
 import com.beonse2.domain.member.service.MemberService;
-import com.beonse2.domain.member.vo.enums.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

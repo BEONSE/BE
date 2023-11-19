@@ -5,13 +5,12 @@ import com.beonse2.domain.member.vo.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.security.Timestamp;
 
 
 @Getter
 @NoArgsConstructor
-public class Member{
+public class Member {
 
     private Long mid;//고유번호
     private String email;//email

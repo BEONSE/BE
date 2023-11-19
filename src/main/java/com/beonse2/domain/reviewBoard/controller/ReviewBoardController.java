@@ -5,9 +5,7 @@ import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
-import com.beonse2.domain.reviewBoard.dto.ReviewBoardRequestDTO;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;
-import com.beonse2.domain.reviewBoard.vo.ReviewBoard;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController

@@ -29,9 +29,9 @@ public class ReservationController {
     })
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessMessageDTO> createReservation (@PathVariable("branch-id") Long branchId,
-                                                                @RequestBody ReservationResponseDTO reservationResponseDTO,
-                                                                @RequestHeader(value = "Authorization") String accessToken) {
+    public ResponseEntity<SuccessMessageDTO> createReservation(@PathVariable("branch-id") Long branchId,
+                                                               @RequestBody ReservationResponseDTO reservationResponseDTO,
+                                                               @RequestHeader(value = "Authorization") String accessToken) {
         return reservationService.save(branchId, reservationResponseDTO, accessToken);
     }
 
