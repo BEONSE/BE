@@ -70,6 +70,12 @@
         FROM member
         WHERE nickname = #{value}
     </select>
+
+    <select id="findById" parameterType="long" resultType="memberDTO">
+        SELECT *
+        FROM member
+        WHERE mid = #{value}
+    </select>
     <!--누적 결제 내역-->
     <update id="updatePayment" parameterType="memberDTO">
         UPDATE MEMBER

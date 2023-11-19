@@ -25,5 +25,7 @@ public interface MemberMapper {
     void updatePoint(MemberDTO member);
 
     Optional<MemberDTO> findByNickname(String nickname);
+
+    Optional<MemberDTO> findById(Long memberId);
 }
 
