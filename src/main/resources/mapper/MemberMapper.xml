@@ -65,6 +65,11 @@
         WHERE STATUS = 0 AND EMAIL = #{value}
     </select>
 
+    <select id="findByNickname" parameterType="string" resultType="memberDTO">
+        SELECT *
+        FROM member
+        WHERE nickname = #{value}
+    </select>
     <!--누적 결제 내역-->
     <update id="updatePayment" parameterType="memberDTO">
         UPDATE MEMBER

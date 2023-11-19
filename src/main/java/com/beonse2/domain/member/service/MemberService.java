@@ -17,8 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
-import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_USER;
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,12 +38,16 @@ public class MemberService {
      */
     @Transactional
     public boolean save(MemberDTO member) {
+
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
             System.out.println("이미 가입된 회원입니다");
             throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
         }
 
+        if (memberMapper.findByNickname(member.getNickname()).isPresent()) {
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+        }
         // 가입 안했으면 아래 진행
 
         member = MemberDTO.builder()
@@ -123,6 +126,10 @@ public class MemberService {
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
+
+        if (memberMapper.findByNickname(memberEditDTO.getNickname()).isPresent()) {
+            throw new CustomException(DUPLICATE_NICKNAME);
+        }
 
         Long mid = findMember.getMid();
         String email = findMember.getEmail();
