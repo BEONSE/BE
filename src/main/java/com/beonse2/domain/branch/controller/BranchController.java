@@ -7,13 +7,11 @@ import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.service.CouponService;
-import com.beonse2.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -36,50 +34,43 @@ public class BranchController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @PostMapping("/join/branch")
-    public ResponseEntity<SuccessMessageDTO> save(@RequestBody BranchRequestDTO branchRequestDTO) {
-        branchService.save(branchRequestDTO);
-        System.out.println("branchRequestDTO : " + branchRequestDTO);
-
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .successMessage("성공적으로 회원가입이 완료되었습니다.")
-                .build());
+    public ResponseEntity<SuccessMessageDTO> postBranch(@RequestBody BranchRequestDTO branchRequestDTO) {
+        return ResponseEntity.ok(branchService.createBranch(branchRequestDTO));
     }
 
     @GetMapping("/branches/coupons") //전체 쿠폰 사용 내역 조회
     @PreAuthorize("hasRole('BRANCH')")
-    public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(@RequestHeader("Authorization") String accessToken) {
-        return couponService.findUseAllCoupon(accessToken);
+    public ResponseEntity<List<CouponResponseDTO>> getUseCoupons(@RequestHeader("Authorization") String accessToken) {
+        return ResponseEntity.ok(couponService.findUseAllCoupon(accessToken));
     }
 
     @GetMapping("/branches/coupons/{member-id}") //단일 회원 쿠폰 결제
     @PreAuthorize("hasRole('BRANCH')")
-    public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(@PathVariable("member-id") Long memberId,
+    public ResponseEntity<List<CouponResponseDTO>> getUseMemberCoupons(@PathVariable("member-id") Long memberId,
                                                                        @RequestHeader("Authorization") String accessToken) {
-        return couponService.findUseMemberCoupon(memberId, accessToken);
+        return ResponseEntity.ok(couponService.findUseMemberCoupon(memberId, accessToken));
     }
 
     @GetMapping("/branches") // 가맹점 전체 조회
-    public ResponseEntity<List<BranchListDTO>> findByAllBranch() {
-        return branchService.findByAllBranch();
+    public ResponseEntity<List<BranchListDTO>> getBranches() {
+        return ResponseEntity.ok(branchService.findByAllBranch());
     }
 
     @GetMapping("/branches/{branch-id}") //가맹점 상세 조회
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BranchDTO> findBranch(@PathVariable("branch-id") Long branchId,
-                                                @RequestHeader("Authorization") String accessToken) {
-        return branchService.findBranch(branchId, accessToken);
+    public ResponseEntity<BranchDTO> getBranch(@PathVariable("branch-id") Long branchId) {
+        return ResponseEntity.ok(branchService.findBranch(branchId));
     }
 
     @GetMapping("/branches/names")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<String>> findBranchNames() {
-        return branchService.findBranchNames();
+    public ResponseEntity<List<String>> getBranchNames() {
+        return ResponseEntity.ok(branchService.findBranchNames());
     }
 
     @GetMapping("/branches/search")
     public ResponseEntity<List<BranchListDTO>> getBranchSearch(String name) {
-        return branchService.findBranchSearch(name);
+        return ResponseEntity.ok(branchService.findBranchSearch(name));
     }
 
     @PatchMapping("/branches/info")
@@ -87,6 +78,6 @@ public class BranchController {
     public ResponseEntity<SuccessMessageDTO> patchBranch(@RequestPart List<MultipartFile> image,
                                                          @RequestPart BranchRequestDTO branchRequestDTO,
                                                          @RequestHeader("Authorization") String accessToken) throws IOException {
-        return branchService.updateBranch(accessToken, image, branchRequestDTO);
+        return ResponseEntity.ok(branchService.updateBranch(accessToken, image, branchRequestDTO));
     }
 }

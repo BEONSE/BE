@@ -23,13 +23,13 @@ public class MateCommentController {
     public ResponseEntity<SuccessMessageDTO> postMateComment(@PathVariable("mateBoard-id") Long mateBoardId,
                                                              @RequestHeader(value = "Authorization") String accessToken,
                                                              @RequestBody MateCommentRequestDTO mateCommentRequestDTO) {
-        return mateCommentService.createMateComment(mateBoardId, accessToken, mateCommentRequestDTO);
+        return ResponseEntity.ok(mateCommentService.createMateComment(mateBoardId, accessToken, mateCommentRequestDTO));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<MateCommentResponseDTO>> getMateCommentList(@PathVariable("mateBoard-id") Long mateBoardId) {
-        return mateCommentService.findMateCommentList(mateBoardId);
+        return ResponseEntity.ok(mateCommentService.findMateCommentList(mateBoardId));
     }
 
     @PatchMapping("/{mateComment-id}")
@@ -37,7 +37,6 @@ public class MateCommentController {
     public ResponseEntity<SuccessMessageDTO> deleteMateComment(@PathVariable("mateBoard-id") Long mateBoardId,
                                                                @PathVariable("mateComment-id") Long mateCommentId,
                                                                @RequestHeader(value = "Authorization") String accessToken) {
-        return mateCommentService.removeMateComment(mateBoardId, mateCommentId, accessToken);
+        return ResponseEntity.ok(mateCommentService.removeMateComment(mateBoardId, mateCommentId, accessToken));
     }
-
 }

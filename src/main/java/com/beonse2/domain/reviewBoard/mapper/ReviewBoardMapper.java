@@ -5,13 +5,14 @@ import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface ReviewBoardMapper {
 
     void createReviewBoard(ReviewBoardDTO reviewBoardDTO);
 
-    List<ReviewBoardDTO> findByReviewBoardId(Long rbId);
+    Optional<ReviewBoardDTO> findByReviewBoardId(Long rbId);
 
     List<ReviewBoardDTO> reviewBoardPage(PageRequestDTO pageRequestDTO);//전체 리스트 조회
 

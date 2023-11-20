@@ -12,7 +12,6 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +30,9 @@ public class MateCommentService {
     private final JwtUtil tokenProvider;
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> createMateComment(Long mateBoardId,
-                                                               String accessToken,
-                                                               MateCommentRequestDTO mateCommentRequestDTO) {
+    public SuccessMessageDTO createMateComment(Long mateBoardId,
+                                               String accessToken,
+                                               MateCommentRequestDTO mateCommentRequestDTO) {
 
         String token = tokenProvider.resolveToken(accessToken);
 
@@ -49,13 +48,13 @@ public class MateCommentService {
 
         mateCommentMapper.saveMateComment(mateCommentVO);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("댓글 작성 완료.")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<List<MateCommentResponseDTO>> findMateCommentList(Long mateBoardId) {
+    public List<MateCommentResponseDTO> findMateCommentList(Long mateBoardId) {
 
         List<MateCommentResponseDTO> mateComments = mateCommentMapper.findAllMateComment(mateBoardId);
 
@@ -67,14 +66,14 @@ public class MateCommentService {
             mateComment.updateGrade(mateComment.getPaymentAmount() < 150000 ? 3 : mateComment.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
-        return ResponseEntity.ok(mateComments);
+        return mateComments;
     }
 
-    public ResponseEntity<SuccessMessageDTO> removeMateComment(Long mateBoardId, Long mateCommentId, String accessToken) {
+    public SuccessMessageDTO removeMateComment(Long mateBoardId, Long mateCommentId, String accessToken) {
 
         String token = tokenProvider.resolveToken(accessToken);
 
-        MemberDTO findMember = memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
+        memberMapper.findByEmail(tokenProvider.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
@@ -88,9 +87,9 @@ public class MateCommentService {
 
         mateCommentMapper.deleteMateComment(mateCommentId);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("댓글 삭제 완료.")
-                .build());
+                .build();
     }
 }

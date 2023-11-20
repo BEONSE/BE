@@ -36,7 +36,7 @@ public class MateBoardService {
     private final JwtUtil jwtUtil;
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> createMateBoard(MateBoardRequestDTO mateBoardRequestDTO,
+    public SuccessMessageDTO createMateBoard(MateBoardRequestDTO mateBoardRequestDTO,
                                                              String accessToken) {
 
         String token = jwtUtil.resolveToken(accessToken);
@@ -52,13 +52,13 @@ public class MateBoardService {
                 .branchName(mateBoardRequestDTO.getBranchName())
                 .build());
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("게시글이 작성되었습니다.")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<PageResponseDTO> findMateBoardPage(int page) {
+    public PageResponseDTO findMateBoardPage(int page) {
 
         /*int rowsPerPage, int pagesPerGroup, int totalRows, int pageNo) {*/
         int totalRows = mateBoardMapper.getCount();
@@ -83,16 +83,16 @@ public class MateBoardService {
             mateBoard.updateGrade(mateBoard.getPaymentAmount() < 150000 ? 3 : mateBoard.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
-        return ResponseEntity.ok(PageResponseDTO.builder()
+        return PageResponseDTO.builder()
                 .content(mateBoards)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
-                .build());
+                .build();
     }
 
-    public ResponseEntity<MateBoardResponseDTO> findMateBoard(Long mateBoardId, String accessToken) {
+    public MateBoardResponseDTO findMateBoard(Long mateBoardId, String accessToken) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -109,11 +109,11 @@ public class MateBoardService {
         mateBoardResponseDTO.updateCommentCount(commentCount);
         mateBoardResponseDTO.updateGrade(mateBoardResponseDTO.getPaymentAmount() < 150000 ? 3 : mateBoardResponseDTO.getPaymentAmount() < 300000 ? 2 : 1);
 
-        return ResponseEntity.ok(mateBoardResponseDTO);
+        return mateBoardResponseDTO;
     }
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> updateMateBoard(Long mateBoardId,
+    public SuccessMessageDTO updateMateBoard(Long mateBoardId,
                                                              String accessToken,
                                                              MateBoardRequestDTO mateBoardRequestDTO) {
 
@@ -129,23 +129,23 @@ public class MateBoardService {
 
         mateBoardMapper.updateMateBoard(mateBoardRequestDTO);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("게시글이 수정되었습니다.")
-                .build());
+                .build();
     }
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> removeMateBoard(Long mateBoardId, String accessToken) {
+    public SuccessMessageDTO removeMateBoard(Long mateBoardId, String accessToken) {
 
         checkWriter(mateBoardId, accessToken);
 
         mateBoardMapper.deleteById(mateBoardId);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("게시글이 삭제되었습니다.")
-                .build());
+                .build();
     }
 
     private void checkWriter(Long mateBoardId, String accessToken) {

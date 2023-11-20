@@ -12,7 +12,6 @@ import com.beonse2.domain.point.vo.PointVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +33,7 @@ public class PointService {
     private final MemberMapper memberMapper;
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> createPoint(PointRequestDTO pointRequestDTO, String accessToken) {
+    public SuccessMessageDTO createPoint(PointRequestDTO pointRequestDTO, String accessToken) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -64,9 +63,7 @@ public class PointService {
 
         pointMapper.savePoint(PointVO.builder()
                 .points(points)
-//                .points(memberPoint)
                 .memberMid(findMember.getMid())
-//                .paymentPrice(memberPayment)
                 .paymentPrice(pointRequestDTO.getPaymentPrice())
                 .cardName(pointRequestDTO.getCardName())
                 .cardNumber(pointRequestDTO.getCardNumber())
@@ -74,13 +71,13 @@ public class PointService {
 
         memberMapper.updatePayment(findMember);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("포인트 구매가 정상적으로 완료되었습니다.")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<List<PointResponseDTO>> findPointList(String accessToken) {
+    public List<PointResponseDTO> findPointList(String accessToken) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -103,20 +100,19 @@ public class PointService {
             pointResponseDTOS.add(pointResponseDTO);
         }
 
-        return ResponseEntity.ok(pointResponseDTOS);
+        return pointResponseDTOS;
     }
 
-    public ResponseEntity<Map<String, Integer>> findPoint(String accessToken) {
+    public Map<String, Integer> findPoint(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap<>();
         map.put("point", findMember.getPointAmount());
 
-        return ResponseEntity.ok(map);
+        return map;
     }
-
 }

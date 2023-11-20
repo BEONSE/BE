@@ -13,7 +13,6 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,15 +31,12 @@ public class BranchService {
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     private final JwtUtil jwtUtil;
-
     private final BranchMapper branchMapper;
-
     private final MemberMapper memberMapper;
 
-    public boolean save(BranchRequestDTO branchRequestDTO) {
+    public SuccessMessageDTO createBranch(BranchRequestDTO branchRequestDTO) {
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(branchRequestDTO.getEmail()).isPresent()) {
-            System.out.println("이미 가입된 회원입니다");
             throw new RuntimeException("이미 가입된 회원입니다");
         }
 
@@ -55,7 +51,6 @@ public class BranchService {
         memberMapper.saveBranch(member);
 
         //response로 멤버 아이디  findbyEmail찾음
-
         MemberDTO findMember = memberMapper.findByEmail(branchRequestDTO.getEmail()).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
@@ -73,10 +68,13 @@ public class BranchService {
         //가맹점 매퍼 저장
         branchMapper.save(branch);
 
-        return memberMapper.findByEmail(member.getEmail()).isPresent();
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .successMessage("가맹점 회원 가입 완료")
+                .build();
     }
 
-    public ResponseEntity<List<String>> findBranchNames() {
+    public List<String> findBranchNames() {
 
         List<String> branchNames = branchMapper.findAllBranchName();
 
@@ -84,10 +82,10 @@ public class BranchService {
             throw new CustomException(NOT_FOUND_BRANCH_NAMES);
         }
 
-        return ResponseEntity.ok(branchNames);
+        return branchNames;
     }
 
-    public ResponseEntity<List<BranchListDTO>> findByAllBranch() {
+    public List<BranchListDTO> findByAllBranch() {
 
         List<BranchListDTO> branches = branchMapper.findByAllBranch();
 
@@ -95,26 +93,24 @@ public class BranchService {
             throw new CustomException(NOT_FOUND_BRANCH);
         }
 
-        return ResponseEntity.ok(branches);
+        return branches;
     }
 
-    public ResponseEntity<List<BranchListDTO>> findBranchSearch(String name) {
+    public List<BranchListDTO> findBranchSearch(String name) {
 
         List<BranchListDTO> branches = branchMapper.searchBranches(name);
 
         if (branches.isEmpty()) {
             throw new CustomException(NOT_FOUND_BRANCH);
         }
-        return ResponseEntity.ok(branches);
+        return branches;
     }
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> updateBranch(String accessToken,
-                                                          List<MultipartFile> images,
-                                                          BranchRequestDTO branchRequestDTO) throws IOException {
-
+    public SuccessMessageDTO updateBranch(String accessToken,
+                                          List<MultipartFile> images,
+                                          BranchRequestDTO branchRequestDTO) throws IOException {
         /*비밀번호, 지점사 소개, 소개이미지, 주소, 지점사명*/
-
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -168,13 +164,13 @@ public class BranchService {
         memberMapper.updateBranchInfo(branch);
         branchMapper.updateBranchInfo(branch);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("정보 수정 완료.")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<BranchDTO> findBranch(Long branchId, String accessToken) {
+    public BranchDTO findBranch(Long branchId) {
 
         BranchDTO branchDTO = branchMapper.findById(branchId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BRANCH)
@@ -186,7 +182,7 @@ public class BranchService {
             throw new CustomException(NOT_FOUND_IMAGE);
         }
 
-        return ResponseEntity.ok(BranchDTO.builder()
+        return BranchDTO.builder()
                 .bId(branchDTO.getBId())
                 .memberMid(branchDTO.getMemberMid())
                 .email(branchDTO.getEmail())
@@ -194,6 +190,6 @@ public class BranchService {
                 .branchName(branchDTO.getBranchName())
                 .isApproval(branchDTO.getIsApproval())
                 .introduction(branchDTO.getIntroduction())
-                .build());
+                .build();
     }
 }

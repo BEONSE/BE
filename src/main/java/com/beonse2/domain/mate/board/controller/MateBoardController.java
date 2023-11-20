@@ -2,7 +2,6 @@ package com.beonse2.domain.mate.board.controller;
 
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
 import com.beonse2.domain.mate.board.service.MateBoardService;
@@ -13,8 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +29,7 @@ public class MateBoardController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postMateBoard(@RequestBody MateBoardRequestDTO mateBoardRequestDTO,
                                                            @RequestHeader(value = "Authorization") String accessToken) {
-        return mateBoardService.createMateBoard(mateBoardRequestDTO, accessToken);
+        return ResponseEntity.ok(mateBoardService.createMateBoard(mateBoardRequestDTO, accessToken));
     }
 
     @Operation(summary = "메이트 게시글 전체 조회", description = "메이트 게시글 전체 조회")
@@ -42,7 +39,7 @@ public class MateBoardController {
     })
     @GetMapping
     public ResponseEntity<PageResponseDTO> getMateBoardPage(@RequestParam(defaultValue = "1") int page) {
-        return mateBoardService.findMateBoardPage(page);
+        return ResponseEntity.ok(mateBoardService.findMateBoardPage(page));
     }
 
     @Operation(summary = "메이트 게시글 단건 조회", description = "메이트 게시글 단건 조회")
@@ -54,7 +51,7 @@ public class MateBoardController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<MateBoardResponseDTO> getMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
                                                              @RequestHeader(value = "Authorization") String accessToken) {
-        return mateBoardService.findMateBoard(mateBoardId, accessToken);
+        return ResponseEntity.ok(mateBoardService.findMateBoard(mateBoardId, accessToken));
     }
 
     @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
@@ -67,7 +64,7 @@ public class MateBoardController {
     public ResponseEntity<SuccessMessageDTO> patchMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
                                                             @RequestHeader(value = "Authorization") String accessToken,
                                                             @RequestBody MateBoardRequestDTO mateBoardRequestDTO) {
-        return mateBoardService.updateMateBoard(mateBoardId, accessToken, mateBoardRequestDTO);
+        return ResponseEntity.ok(mateBoardService.updateMateBoard(mateBoardId, accessToken, mateBoardRequestDTO));
     }
 
     @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
@@ -79,6 +76,6 @@ public class MateBoardController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> deleteMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
                                                              @RequestHeader(value = "Authorization") String accessToken) {
-        return mateBoardService.removeMateBoard(mateBoardId, accessToken);
+        return ResponseEntity.ok(mateBoardService.removeMateBoard(mateBoardId, accessToken));
     }
 }

@@ -7,11 +7,11 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.beonse2.config.exception.ErrorCode.*;
+import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
+import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_APPROVAL;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class AdminService {
     private final MemberMapper memberMapper;
     private final AdminMapper adminMapper;
 
-    public ResponseEntity<SuccessMessageDTO> updateAcceptAdmin(Long memberId) {
+    public SuccessMessageDTO updateAcceptAdmin(Long memberId) {
 
         MemberDTO findMember = memberMapper.findById(memberId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
@@ -33,13 +33,13 @@ public class AdminService {
 
         adminMapper.updateAcceptApproval(memberId);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("가입 승인 완료")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<SuccessMessageDTO> updateRejectAdmin(Long memberId) {
+    public SuccessMessageDTO updateRejectAdmin(Long memberId) {
 
         MemberDTO findMember = memberMapper.findById(memberId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
@@ -51,9 +51,9 @@ public class AdminService {
 
         adminMapper.updateRejectApproval(memberId);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("가입 거절 완료")
-                .build());
+                .build();
     }
 }

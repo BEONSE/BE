@@ -17,13 +17,11 @@ import com.beonse2.domain.reservation.vo.Reservation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -33,15 +31,12 @@ import static com.beonse2.config.exception.ErrorCode.*;
 public class ReservationService {
 
     private final JwtUtil jwtUtil;
-
     private final ReservationMapper reservationMapper;
-
     private final MemberMapper memberMapper;
-
     private final BranchMapper branchMapper;
 
     @Transactional
-    public ResponseEntity<SuccessMessageDTO> save(Long branchId, ReservationResponseDTO reservationResponseDTO, String accessToken) {
+    public SuccessMessageDTO createReservation(Long branchId, ReservationResponseDTO reservationResponseDTO, String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -60,13 +55,13 @@ public class ReservationService {
 
         reservationMapper.createReservation(reservation);
 
-        return ResponseEntity.ok(SuccessMessageDTO.builder()
+        return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .successMessage("예약이 완료되었습니다.")
-                .build());
+                .build();
     }
 
-    public ResponseEntity<PageResponseDTO> findReservationPage(Long branchId, String accessToken, int page) {
+    public PageResponseDTO findReservationPage(Long branchId, String accessToken, int page) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -98,12 +93,12 @@ public class ReservationService {
             throw new CustomException(NOT_FOUND_RESERVATION);
         }
 
-        return ResponseEntity.ok(PageResponseDTO.builder()
+        return PageResponseDTO.builder()
                 .content(reservationList)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
-                .build());
+                .build();
     }
 }

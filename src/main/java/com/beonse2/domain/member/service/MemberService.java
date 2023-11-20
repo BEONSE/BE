@@ -3,11 +3,12 @@ package com.beonse2.domain.member.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.*;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class MemberService {
      * @param member
      */
     @Transactional
-    public boolean save(MemberDTO member) {
+    public SuccessMessageDTO createMember(MemberDTO member) {
 
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
@@ -60,7 +61,10 @@ public class MemberService {
 
         memberMapper.save(member);
 
-        return memberMapper.findByEmail(member.getEmail()).isPresent();
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .successMessage("성공적으로 회원가입이 완료되었습니다.")
+                .build();
     }
 
     /**
@@ -69,7 +73,7 @@ public class MemberService {
      * @param loginDTO 로그인 하는 유저의 정보
      * @return result[0]: accessToken, result[1]: refreshToken
      */
-    public MemberDTO login(LoginDTO loginDTO) {
+    public TokenDTO login(LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_MATCH_EMAIL));
@@ -78,8 +82,12 @@ public class MemberService {
             throw new CustomException(ErrorCode.NOT_MATCH_PASSWORD);
         }
 
-        return memberDTO;
+        TokenDTO tokenDTO = tokenGenerator(memberDTO.getEmail());
 
+        return TokenDTO.builder()
+                .accessToken(tokenDTO.getAccessToken())
+                .refreshToken(tokenDTO.getRefreshToken())
+                .build();
     }
 
     /**
@@ -88,12 +96,14 @@ public class MemberService {
      * @param email 유저의 아이디 입력
      * @return 유저가 있다면: true, 유저가 없다면: false
      */
-    public boolean haveMember(String email) {
+    public SuccessMessageDTO haveMember(String email) {
         if (memberMapper.findByEmail(email).isPresent()) {
-            return true;
-        } else {
-            return false;
+            throw new CustomException(DUPLICATE_MEMBER);
         }
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("중복 확인 완료.")
+                .build();
     }
 
     /**
@@ -119,7 +129,7 @@ public class MemberService {
                 .build();
     }
 
-    public ResponseEntity<MemberEditDTO> updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
+    public MemberEditDTO updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -171,15 +181,12 @@ public class MemberService {
 
         memberMapper.updateInfo(memberEditDTO);
 
-        return ResponseEntity.ok(memberEditDTO);
+        return memberEditDTO;
     }
 
-    public ResponseEntity<MaxPaymentDTO> findMaxPayment() {
-
-        MaxPaymentDTO maxPayment = memberMapper.findMaxPayment().orElseThrow(
+    public MaxPaymentDTO findMaxPayment() {
+        return memberMapper.findMaxPayment().orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
-
-        return ResponseEntity.ok(maxPayment);
     }
 }

@@ -1,7 +1,6 @@
 package com.beonse2.domain.myPage.service;
 
 import com.beonse2.config.exception.CustomException;
-import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
@@ -17,7 +16,6 @@ import com.beonse2.domain.reservation.mapper.ReservationMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +34,7 @@ public class MyPageService {
     private final MateCommentMapper mateCommentMapper;
     private final ReservationMapper reservationMapper;
 
-    public ResponseEntity<MyPage> myInfo(String accessToken) {
+    public MyPage myInfo(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -49,11 +47,11 @@ public class MyPageService {
 
         myPage.updateGrade(myPage.getPaymentAmount() < 150000 ? 3 : myPage.getPaymentAmount() < 300000 ? 2 : 1);
 
-        return ResponseEntity.ok(myPage);
+        return myPage;
     }
 
 
-    public ResponseEntity<PageResponseDTO> findMyReviewPage(String accessToken, int page) {
+    public PageResponseDTO findMyReviewPage(String accessToken, int page) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -76,17 +74,17 @@ public class MyPageService {
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
-        return ResponseEntity.ok(PageResponseDTO.builder()
+        return PageResponseDTO.builder()
                 .content(reviewBoardDTOS)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequestDTO.getTotalPageNo())
-                .build());
+                .build();
 
     }
 
-    public ResponseEntity<PageResponseDTO> findMyMatePage(String accessToken, int page) {
+    public PageResponseDTO findMyMatePage(String accessToken, int page) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -117,17 +115,17 @@ public class MyPageService {
             mateBoard.updateGrade(mateBoard.getPaymentAmount() < 150000 ? 3 : mateBoard.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
-        return ResponseEntity.ok(PageResponseDTO.builder()
+        return PageResponseDTO.builder()
                 .content(mateBoards)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
-                .build());
+                .build();
     }
 
-    public ResponseEntity<PageResponseDTO> findMyReservationPage(String accessToken,
-                                                                 int page) {
+    public PageResponseDTO findMyReservationPage(String accessToken,
+                                                 int page) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -150,12 +148,12 @@ public class MyPageService {
             throw new CustomException(NOT_FOUND_RESERVATION);
         }
 
-        return ResponseEntity.ok(PageResponseDTO.builder()
+        return PageResponseDTO.builder()
                 .content(reservationList)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
-                .build());
+                .build();
     }
 }
