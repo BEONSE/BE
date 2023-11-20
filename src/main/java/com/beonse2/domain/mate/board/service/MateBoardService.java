@@ -70,7 +70,7 @@ public class MateBoardService {
                 .page(page)
                 .build();
 
-        List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard(pageRequest);
+        List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findMateBoardPage(pageRequest);
 
         if (mateBoards.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);

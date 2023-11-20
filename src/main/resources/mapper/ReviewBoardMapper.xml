@@ -51,9 +51,35 @@
         ]]>
     </select>
 
+<!--내가 쓴 게시글 조회-->
+    <select id="myReviewBoardPage" resultType="reviewBoardDTO" parameterType="reviewPager">
+        <![CDATA[
+        SELECT *
+        FROM (SELECT rownum rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, BRANCHNAME, TITLE, CONTENT,
+                     STATUS, IMAGE_DATA, ORIGINAL_FILE_NAME, IMAGE_TYPE, CREATED_AT, MODIFIED_AT
+              FROM (SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
+                           R.STATUS, R.IMAGE IMAGE_DATA, R.ORIGINAL_FILE_NAME, R.IMAGE_TYPE, R.CREATED_AT, R.MODIFIED_AT
+                    FROM REVIEWBOARD R
+                        JOIN MEMBER M
+                            ON R.member_mid = m.mid
+                        JOIN BRANCH B
+                            ON R.branch_bid = b.bid
+                    WHERE R.member_mid = #{paramId}
+                    ORDER BY R.MODIFIED_AT DESC)
+              WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
     <select id="getCount" parameterType="long" resultType="int">
             SELECT count(*) FROM reviewboard
             WHERE branch_bid = #{branchId}
+              AND status = '0'
+    </select>
+
+    <select id="getCountByMemberId" parameterType="long" resultType="int">
+            SELECT count(*) FROM reviewboard
+            WHERE member_mid = #{mid}
               AND status = '0'
     </select>
 

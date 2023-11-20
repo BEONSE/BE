@@ -13,11 +13,15 @@ public interface ReviewBoardMapper {
 
     List<ReviewBoardDTO> findByReviewBoardId(Long rbId);
 
-    List<ReviewBoardDTO> reviewBoardList(PageRequestDTO pageRequestDTO);//전체 리스트 조회
+    List<ReviewBoardDTO> reviewBoardPage(PageRequestDTO pageRequestDTO);//전체 리스트 조회
+
+    List<ReviewBoardDTO> myReviewBoardPage(PageRequestDTO pageRequestDTO);//내가 쓴 리뷰 전체 조회
 
     void updateReviewBoard(ReviewBoardDTO reviewBoardDTO);
 
     void deleteReviewBoard(Long rbId);
 
     int getCount(Long branchId);
+
+    int getCountByMemberId(Long mid);
 }

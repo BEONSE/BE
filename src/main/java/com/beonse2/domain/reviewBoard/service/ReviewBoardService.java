@@ -11,7 +11,6 @@ import com.beonse2.domain.coupon.mapper.CouponMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
-import com.beonse2.domain.reviewBoard.dto.ReviewPageRequest;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -98,7 +97,7 @@ public class ReviewBoardService {
                 .page(page)
                 .build();
 
-        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList(pageRequestDTO);
+        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardPage(pageRequestDTO);
 
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);

@@ -36,4 +36,18 @@ public class MyPageController {
                                                     MemberEditDTO memberEditDTO) throws IOException {
         return memberService.updateInfo(memberEditDTO, accessToken);
     }
+
+    @GetMapping("/reviews")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<PageResponseDTO> getMyReviewPage(@RequestHeader(value = "Authorization") String accessToken,
+                                                           @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyReviewPage(accessToken, page);
+    }
+
+    @GetMapping("/mates")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<PageResponseDTO> getMyMatePage(@RequestHeader(value = "Authorization") String accessToken,
+                                                           @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyMatePage(accessToken, page);
+    }
 }

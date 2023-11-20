@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface MateBoardMapper {
     void saveMateBoard(MateBoardVO mateBoardVO);
 
-    List<MateBoardListResponseDTO> findAllMateBoard(PageRequestDTO pageRequest);
+    List<MateBoardListResponseDTO> findMateBoardPage(PageRequestDTO pageRequest);
 
     Optional<MateBoardResponseDTO> findById(Long mateBoardId);
 
@@ -24,4 +24,7 @@ public interface MateBoardMapper {
 
     int getCount();
 
+    List<MateBoardListResponseDTO> findMyMateBoardPage(PageRequestDTO pageRequest);
+
+    int getCountByMemberId(Long memberId);
 }
