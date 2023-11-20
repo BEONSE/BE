@@ -3,12 +3,10 @@ package com.beonse2.domain.member.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
-import com.beonse2.domain.member.dto.LoginDTO;
-import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.dto.MemberEditDTO;
-import com.beonse2.domain.member.dto.TokenDTO;
+import com.beonse2.domain.member.dto.*;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,7 @@ import java.io.IOException;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -167,6 +166,12 @@ public class MemberService {
         return ResponseEntity.ok(memberEditDTO);
     }
 
+    public ResponseEntity<MaxPaymentDTO> findMaxPayment() {
 
+        MaxPaymentDTO maxPayment = memberMapper.findMaxPayment().orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        return ResponseEntity.ok(maxPayment);
+    }
 }
-

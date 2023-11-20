@@ -76,6 +76,15 @@
         FROM member
         WHERE mid = #{value}
     </select>
+
+    <select id="findMaxPayment" resultType="maxPaymentDTO">
+        SELECT mid, nickname, payment_amount, point_amount
+        FROM member
+        WHERE payment_amount = (SELECT MAX(payment_amount) FROM member)
+        ORDER BY point_amount
+            FETCH FIRST 1 ROW ONLY
+    </select>
+
     <!--누적 결제 내역-->
     <update id="updatePayment" parameterType="memberDTO">
         UPDATE MEMBER

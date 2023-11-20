@@ -8,7 +8,6 @@ import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,12 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewBoardController {
 
-    @Autowired
     ResponseService responseService;
-
-    @Autowired
     ReviewBoardService reviewBoardService;
-
 
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
@@ -97,28 +92,4 @@ public class ReviewBoardController {
 
         return responseEntity;
     }
-        /*ResponseEntity responseEntity = null;
-
-        try {
-            List<ReviewBoardDTO> reviewBoard = reviewBoardService.deleteReviewBoard(rbId, updatedReviewBoardDTO, accessToken);
-            System.out.println("reviewBoard : " + reviewBoard);
-
-            SingleDataResponse<List<ReviewBoardDTO>> response = responseService.getSingleDataResponse(true, "게시판 삭제 성공", reviewBoard);
-            System.out.println("response1 : " + response);
-
-            responseEntity = ResponseEntity.ok(response);
-        } catch (IllegalStateException e) {
-            log.error(e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("게시판 삭제 실패", e);
-            BaseResponse response = responseService.getBaseResponse(false, "게시판 삭제 실패");
-            System.out.println("response2 : " + response);
-            responseEntity = ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
-        }
-
-        return responseEntity;
-
-    }
-
-}*/
 }

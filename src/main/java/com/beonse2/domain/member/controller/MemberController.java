@@ -4,10 +4,7 @@ import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.member.dto.LoginDTO;
-import com.beonse2.domain.member.dto.LoginResponseDTO;
-import com.beonse2.domain.member.dto.MemberDTO;
-import com.beonse2.domain.member.dto.TokenDTO;
+import com.beonse2.domain.member.dto.*;
 import com.beonse2.domain.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -83,4 +80,8 @@ public class MemberController {
         return responseEntity;
     }
 
+    @GetMapping("/main")
+    public ResponseEntity<MaxPaymentDTO> getMember() {
+        return memberService.findMaxPayment();
+    }
 }

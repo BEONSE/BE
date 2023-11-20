@@ -28,9 +28,6 @@ import java.util.List;
 public class BranchController {
 
     private final BranchService branchService;
-
-    private final MemberService memberService;
-
     private final CouponService couponService;
 
     @Operation(summary = "회원 가입", description = "회원 가입")
@@ -38,7 +35,7 @@ public class BranchController {
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
-    @PostMapping("/joinbranch")
+    @PostMapping("/join/branch")
     public ResponseEntity<SuccessMessageDTO> save(@RequestBody BranchRequestDTO branchRequestDTO) {
         branchService.save(branchRequestDTO);
         System.out.println("branchRequestDTO : " + branchRequestDTO);
@@ -49,24 +46,29 @@ public class BranchController {
                 .build());
     }
 
-    @GetMapping("/branches") //전체 쿠폰 사용 내역 조회
+    @GetMapping("/branches/coupons") //전체 쿠폰 사용 내역 조회
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<List<CouponResponseDTO>> findUseAllCoupon(@RequestHeader("Authorization") String accessToken) {
         return couponService.findUseAllCoupon(accessToken);
     }
 
-    @GetMapping("/branches/info/{branch-id}") //가맹점 상세 조회
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<BranchDTO> findBranch(@PathVariable("branch-id") Long branchId,
-                                                @RequestHeader("Authorization") String accessToken) {
-        return branchService.findBranch(branchId, accessToken);
-    }
-
-    @GetMapping("/branches/{member-id}") //단일 회원 쿠폰 결제
+    @GetMapping("/branches/coupons/{member-id}") //단일 회원 쿠폰 결제
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<List<CouponResponseDTO>> findUseMemberCoupon(@PathVariable("member-id") Long memberId,
                                                                        @RequestHeader("Authorization") String accessToken) {
         return couponService.findUseMemberCoupon(memberId, accessToken);
+    }
+
+    @GetMapping("/branches") // 가맹점 전체 조회
+    public ResponseEntity<List<BranchListDTO>> findByAllBranch() {
+        return branchService.findByAllBranch();
+    }
+
+    @GetMapping("/branches/{branch-id}") //가맹점 상세 조회
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<BranchDTO> findBranch(@PathVariable("branch-id") Long branchId,
+                                                @RequestHeader("Authorization") String accessToken) {
+        return branchService.findBranch(branchId, accessToken);
     }
 
     @GetMapping("/branches/names")
@@ -75,17 +77,12 @@ public class BranchController {
         return branchService.findBranchNames();
     }
 
-    @GetMapping("/branches/map")
-    public ResponseEntity<List<BranchListDTO>> findByAllBranch() {
-        return branchService.findByAllBranch();
-    }
-
     @GetMapping("/branches/search")
     public ResponseEntity<List<BranchListDTO>> getBranchSearch(String name) {
         return branchService.findBranchSearch(name);
     }
 
-    @PatchMapping("/branches/info") //단일 회원 쿠폰 결제
+    @PatchMapping("/branches/info")
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<SuccessMessageDTO> patchBranch(@RequestPart List<MultipartFile> image,
                                                          @RequestPart BranchRequestDTO branchRequestDTO,
