@@ -44,7 +44,7 @@
                             ON R.member_mid = m.mid
                         JOIN BRANCH B
                             ON R.branch_bid = b.bid
-                    WHERE B.bid = #{branchId}
+                    WHERE B.bid = #{paramId}
                     ORDER BY R.MODIFIED_AT DESC)
               WHERE rownum <= #{endRowNo})
         WHERE rnum >= #{startRowNo}

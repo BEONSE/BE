@@ -2,6 +2,7 @@ package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
@@ -89,8 +90,8 @@ public class ReviewBoardService {
 
         int totalRows = reviewBoardMapper.getCount(branchId);
 
-        ReviewPageRequest pageRequestDTO = ReviewPageRequest.builder()
-                .branchId(branchId)
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .paramId(branchId)
                 .rowsPerPage(5)
                 .pagesPerGroup(5)
                 .totalRows(totalRows)

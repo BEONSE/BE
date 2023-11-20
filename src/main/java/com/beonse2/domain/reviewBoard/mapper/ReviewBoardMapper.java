@@ -1,7 +1,7 @@
 package com.beonse2.domain.reviewBoard.mapper;
 
+import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
-import com.beonse2.domain.reviewBoard.dto.ReviewPageRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface ReviewBoardMapper {
 
     List<ReviewBoardDTO> findByReviewBoardId(Long rbId);
 
-    List<ReviewBoardDTO> reviewBoardList(ReviewPageRequest reviewPager);//전체 리스트 조회
+    List<ReviewBoardDTO> reviewBoardList(PageRequestDTO pageRequestDTO);//전체 리스트 조회
 
     void updateReviewBoard(ReviewBoardDTO reviewBoardDTO);
 

@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class PageRequestDTO {
 
+    private Long paramId;
     private int totalRows;		//전체 행수
     private int totalPageNo;	//전체 페이지 수
     private int totalGroupNo;	//전체 그룹 수
@@ -21,7 +22,8 @@ public class PageRequestDTO {
     private int endRowIndex;	//페이지의 마지막 행 인덱스
 
     @Builder
-    public PageRequestDTO(int rowsPerPage, int pagesPerGroup, int totalRows, int page) {
+    public PageRequestDTO(Long paramId, int rowsPerPage, int pagesPerGroup, int totalRows, int page) {
+        this.paramId = paramId;
         this.rowsPerPage = rowsPerPage;
         this.pagesPerGroup = pagesPerGroup;
         this.totalRows = totalRows;

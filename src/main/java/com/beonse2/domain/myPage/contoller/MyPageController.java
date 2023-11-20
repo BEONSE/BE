@@ -1,9 +1,11 @@
 package com.beonse2.domain.myPage.contoller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.service.MemberService;
 import com.beonse2.domain.myPage.service.MyPageService;
 import com.beonse2.domain.myPage.vo.MyPage;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
@@ -34,7 +36,4 @@ public class MyPageController {
                                                     MemberEditDTO memberEditDTO) throws IOException {
         return memberService.updateInfo(memberEditDTO, accessToken);
     }
-
-//    @PatchMapping("/coupons/{coupon-id}") //세차 쿠폰 사용
-
 }
