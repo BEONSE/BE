@@ -32,7 +32,7 @@ public class PointController {
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postPoint(@RequestBody PointRequestDTO pointRequestDTO,
                                                        @RequestHeader(value = "Authorization") String accessToken) {
-        return pointService.createPoint(pointRequestDTO, accessToken);
+        return ResponseEntity.ok(pointService.createPoint(pointRequestDTO, accessToken));
     }
 
     @Operation(summary = "포인트 결제", description = "포인트 결제")
@@ -43,12 +43,12 @@ public class PointController {
     @GetMapping("/mypage/payments")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<List<PointResponseDTO>> getPointList(@RequestHeader(value = "Authorization") String accessToken) {
-        return pointService.findPointList(accessToken);
+        return ResponseEntity.ok(pointService.findPointList(accessToken));
     }
 
     @GetMapping("/points")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<Map<String, Integer>> getPointAmount(@RequestHeader("Authorization") String accessToken) {
-        return pointService.findPoint(accessToken);
+        return ResponseEntity.ok(pointService.findPoint(accessToken));
     }
 }

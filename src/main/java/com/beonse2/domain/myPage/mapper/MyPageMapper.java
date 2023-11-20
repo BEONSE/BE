@@ -10,6 +10,4 @@ public interface MyPageMapper {
 
     Optional<MyPage> findById(Long mid);
 
-    void updateEdit(MyPage myPage);
-
 }

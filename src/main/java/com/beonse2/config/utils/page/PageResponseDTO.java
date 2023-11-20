@@ -1,6 +1,5 @@
 package com.beonse2.config.utils.page;
 
-import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import lombok.Builder;
 import lombok.Getter;
 

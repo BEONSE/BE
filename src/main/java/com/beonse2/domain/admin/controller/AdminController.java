@@ -20,12 +20,12 @@ public class AdminController {
     @PatchMapping("/accept/{member-id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessMessageDTO> patchAcceptAdmin(@PathVariable("member-id") Long memberId) {
-        return adminService.updateAcceptAdmin(memberId);
+        return ResponseEntity.ok(adminService.updateAcceptAdmin(memberId));
     }
 
     @PatchMapping("/reject/{member-id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessMessageDTO> patchRejectAdmin(@PathVariable("member-id") Long memberId) {
-        return adminService.updateRejectAdmin(memberId);
+        return ResponseEntity.ok(adminService.updateRejectAdmin(memberId));
     }
 }

@@ -8,10 +8,8 @@ import com.beonse2.domain.myPage.vo.MyPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,33 +23,32 @@ import java.io.IOException;
 public class MyPageController {
 
     private final MyPageService myPageService;
-
     private final MemberService memberService;
 
     @GetMapping //내 정보
     public ResponseEntity<MyPage> myInfo(@RequestHeader(value = "Authorization") String accessToken) {
-        return myPageService.myInfo(accessToken);
+        return ResponseEntity.ok(myPageService.myInfo(accessToken));
     }
 
     @PatchMapping("/info") //회원정보 수정
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<MemberEditDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
                                                     MemberEditDTO memberEditDTO) throws IOException {
-        return memberService.updateInfo(memberEditDTO, accessToken);
+        return ResponseEntity.ok(memberService.updateInfo(memberEditDTO, accessToken));
     }
 
     @GetMapping("/reviews")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<PageResponseDTO> getMyReviewPage(@RequestHeader(value = "Authorization") String accessToken,
                                                            @RequestParam(defaultValue = "1") int page) {
-        return myPageService.findMyReviewPage(accessToken, page);
+        return ResponseEntity.ok(myPageService.findMyReviewPage(accessToken, page));
     }
 
     @GetMapping("/mates")
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<PageResponseDTO> getMyMatePage(@RequestHeader(value = "Authorization") String accessToken,
-                                                           @RequestParam(defaultValue = "1") int page) {
-        return myPageService.findMyMatePage(accessToken, page);
+                                                         @RequestParam(defaultValue = "1") int page) {
+        return ResponseEntity.ok(myPageService.findMyMatePage(accessToken, page));
     }
 
     @Operation(summary = "세차 예약 조회", description = "세차 예약 조회")
@@ -63,7 +60,7 @@ public class MyPageController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<PageResponseDTO> getReservationPage(@RequestHeader(value = "Authorization") String accessToken,
                                                               @RequestParam(defaultValue = "1") int page) {
-        return myPageService.findMyReservationPage(accessToken, page);
+        return ResponseEntity.ok(myPageService.findMyReservationPage(accessToken, page));
     }
 
 }

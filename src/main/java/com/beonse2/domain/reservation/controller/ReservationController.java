@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,10 +28,10 @@ public class ReservationController {
     })
     @PostMapping
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<SuccessMessageDTO> createReservation(@PathVariable("branch-id") Long branchId,
-                                                               @RequestBody ReservationResponseDTO reservationResponseDTO,
-                                                               @RequestHeader(value = "Authorization") String accessToken) {
-        return reservationService.save(branchId, reservationResponseDTO, accessToken);
+    public ResponseEntity<SuccessMessageDTO> postReservation(@PathVariable("branch-id") Long branchId,
+                                                             @RequestBody ReservationResponseDTO reservationResponseDTO,
+                                                             @RequestHeader(value = "Authorization") String accessToken) {
+        return ResponseEntity.ok(reservationService.createReservation(branchId, reservationResponseDTO, accessToken));
     }
 
     @GetMapping
@@ -41,7 +39,7 @@ public class ReservationController {
     public ResponseEntity<PageResponseDTO> getReservationPage(@PathVariable("branch-id") Long branchId,
                                                               @RequestHeader(value = "Authorization") String accessToken,
                                                               @RequestParam(defaultValue = "1") int page) {
-        return reservationService.findReservationPage(branchId, accessToken, page);
+        return ResponseEntity.ok(reservationService.findReservationPage(branchId, accessToken, page));
     }
 
 }
