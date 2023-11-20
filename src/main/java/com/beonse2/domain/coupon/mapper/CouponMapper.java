@@ -1,5 +1,6 @@
 package com.beonse2.domain.coupon.mapper;
 
+import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.vo.CouponVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public interface CouponMapper {
     void saveCoupon(CouponVO couponVO);
 
-    List<CouponResponseDTO> findAllCoupon(Long mid);
+    List<CouponResponseDTO> findCouponPages(PageRequestDTO pageRequest);
 
     Optional<CouponResponseDTO> findById(Long couponId);
 
@@ -23,4 +24,10 @@ public interface CouponMapper {
     List<CouponResponseDTO> findUseMemberCoupon(CouponResponseDTO couponResponseDTO);
 
     void updateCouponWriteReview(CouponResponseDTO couponResponseDTO);
+
+    int getCountCoupons(Long memberId);
+
+    int getCountUseCoupons(Long memberId);
+
+    List<CouponResponseDTO> findUseCouponPages(PageRequestDTO pageRequest);
 }

@@ -3,6 +3,7 @@ package com.beonse2.domain.reviewBoard.controller;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;
@@ -22,8 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewBoardController {
 
-    ResponseService responseService;
-    ReviewBoardService reviewBoardService;
+    private final ResponseService responseService;
+    private final ReviewBoardService reviewBoardService;
 
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
@@ -34,12 +35,10 @@ public class ReviewBoardController {
         return ResponseEntity.ok(success);
     }
 
-
-    @GetMapping("/reviews") // 리뷰 전체 조회
-
-    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(@RequestParam(defaultValue = "1") int startPage,
-                                                                @RequestParam(defaultValue = "1") int pageNum) {
-        return reviewBoardService.reviewBoardList(startPage, pageNum);
+    @GetMapping("/reviews/{branch-id}") // 리뷰 전체 조회
+    public ResponseEntity<PageResponseDTO> reviewBoardPage(@RequestParam(defaultValue = "1") int page,
+                                                           @PathVariable("branch-id") Long branchId) {
+        return reviewBoardService.reviewBoardPage(page, branchId);
     }
 
     @PatchMapping("/reviews/{reviewBoard-id}") // 리뷰 업데이트

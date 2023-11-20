@@ -20,12 +20,48 @@
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberId}, #{branchId}, #{reservationTime}, '0')
     </insert>
 
-    <select id="findMyReservations" parameterType="Long" resultType="reservationResponseDTO">
-        SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
-        FROM RESERVATION R, BRANCH B
-        WHERE R.BRANCH_BID = B.BID
-        AND R.BRANCH_BID = #{branchBid}
-        ORDER BY R.RVID DESC
+    <select id="findMyReservationPage" parameterType="pageRequest" resultType="reservationResponseDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, BRANCH_NAME, RESERVATION_TIME, STATUS
+                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+                        FROM RESERVATION R
+                            JOIN BRANCH B
+                                ON R.BRANCH_BID = B.BID
+                        WHERE R.member_mid = #{paramId}
+                        ORDER BY R.RVID DESC)
+                WHERE rownum <= #{endRowNo}
+            )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findBranchReservationPage" parameterType="pageRequest" resultType="reservationResponseDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, BRANCH_NAME, RESERVATION_TIME, STATUS
+                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+                        FROM RESERVATION R
+                            JOIN BRANCH B
+                                ON R.BRANCH_BID = B.BID
+                        WHERE R.branch_bid = #{paramId}
+                        ORDER BY R.RVID DESC)
+                WHERE rownum <= #{endRowNo}
+            )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getCountByMemberId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM reservation
+        WHERE member_mid = #{memberId}
+    </select>
+
+    <select id="getCountByBranchId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM reservation
+        WHERE branch_bid = #{branchId}
     </select>
 
 </mapper>

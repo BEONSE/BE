@@ -1,5 +1,6 @@
 package com.beonse2.domain.reservation.controller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
 import com.beonse2.domain.reservation.service.ReservationService;
@@ -35,16 +36,12 @@ public class ReservationController {
         return reservationService.save(branchId, reservationResponseDTO, accessToken);
     }
 
-    @Operation(summary = "세차 예약 조회", description = "세차 예약 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
-    })
     @GetMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<List<ReservationResponseDTO>> reservationList(@PathVariable("branch-id") Long branchId,
-                                                                        @RequestHeader(value = "Authorization") String accessToken) {
-        return reservationService.reservationList(branchId, accessToken);
+    @PreAuthorize("hasRole('BRANCH')")
+    public ResponseEntity<PageResponseDTO> getReservationPage(@PathVariable("branch-id") Long branchId,
+                                                              @RequestHeader(value = "Authorization") String accessToken,
+                                                              @RequestParam(defaultValue = "1") int page) {
+        return reservationService.findReservationPage(branchId, accessToken, page);
     }
 
 }

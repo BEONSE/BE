@@ -1,5 +1,6 @@
 package com.beonse2.domain.mate.board.mapper;
 
+import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardResponseDTO;
@@ -13,11 +14,17 @@ import java.util.Optional;
 public interface MateBoardMapper {
     void saveMateBoard(MateBoardVO mateBoardVO);
 
-    List<MateBoardListResponseDTO> findAllMateBoard();
+    List<MateBoardListResponseDTO> findMateBoardPage(PageRequestDTO pageRequest);
 
     Optional<MateBoardResponseDTO> findById(Long mateBoardId);
 
     void updateMateBoard(MateBoardRequestDTO mateBoardRequestDTO);
 
     void deleteById(Long mateBoardId);
+
+    int getCount();
+
+    List<MateBoardListResponseDTO> findMyMateBoardPage(PageRequestDTO pageRequest);
+
+    int getCountByMemberId(Long memberId);
 }

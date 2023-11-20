@@ -21,6 +21,7 @@
         <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
         <typeAlias alias="mateBoardVo" type="com.beonse2.domain.mate.board.vo.MateBoardVO" />
         <typeAlias alias="mateBoardListDTO" type="com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO" />
+        <typeAlias alias="pageRequest" type="com.beonse2.config.utils.page.PageRequestDTO" />
         <typeAlias alias="mateBoardDTO" type="com.beonse2.domain.mate.board.dto.MateBoardResponseDTO" />
         <typeAlias alias="mateBoardUpdateDTO" type="com.beonse2.domain.mate.board.dto.MateBoardRequestDTO" />
         <typeAlias alias="mateCommentVo" type="com.beonse2.domain.mate.comment.vo.MateCommentVO" />
@@ -28,6 +29,7 @@
         <typeAlias alias="reservation" type="com.beonse2.domain.reservation.vo.Reservation" />
         <typeAlias alias="reservationResponseDTO" type="com.beonse2.domain.reservation.dto.ReservationResponseDTO" />
         <typeAlias alias="reviewBoardDTO" type="com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO" />
+        <typeAlias alias="reviewPager" type="com.beonse2.domain.reviewBoard.dto.ReviewPageRequest" />
         <typeAlias alias="myPage" type="com.beonse2.domain.myPage.vo.MyPage" />
         <typeAlias alias="couponVo" type="com.beonse2.domain.coupon.vo.CouponVO" />
         <typeAlias alias="couponResponseDTO" type="com.beonse2.domain.coupon.dto.CouponResponseDTO" />

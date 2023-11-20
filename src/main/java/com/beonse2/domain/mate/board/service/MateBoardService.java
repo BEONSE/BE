@@ -2,6 +2,8 @@ package com.beonse2.domain.mate.board.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
@@ -56,9 +58,19 @@ public class MateBoardService {
                 .build());
     }
 
-    public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard() {
+    public ResponseEntity<PageResponseDTO> findMateBoardPage(int page) {
 
-        List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard();
+        /*int rowsPerPage, int pagesPerGroup, int totalRows, int pageNo) {*/
+        int totalRows = mateBoardMapper.getCount();
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findMateBoardPage(pageRequest);
 
         if (mateBoards.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
@@ -71,7 +83,13 @@ public class MateBoardService {
             mateBoard.updateGrade(mateBoard.getPaymentAmount() < 150000 ? 3 : mateBoard.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
-        return ResponseEntity.ok(mateBoards);
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(mateBoards)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
     }
 
     public ResponseEntity<MateBoardResponseDTO> findMateBoard(Long mateBoardId, String accessToken) {

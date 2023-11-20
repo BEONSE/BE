@@ -1,11 +1,17 @@
 package com.beonse2.domain.myPage.contoller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.service.MemberService;
 import com.beonse2.domain.myPage.service.MyPageService;
 import com.beonse2.domain.myPage.vo.MyPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +40,30 @@ public class MyPageController {
         return memberService.updateInfo(memberEditDTO, accessToken);
     }
 
-//    @PatchMapping("/coupons/{coupon-id}") //세차 쿠폰 사용
+    @GetMapping("/reviews")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<PageResponseDTO> getMyReviewPage(@RequestHeader(value = "Authorization") String accessToken,
+                                                           @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyReviewPage(accessToken, page);
+    }
+
+    @GetMapping("/mates")
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<PageResponseDTO> getMyMatePage(@RequestHeader(value = "Authorization") String accessToken,
+                                                           @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyMatePage(accessToken, page);
+    }
+
+    @Operation(summary = "세차 예약 조회", description = "세차 예약 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @GetMapping("/reservation")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<PageResponseDTO> getReservationPage(@RequestHeader(value = "Authorization") String accessToken,
+                                                              @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyReservationPage(accessToken, page);
+    }
 
 }

@@ -3,7 +3,10 @@ package com.beonse2.domain.reservation.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -20,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_RESERVATION;
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -63,24 +66,44 @@ public class ReservationService {
                 .build());
     }
 
-    public ResponseEntity<List<ReservationResponseDTO>> reservationList(Long branchId,
-                                                                        String accessToken) {
+    public ResponseEntity<PageResponseDTO> findReservationPage(Long branchId, String accessToken, int page) {
+
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        branchMapper.findByMemberId(branchId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_BRANCH)
+        BranchDTO findBranch = branchMapper.findById(branchId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BRANCH)
         );
 
-        List<ReservationResponseDTO> reservationList = reservationMapper.findMyReservations(findMember.getMid());
+        if (!findMember.getMid().equals(findBranch.getMemberMid())) {
+            throw new CustomException(NOT_MATCH_USER);
+        }
+
+        int totalRows = reservationMapper.getCountByBranchId(branchId);
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(branchId)
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<ReservationResponseDTO> reservationList = reservationMapper.findBranchReservationPage(pageRequest);
 
         if (reservationList.isEmpty()) {
             throw new CustomException(NOT_FOUND_RESERVATION);
         }
 
-        return ResponseEntity.ok(reservationList);
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(reservationList)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
     }
 }

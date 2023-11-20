@@ -2,6 +2,8 @@ package com.beonse2.domain.coupon.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponRequestDTO;
@@ -62,7 +64,7 @@ public class CouponService {
                 .build());
     }
 
-    public ResponseEntity<List<CouponResponseDTO>> findCouponList(String accessToken) {
+    public ResponseEntity<PageResponseDTO> findCouponPage(String accessToken, int page) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
@@ -70,13 +72,63 @@ public class CouponService {
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        List<CouponResponseDTO> couponResponseDTOS = couponMapper.findAllCoupon(findMember.getMid());
+        int totalRows = couponMapper.getCountCoupons(findMember.getMid());
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(findMember.getMid())
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<CouponResponseDTO> couponResponseDTOS = couponMapper.findCouponPages(pageRequest);
 
         if (couponResponseDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_COUPON);
         }
 
-        return ResponseEntity.ok(couponResponseDTOS);
+
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(couponResponseDTOS)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
+    }
+
+    public ResponseEntity<PageResponseDTO> findUseCouponPage(String accessToken, int page) {
+
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        int totalRows = couponMapper.getCountUseCoupons(findMember.getMid());
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(findMember.getMid())
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<CouponResponseDTO> couponResponseDTOS = couponMapper.findUseCouponPages(pageRequest);
+
+        if (couponResponseDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_COUPON);
+        }
+
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(couponResponseDTOS)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
     }
 
     @Transactional
@@ -149,5 +201,4 @@ public class CouponService {
         }
         return ResponseEntity.ok(findCoupon);
     }
-
 }

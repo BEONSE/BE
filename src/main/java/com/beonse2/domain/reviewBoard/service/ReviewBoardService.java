@@ -2,6 +2,8 @@ package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
@@ -83,14 +85,30 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(int startPage, int pageNum) {
-        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList();
+    public ResponseEntity<PageResponseDTO> reviewBoardPage(int page, Long branchId) {
+
+        int totalRows = reviewBoardMapper.getCount(branchId);
+
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .paramId(branchId)
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardPage(pageRequestDTO);
 
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
-
-        return ResponseEntity.ok(reviewBoardDTOS);
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(reviewBoardDTOS)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequestDTO.getTotalPageNo())
+                .build());
     }
 
     public List<ReviewBoardDTO> updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {
@@ -149,19 +167,4 @@ public class ReviewBoardService {
 
         return reviewBoardList;
     }
-
-
-//    public MemberDTO isMemberCurrent(String email) {
-//        return memberMapper.findByEmail(tokenProvider.getEmail(email))
-//                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
-//    }
-
-//    public ReviewBoard authorizationReviewBoardWriter(String email, Long rvId) {
-//        MemberDTO memberDTO = isMemberCurrent(tokenProvider.getEmail(email));
-//        ReviewBoard reviewBoard = reviewBoardMapper.findMyReviewId(rvId).orElseThrow(() -> new RuntimeException("글이 없습니다."));
-//        if(!reviewBoard.getMemberId().equals(memberDTO.getMid())) {
-//            throw new RuntimeException("로그인한 유저와 작성한 유저가 같지 않습니다.");
-//        }
-//        return reviewBoard;
-//    }
 }

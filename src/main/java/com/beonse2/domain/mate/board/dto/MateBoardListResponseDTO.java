@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class MateBoardListResponseDTO {
 
+    private int rnum;
     private Long mbid;
     private String title;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -21,7 +22,8 @@ public class MateBoardListResponseDTO {
     private int grade;
 
     @Builder
-    public MateBoardListResponseDTO(Long mbid, String title, Timestamp modifiedAt, String nickname, int paymentAmount) {
+    public MateBoardListResponseDTO(int rnum, Long mbid, String title, Timestamp modifiedAt, String nickname, int paymentAmount) {
+        this.rnum = rnum;
         this.mbid = mbid;
         this.title = title;
         this.modifiedAt = modifiedAt;

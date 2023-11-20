@@ -11,18 +11,56 @@
         VALUES (coupon_seq.NEXTVAL, #{memberMid}, #{type}, #{price})
     </insert>
 
-    <select id="findAllCoupon" parameterType="long" resultType="couponResponseDTO">
-        SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
-        FROM coupon
-        WHERE member_mid = #{value}
-        GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
-        ORDER BY type DESC
+    <select id="findCouponPages" parameterType="pageRequest" resultType="couponResponseDTO">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date
+            FROM (
+                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
+                FROM coupon
+                WHERE member_mid = ${paramId}
+                    AND branch_name IS NULL
+                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
+                ORDER BY type DESC
+                )
+            WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findUseCouponPages" parameterType="pageRequest" resultType="couponResponseDTO">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date
+            FROM (
+                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
+                FROM coupon
+                WHERE member_mid = ${paramId}
+                    AND branch_name IS NOT NULL
+                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
+                ORDER BY type DESC
+                )
+            WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
     </select>
 
     <select id="findById" parameterType="long" resultType="couponResponseDTO">
         SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
         FROM coupon
         WHERE cid = #{value}
+    </select>
+
+    <select id="getCountCoupons" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        WHERE member_mid = #{value}
+          AND branch_name IS NULL
+    </select>
+
+    <select id="getCountUseCoupons" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        WHERE member_mid = #{value}
+          AND branch_name IS NOT NULL
     </select>
 
     <update id="updateCoupon" parameterType="map">

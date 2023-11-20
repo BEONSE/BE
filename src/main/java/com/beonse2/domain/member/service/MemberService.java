@@ -135,7 +135,6 @@ public class MemberService {
         String password;
         if (memberEditDTO.getPassword() != null) {
             password = passwordEncoder.encode(memberEditDTO.getPassword());
-
         } else {
             password = findMember.getPassword();
         }
@@ -154,6 +153,15 @@ public class MemberService {
                         .originalFileName(image.getOriginalFilename())
                         .imageType(image.getContentType())
                         .imageData(image.getBytes())
+                        .modifiedAt(findMember.getModifiedAt())
+                        .build();
+            } else {
+                memberEditDTO = MemberEditDTO.builder()
+                        .mid(mid)
+                        .email(email)
+                        .nickname(memberEditDTO.getNickname())
+                        .address(memberEditDTO.getAddress())
+                        .password(password)
                         .modifiedAt(findMember.getModifiedAt())
                         .build();
             }
