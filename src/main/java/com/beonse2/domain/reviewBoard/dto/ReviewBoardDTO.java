@@ -14,6 +14,7 @@ import java.security.Timestamp;
 public class ReviewBoardDTO {
 
     private Long rbId; //고유 번호
+    private int rnum;
     private Long memberMid;
     private Long branchBid;
     private Long couponCid;

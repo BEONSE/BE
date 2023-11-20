@@ -9,6 +9,7 @@ import com.beonse2.domain.coupon.mapper.CouponMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
+import com.beonse2.domain.reviewBoard.dto.ReviewPager;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -83,8 +84,19 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(int startPage, int pageNum) {
-        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList();
+    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(int page, Long branchId) {
+
+        int totalRows = reviewBoardMapper.getCount();
+
+        ReviewPager reviewPager = ReviewPager.builder()
+                .branchId(branchId)
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList(reviewPager);
 
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
@@ -149,19 +161,4 @@ public class ReviewBoardService {
 
         return reviewBoardList;
     }
-
-
-//    public MemberDTO isMemberCurrent(String email) {
-//        return memberMapper.findByEmail(tokenProvider.getEmail(email))
-//                .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
-//    }
-
-//    public ReviewBoard authorizationReviewBoardWriter(String email, Long rvId) {
-//        MemberDTO memberDTO = isMemberCurrent(tokenProvider.getEmail(email));
-//        ReviewBoard reviewBoard = reviewBoardMapper.findMyReviewId(rvId).orElseThrow(() -> new RuntimeException("글이 없습니다."));
-//        if(!reviewBoard.getMemberId().equals(memberDTO.getMid())) {
-//            throw new RuntimeException("로그인한 유저와 작성한 유저가 같지 않습니다.");
-//        }
-//        return reviewBoard;
-//    }
 }

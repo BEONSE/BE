@@ -22,8 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewBoardController {
 
-    ResponseService responseService;
-    ReviewBoardService reviewBoardService;
+    private final ResponseService responseService;
+    private final ReviewBoardService reviewBoardService;
 
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
@@ -35,11 +35,11 @@ public class ReviewBoardController {
     }
 
 
-    @GetMapping("/reviews") // 리뷰 전체 조회
-
-    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(@RequestParam(defaultValue = "1") int startPage,
-                                                                @RequestParam(defaultValue = "1") int pageNum) {
-        return reviewBoardService.reviewBoardList(startPage, pageNum);
+    @GetMapping("/reviews/{branch-id}") // 리뷰 전체 조회
+    @PreAuthorize("hasAnyRole('USER')")
+    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(@RequestParam(defaultValue = "1") int page,
+                                                                @PathVariable("branch-id") Long branchId) {
+        return reviewBoardService.reviewBoardList(page, branchId);
     }
 
     @PatchMapping("/reviews/{reviewBoard-id}") // 리뷰 업데이트

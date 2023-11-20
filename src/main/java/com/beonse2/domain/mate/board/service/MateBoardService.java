@@ -56,7 +56,15 @@ public class MateBoardService {
                 .build());
     }
 
-    public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard() {
+    public ResponseEntity<List<MateBoardListResponseDTO>> findAllMateBoard(int page) {
+
+//        /*int rowsPerPage, int pagesPerGroup, int totalRows, int pageNo) {*/
+//        ReviewPager reviewPager = ReviewPager.builder()
+//                .rowsPerPage(1)
+//                .pagesPerGroup(5)
+//                .totalRows(totalRows)
+//                .pageNo(pageNo)
+//                .build();
 
         List<MateBoardListResponseDTO> mateBoards = mateBoardMapper.findAllMateBoard();
 
