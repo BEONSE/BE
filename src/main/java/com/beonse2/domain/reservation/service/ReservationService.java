@@ -3,6 +3,8 @@ package com.beonse2.domain.reservation.service;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
@@ -63,24 +65,4 @@ public class ReservationService {
                 .build());
     }
 
-    public ResponseEntity<List<ReservationResponseDTO>> reservationList(Long branchId,
-                                                                        String accessToken) {
-        String token = jwtUtil.resolveToken(accessToken);
-
-        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
-                () -> new CustomException(NOT_FOUND_MEMBER)
-        );
-
-        branchMapper.findByMemberId(branchId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_BRANCH)
-        );
-
-        List<ReservationResponseDTO> reservationList = reservationMapper.findMyReservations(findMember.getMid());
-
-        if (reservationList.isEmpty()) {
-            throw new CustomException(NOT_FOUND_RESERVATION);
-        }
-
-        return ResponseEntity.ok(reservationList);
-    }
 }

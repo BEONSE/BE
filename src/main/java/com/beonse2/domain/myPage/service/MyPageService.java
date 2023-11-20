@@ -1,6 +1,7 @@
 package com.beonse2.domain.myPage.service;
 
 import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
@@ -11,6 +12,8 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.myPage.mapper.MyPageMapper;
 import com.beonse2.domain.myPage.vo.MyPage;
+import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
+import com.beonse2.domain.reservation.mapper.ReservationMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,7 @@ public class MyPageService {
     private final ReviewBoardMapper reviewBoardMapper;
     private final MateBoardMapper mateBoardMapper;
     private final MateCommentMapper mateCommentMapper;
+    private final ReservationMapper reservationMapper;
 
     public ResponseEntity<MyPage> myInfo(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
@@ -115,6 +119,39 @@ public class MyPageService {
 
         return ResponseEntity.ok(PageResponseDTO.builder()
                 .content(mateBoards)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
+    }
+
+    public ResponseEntity<PageResponseDTO> findMyReservationPage(String accessToken,
+                                                                 int page) {
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        int totalRows = reservationMapper.getCountByMemberId(findMember.getMid());
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(findMember.getMid())
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<ReservationResponseDTO> reservationList = reservationMapper.findMyReservationPage(pageRequest);
+
+        if (reservationList.isEmpty()) {
+            throw new CustomException(NOT_FOUND_RESERVATION);
+        }
+
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(reservationList)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)

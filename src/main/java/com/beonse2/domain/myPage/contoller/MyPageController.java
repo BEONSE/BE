@@ -5,6 +5,9 @@ import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.service.MemberService;
 import com.beonse2.domain.myPage.service.MyPageService;
 import com.beonse2.domain.myPage.vo.MyPage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,4 +53,17 @@ public class MyPageController {
                                                            @RequestParam(defaultValue = "1") int page) {
         return myPageService.findMyMatePage(accessToken, page);
     }
+
+    @Operation(summary = "세차 예약 조회", description = "세차 예약 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
+    })
+    @GetMapping("/reservation")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<PageResponseDTO> getReservationPage(@RequestHeader(value = "Authorization") String accessToken,
+                                                              @RequestParam(defaultValue = "1") int page) {
+        return myPageService.findMyReservationPage(accessToken, page);
+    }
+
 }
