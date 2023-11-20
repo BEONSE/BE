@@ -3,9 +3,9 @@ package com.beonse2.domain.reviewBoard.controller;
 import com.beonse2.config.response.BaseResponse;
 import com.beonse2.config.response.SingleDataResponse;
 import com.beonse2.config.service.ResponseService;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
-import com.beonse2.domain.reviewBoard.dto.ReviewPageResponse;
 import com.beonse2.domain.reviewBoard.service.ReviewBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,12 +35,10 @@ public class ReviewBoardController {
         return ResponseEntity.ok(success);
     }
 
-
     @GetMapping("/reviews/{branch-id}") // 리뷰 전체 조회
-    @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<ReviewPageResponse> reviewBoardList(@RequestParam(defaultValue = "1") int page,
-                                                              @PathVariable("branch-id") Long branchId) {
-        return reviewBoardService.reviewBoardList(page, branchId);
+    public ResponseEntity<PageResponseDTO> reviewBoardPage(@RequestParam(defaultValue = "1") int page,
+                                                           @PathVariable("branch-id") Long branchId) {
+        return reviewBoardService.reviewBoardPage(page, branchId);
     }
 
     @PatchMapping("/reviews/{reviewBoard-id}") // 리뷰 업데이트

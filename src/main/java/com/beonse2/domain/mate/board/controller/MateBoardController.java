@@ -1,5 +1,6 @@
 package com.beonse2.domain.mate.board.controller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardRequestDTO;
@@ -40,9 +41,8 @@ public class MateBoardController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<MateBoardListResponseDTO>> getMateBoardList(@RequestParam(defaultValue = "1") int page) {
-        return mateBoardService.findAllMateBoard(page);
+    public ResponseEntity<PageResponseDTO> getMateBoardPage(@RequestParam(defaultValue = "1") int page) {
+        return mateBoardService.findMateBoardPage(page);
     }
 
     @Operation(summary = "메이트 게시글 단건 조회", description = "메이트 게시글 단건 조회")

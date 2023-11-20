@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reservation/*").hasRole("USER")
                 .antMatchers("/main").permitAll()
                 .antMatchers("/reviews/*").permitAll()
-                .antMatchers("/api/v1/join").permitAll();
+                .antMatchers("/mates").permitAll();
 
         http.exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)

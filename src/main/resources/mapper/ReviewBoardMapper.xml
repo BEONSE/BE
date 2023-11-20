@@ -51,8 +51,10 @@
         ]]>
     </select>
 
-    <select id="getCount" resultType="int">
-        SELECT count(*) FROM reviewboard
+    <select id="getCount" parameterType="long" resultType="int">
+            SELECT count(*) FROM reviewboard
+            WHERE branch_bid = #{branchId}
+              AND status = '0'
     </select>
 
 <!--단일 조회-->

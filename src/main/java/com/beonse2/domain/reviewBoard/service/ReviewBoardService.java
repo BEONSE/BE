@@ -2,6 +2,7 @@ package com.beonse2.domain.reviewBoard.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
@@ -10,7 +11,6 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.dto.ReviewPageRequest;
-import com.beonse2.domain.reviewBoard.dto.ReviewPageResponse;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.List;
 
@@ -87,11 +85,11 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public ResponseEntity<ReviewPageResponse> reviewBoardList(int page, Long branchId) {
+    public ResponseEntity<PageResponseDTO> reviewBoardPage(int page, Long branchId) {
 
-        int totalRows = reviewBoardMapper.getCount();
+        int totalRows = reviewBoardMapper.getCount(branchId);
 
-        ReviewPageRequest reviewPager = ReviewPageRequest.builder()
+        ReviewPageRequest pageRequestDTO = ReviewPageRequest.builder()
                 .branchId(branchId)
                 .rowsPerPage(5)
                 .pagesPerGroup(5)
@@ -99,18 +97,17 @@ public class ReviewBoardService {
                 .page(page)
                 .build();
 
-        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList(reviewPager);
+        List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardList(pageRequestDTO);
 
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
-        return ResponseEntity.ok(ReviewPageResponse.builder()
-                .branchId(branchId)
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(reviewBoardDTOS)
                 .page(page)
                 .size(5)
                 .totalRows(totalRows)
-                .totalPageNo(reviewPager.getTotalPageNo())
-                .content(reviewBoardDTOS)
+                .totalPageNo(pageRequestDTO.getTotalPageNo())
                 .build());
     }
 

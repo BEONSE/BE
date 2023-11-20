@@ -19,5 +19,5 @@ public interface ReviewBoardMapper {
 
     void deleteReviewBoard(Long rbId);
 
-    int getCount();
+    int getCount(Long branchId);
 }
