@@ -13,5 +13,9 @@ public interface ReservationMapper {
 
     List<ReservationResponseDTO> findMyReservationPage(PageRequestDTO pageRequestDTO);
 
+    List<ReservationResponseDTO> findBranchReservationPage(PageRequestDTO pageRequest);
+
     int getCountByMemberId(Long memberId);
+
+    int getCountByBranchId(Long branchId);
 }

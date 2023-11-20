@@ -36,4 +36,12 @@ public class ReservationController {
         return reservationService.save(branchId, reservationResponseDTO, accessToken);
     }
 
+    @GetMapping
+    @PreAuthorize("hasRole('BRANCH')")
+    public ResponseEntity<PageResponseDTO> getReservationPage(@PathVariable("branch-id") Long branchId,
+                                                              @RequestHeader(value = "Authorization") String accessToken,
+                                                              @RequestParam(defaultValue = "1") int page) {
+        return reservationService.findReservationPage(branchId, accessToken, page);
+    }
+
 }
