@@ -98,6 +98,39 @@ public class CouponService {
                 .build());
     }
 
+    public ResponseEntity<PageResponseDTO> findUseCouponPage(String accessToken, int page) {
+
+        String token = jwtUtil.resolveToken(accessToken);
+
+        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        int totalRows = couponMapper.getCountUseCoupons(findMember.getMid());
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(findMember.getMid())
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<CouponResponseDTO> couponResponseDTOS = couponMapper.findUseCouponPages(pageRequest);
+
+        if (couponResponseDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_COUPON);
+        }
+
+        return ResponseEntity.ok(PageResponseDTO.builder()
+                .content(couponResponseDTOS)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build());
+    }
+
     @Transactional
     public ResponseEntity<SuccessMessageDTO> updateCoupon(Long couponId, String accessToken, CouponRequestDTO couponRequestDTO) {
 
@@ -168,5 +201,4 @@ public class CouponService {
         }
         return ResponseEntity.ok(findCoupon);
     }
-
 }

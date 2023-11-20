@@ -34,10 +34,11 @@ public class CouponController {
         return couponService.findCouponPage(accessToken, page);
     }
 
-    @GetMapping("/coupons")
+    @GetMapping("/mypage/coupons/used")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<PageResponseDTO> getUseCouponPage(@RequestHeader(value = "Authorization") String accessToken) {
-        return null;
+    public ResponseEntity<PageResponseDTO> getUseCouponPage(@RequestHeader(value = "Authorization") String accessToken,
+                                                            @RequestParam(defaultValue = "1") int page) {
+        return couponService.findUseCouponPage(accessToken, page);
     }
 
     @PatchMapping("/mypage/coupons/{coupon-id}")

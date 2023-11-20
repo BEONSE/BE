@@ -25,5 +25,9 @@ public interface CouponMapper {
 
     void updateCouponWriteReview(CouponResponseDTO couponResponseDTO);
 
-    int getCountCoupons(Long mid);
+    int getCountCoupons(Long memberId);
+
+    int getCountUseCoupons(Long memberId);
+
+    List<CouponResponseDTO> findUseCouponPages(PageRequestDTO pageRequest);
 }
