@@ -9,7 +9,8 @@ import com.beonse2.domain.coupon.mapper.CouponMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
-import com.beonse2.domain.reviewBoard.dto.ReviewPager;
+import com.beonse2.domain.reviewBoard.dto.ReviewPageRequest;
+import com.beonse2.domain.reviewBoard.dto.ReviewPageResponse;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.util.List;
 
@@ -84,11 +87,11 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public ResponseEntity<List<ReviewBoardDTO>> reviewBoardList(int page, Long branchId) {
+    public ResponseEntity<ReviewPageResponse> reviewBoardList(int page, Long branchId) {
 
         int totalRows = reviewBoardMapper.getCount();
 
-        ReviewPager reviewPager = ReviewPager.builder()
+        ReviewPageRequest reviewPager = ReviewPageRequest.builder()
                 .branchId(branchId)
                 .rowsPerPage(5)
                 .pagesPerGroup(5)
@@ -101,8 +104,14 @@ public class ReviewBoardService {
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
-
-        return ResponseEntity.ok(reviewBoardDTOS);
+        return ResponseEntity.ok(ReviewPageResponse.builder()
+                .branchId(branchId)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(reviewPager.getTotalPageNo())
+                .content(reviewBoardDTOS)
+                .build());
     }
 
     public List<ReviewBoardDTO> updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {

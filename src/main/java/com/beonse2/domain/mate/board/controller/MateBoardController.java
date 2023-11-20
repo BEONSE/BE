@@ -41,8 +41,8 @@ public class MateBoardController {
     })
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<MateBoardListResponseDTO>> getMateBoardList(@RequestParam(defaultValue = "1") int pageNo) {
-        return mateBoardService.findAllMateBoard(pageNo);
+    public ResponseEntity<List<MateBoardListResponseDTO>> getMateBoardList(@RequestParam(defaultValue = "1") int page) {
+        return mateBoardService.findAllMateBoard(page);
     }
 
     @Operation(summary = "메이트 게시글 단건 조회", description = "메이트 게시글 단건 조회")

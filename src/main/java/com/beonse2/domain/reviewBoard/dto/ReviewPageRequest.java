@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ReviewPager {
+public class ReviewPageRequest {
 
 	private Long branchId;
 	private int totalRows;		//전체 행수
@@ -24,7 +24,7 @@ public class ReviewPager {
 	private int endRowIndex;	//페이지의 마지막 행 인덱스
 
 	@Builder
-	public ReviewPager(Long branchId, int rowsPerPage, int pagesPerGroup, int totalRows, int page) {
+	public ReviewPageRequest(Long branchId, int rowsPerPage, int pagesPerGroup, int totalRows, int page) {
 		this.branchId = branchId;
 		this.rowsPerPage = rowsPerPage;
 		this.pagesPerGroup = pagesPerGroup;
