@@ -3,6 +3,7 @@ package com.beonse2.domain.reservation.controller;
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
+import com.beonse2.domain.reservation.dto.ReservationTimeDTO;
 import com.beonse2.domain.reservation.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,10 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/branches/{branch-id}/reservation")
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -26,7 +28,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
-    @PostMapping
+    @PostMapping("/branches/{branch-id}/reservation")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postReservation(@PathVariable("branch-id") Long branchId,
                                                              @RequestBody ReservationResponseDTO reservationResponseDTO,
@@ -34,7 +36,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.createReservation(branchId, reservationResponseDTO, accessToken));
     }
 
-    @GetMapping
+    @GetMapping("/branches/{branch-id}/reservation")
     @PreAuthorize("hasRole('BRANCH')")
     public ResponseEntity<PageResponseDTO> getReservationPage(@PathVariable("branch-id") Long branchId,
                                                               @RequestHeader(value = "Authorization") String accessToken,
@@ -42,4 +44,10 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.findReservationPage(branchId, accessToken, page));
     }
 
+    @GetMapping("reservation/{branch-id}/{date}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<List<ReservationTimeDTO>> getReservationTimeList(@PathVariable("branch-id") Long branchId,
+                                                                           @PathVariable("date") String date) {
+        return ResponseEntity.ok(reservationService.findReservationTimeList(branchId, date));
+    }
 }

@@ -28,6 +28,7 @@
         <typeAlias alias="mateCommentListDTO" type="com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO" />
         <typeAlias alias="reservation" type="com.beonse2.domain.reservation.vo.Reservation" />
         <typeAlias alias="reservationResponseDTO" type="com.beonse2.domain.reservation.dto.ReservationResponseDTO" />
+        <typeAlias alias="reservationTime" type="com.beonse2.domain.reservation.dto.ReservationTimeDTO" />
         <typeAlias alias="reviewBoardDTO" type="com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO" />
         <typeAlias alias="myPage" type="com.beonse2.domain.myPage.vo.MyPage" />
         <typeAlias alias="couponVo" type="com.beonse2.domain.coupon.vo.CouponVO" />
