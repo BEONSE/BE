@@ -35,14 +35,17 @@ public class MemberController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity login(@RequestBody LoginDTO loginDto) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto) {
 
-        TokenDTO token = memberService.login(loginDto);
+        MemberDTO memberDTO = memberService.login(loginDto);
+
+        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
 
         return ResponseEntity.ok()
                 .header("AccessToken", token.getAccessToken())
                 .header("RefreshToken", token.getRefreshToken())
                 .body(LoginResponseDTO.builder()
+                        .role(memberDTO.getRole())
                         .statusCode(HttpStatus.OK.value())
                         .successMessage("로그인 성공")
                         .build());
