@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 
 @Getter
@@ -24,19 +25,25 @@ public class ReviewBoardDTO {
     private String writer; //작성자
     private String branchName; //지점명
     private boolean status;
+    private int paymentAmount;
+    private int grade;
     private MultipartFile image;
-    private String originalFileName;
-    private String imageType;
-    private byte[] imageData;
+    private String memberOriginalFileName;
+    private String memberImageType;
+    private byte[] memberImageData;
+    private String reviewOriginalFileName;
+    private String reviewImageType;
+    private byte[] reviewImageData;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdAt;//작성일
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp modifiedAt;//수정일
 
     @Builder
-    public ReviewBoardDTO(Long rbId, Long memberMid, Long branchBid, Long couponCid, String title,
-                          String content, String writer, String branchName, boolean status, MultipartFile image,
-                          String originalFileName, String imageType, byte[] imageData, Timestamp createdAt, Timestamp modifiedAt) {
+    public ReviewBoardDTO(Long rbId, Long memberMid, Long branchBid, Long couponCid, String title, String content,
+                          String writer, String branchName, boolean status, MultipartFile image, String memberOriginalFileName,
+                          String memberImageType, byte[] memberImageData, String reviewOriginalFileName, String reviewImageType,
+                          byte[] reviewImageData, Timestamp createdAt, Timestamp modifiedAt) {
         this.rbId = rbId;
         this.memberMid = memberMid;
         this.branchBid = branchBid;
@@ -47,10 +54,17 @@ public class ReviewBoardDTO {
         this.branchName = branchName;
         this.status = status;
         this.image = image;
-        this.originalFileName = originalFileName;
-        this.imageType = imageType;
-        this.imageData = imageData;
+        this.memberOriginalFileName = memberOriginalFileName;
+        this.memberImageType = memberImageType;
+        this.memberImageData = memberImageData;
+        this.reviewOriginalFileName = reviewOriginalFileName;
+        this.reviewImageType = reviewImageType;
+        this.reviewImageData = reviewImageData;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+    }
+
+    public void updateGrade(int grade) {
+        this.grade = grade;
     }
 }

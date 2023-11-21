@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import static com.beonse2.config.exception.ErrorCode.*;
@@ -65,9 +66,9 @@ public class ReviewBoardService {
                     .content(reviewBoardDTO.getContent())
                     .writer(findMember.getNickname())
                     .image(reviewBoardDTO.getImage())
-                    .originalFileName(image.getOriginalFilename())
-                    .imageType(image.getContentType())
-                    .imageData(image.getBytes())
+                    .reviewOriginalFileName(image.getOriginalFilename())
+                    .reviewImageType(image.getContentType())
+                    .reviewImageData(image.getBytes())
                     .build();
         }
 
@@ -97,9 +98,14 @@ public class ReviewBoardService {
 
         List<ReviewBoardDTO> reviewBoardDTOS = reviewBoardMapper.reviewBoardPage(pageRequestDTO);
 
+        for (ReviewBoardDTO reviewBoardDTO : reviewBoardDTOS) {
+            reviewBoardDTO.updateGrade(reviewBoardDTO.getPaymentAmount() < 150000 ? 3 : reviewBoardDTO.getPaymentAmount() < 300000 ? 2 : 1);
+        }
+
         if (reviewBoardDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_BOARD);
         }
+
         return PageResponseDTO.builder()
                 .content(reviewBoardDTOS)
                 .page(page)

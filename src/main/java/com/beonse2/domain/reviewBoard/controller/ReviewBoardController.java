@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 @Slf4j
 @RestController
@@ -22,22 +23,22 @@ public class ReviewBoardController {
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postReviewBoard(@PathVariable("coupon-id") Long couponId,
-                                                               ReviewBoardDTO reviewBoardDTO,
-                                                               @RequestHeader(value = "Authorization") String accessToken) throws IOException {
+                                                             ReviewBoardDTO reviewBoardDTO,
+                                                             @RequestHeader(value = "Authorization") String accessToken) throws IOException {
         return ResponseEntity.ok(reviewBoardService.createReviewBoard(couponId, reviewBoardDTO, accessToken));
     }
 
     @GetMapping("/reviews/{branch-id}") // 리뷰 전체 조회
     public ResponseEntity<PageResponseDTO> getReviewBoardPage(@RequestParam(defaultValue = "1") int page,
-                                                           @PathVariable("branch-id") Long branchId) {
+                                                              @PathVariable("branch-id") Long branchId) {
         return ResponseEntity.ok(reviewBoardService.findReviewBoardPage(page, branchId));
     }
 
     @PatchMapping("/reviews/{reviewBoard-id}") // 리뷰 업데이트
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> patchReviewBoard(@PathVariable(value = "reviewBoard-id", required = false) Long rbId,
-                                                               @RequestBody ReviewBoardDTO updatedReviewBoardDTO,
-                                                               @RequestHeader(value = "Authorization") String accessToken) {
+                                                              @RequestBody ReviewBoardDTO updatedReviewBoardDTO,
+                                                              @RequestHeader(value = "Authorization") String accessToken) {
         return ResponseEntity.ok(reviewBoardService.updateReviewBoard(rbId, updatedReviewBoardDTO, accessToken));
     }
 

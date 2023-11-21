@@ -31,15 +31,26 @@
             </choose>
     </insert>
 
+
+    <!--this.memberOriginalFileName = memberOriginalFileName;
+    this.memberImageType = memberImageType;
+    this.memberImageData = memberImageData;
+    this.reviewOriginalFileName = reviewOriginalFileName;
+    this.reviewImageType = reviewImageType;
+    this.reviewImageData = reviewImageData;-->
 <!--게시글 조회-->
     <select id="reviewBoardPage" resultType="reviewBoardDTO" parameterType="pageRequest">
         <![CDATA[
         SELECT rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, COUPON_CID, BRANCHNAME, TITLE, CONTENT,
-               STATUS, IMAGE_DATA, ORIGINAL_FILE_NAME, IMAGE_TYPE, created_at, modified_at
+               STATUS, PAYMENT_AMOUNT, MEMBER_IMAGE_DATA, MEMBER_ORIGINAL_FILE_NAME, MEMBER_IMAGE_TYPE,
+               REVIEW_IMAGE_DATA, REVIEW_ORIGINAL_FILE_NAME, REVIEW_IMAGE_TYPE, created_at, modified_at
         FROM (SELECT rownum rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, COUPON_CID, BRANCHNAME, TITLE, CONTENT,
-                     STATUS, IMAGE_DATA, ORIGINAL_FILE_NAME, IMAGE_TYPE, created_at, modified_at
-              FROM (SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, R.COUPON_CID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
-                           R.STATUS, R.IMAGE IMAGE_DATA, R.ORIGINAL_FILE_NAME, R.IMAGE_TYPE, R.created_at, R.modified_at
+                     STATUS, PAYMENT_AMOUNT, MEMBER_IMAGE_DATA, MEMBER_ORIGINAL_FILE_NAME, MEMBER_IMAGE_TYPE,
+                     REVIEW_IMAGE_DATA, REVIEW_ORIGINAL_FILE_NAME, REVIEW_IMAGE_TYPE, created_at, modified_at
+              FROM (SELECT R.RBID, R.MEMBER_MID, M.NICKNAME AS WRITER, R.BRANCH_BID, R.COUPON_CID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
+                           R.STATUS, M.PAYMENT_AMOUNT, M.IMAGE MEMBER_IMAGE_DATA, M.ORIGINAL_FILE_NAME MEMBER_ORIGINAL_FILE_NAME, M.IMAGE_TYPE MEMBER_IMAGE_TYPE,
+                           R.IMAGE REVIEW_IMAGE_DATA, R.ORIGINAL_FILE_NAME REVIEW_ORIGINAL_FILE_NAME, R.IMAGE_TYPE REVIEW_IMAGE_TYPE,
+                           R.created_at, R.modified_at
                     FROM REVIEWBOARD R
                         JOIN MEMBER M
                             ON R.member_mid = m.mid
