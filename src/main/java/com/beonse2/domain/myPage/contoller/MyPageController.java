@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -34,8 +35,9 @@ public class MyPageController {
     @PatchMapping("/info") //회원정보 수정
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
-                                                        MemberEditDTO memberEditDTO) throws IOException {
-        return ResponseEntity.ok(memberService.updateInfo(memberEditDTO, accessToken));
+                                                        @RequestPart MultipartFile image,
+                                                        @RequestPart MemberEditDTO memberEditDTO) throws IOException {
+        return ResponseEntity.ok(memberService.updateInfo(memberEditDTO, image, accessToken));
     }
 
     @GetMapping("/reviews")

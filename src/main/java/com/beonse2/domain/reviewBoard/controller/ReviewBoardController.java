@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,9 +24,10 @@ public class ReviewBoardController {
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postReviewBoard(@PathVariable("coupon-id") Long couponId,
-                                                             ReviewBoardDTO reviewBoardDTO,
+                                                             @RequestPart MultipartFile image,
+                                                             @RequestPart ReviewBoardDTO reviewBoardDTO,
                                                              @RequestHeader(value = "Authorization") String accessToken) throws IOException {
-        return ResponseEntity.ok(reviewBoardService.createReviewBoard(couponId, reviewBoardDTO, accessToken));
+        return ResponseEntity.ok(reviewBoardService.createReviewBoard(couponId, image, reviewBoardDTO, accessToken));
     }
 
     @GetMapping("/reviews/{branch-id}") // 리뷰 전체 조회
@@ -37,9 +39,10 @@ public class ReviewBoardController {
     @PatchMapping("/reviews/{reviewBoard-id}") // 리뷰 업데이트
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> patchReviewBoard(@PathVariable(value = "reviewBoard-id", required = false) Long rbId,
-                                                              @RequestBody ReviewBoardDTO updatedReviewBoardDTO,
-                                                              @RequestHeader(value = "Authorization") String accessToken) {
-        return ResponseEntity.ok(reviewBoardService.updateReviewBoard(rbId, updatedReviewBoardDTO, accessToken));
+                                                              @RequestPart MultipartFile image,
+                                                              @RequestPart ReviewBoardDTO updatedReviewBoardDTO,
+                                                              @RequestHeader(value = "Authorization") String accessToken) throws IOException {
+        return ResponseEntity.ok(reviewBoardService.updateReviewBoard(rbId, image, updatedReviewBoardDTO, accessToken));
     }
 
     @PostMapping("/reviews/{reviewBoard-id}") //리뷰 삭제

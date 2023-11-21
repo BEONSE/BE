@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import static com.beonse2.config.exception.ErrorCode.*;
@@ -34,6 +33,7 @@ public class ReviewBoardService {
     private final JwtUtil jwtUtil;
 
     public SuccessMessageDTO createReviewBoard(Long couponId,
+                                               MultipartFile image,
                                                ReviewBoardDTO reviewBoardDTO,
                                                String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
@@ -55,8 +55,7 @@ public class ReviewBoardService {
         }
         Long branchId = branchMapper.findByBranchName(couponResponseDTO.getBranchName());
 
-        if (reviewBoardDTO.getImage() != null && !reviewBoardDTO.getImage().isEmpty()) {
-            MultipartFile image = reviewBoardDTO.getImage();
+        if (image != null && !image.isEmpty()) {
 
             reviewBoardDTO = ReviewBoardDTO.builder()
                     .memberMid(findMember.getMid())
@@ -115,7 +114,10 @@ public class ReviewBoardService {
                 .build();
     }
 
-    public SuccessMessageDTO updateReviewBoard(Long rbId, ReviewBoardDTO updatedReviewBoardDTO, String accessToken) {
+    public SuccessMessageDTO updateReviewBoard(Long rbId,
+                                               MultipartFile image,
+                                               ReviewBoardDTO updatedReviewBoardDTO,
+                                               String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
         String email = jwtUtil.getEmail(token);
 
@@ -128,11 +130,20 @@ public class ReviewBoardService {
             throw new CustomException(NOT_MATCH_USER);
         }
 
-        reviewBoardDTO = ReviewBoardDTO.builder()
-                .title(updatedReviewBoardDTO.getTitle())
-                .content(updatedReviewBoardDTO.getContent())
-                .build();
-
+        if (image != null && !image.isEmpty()) {
+            reviewBoardDTO = ReviewBoardDTO.builder()
+                    .title(updatedReviewBoardDTO.getTitle())
+                    .content(updatedReviewBoardDTO.getContent())
+                    .reviewOriginalFileName(image.getOriginalFilename())
+                    .reviewImageType(image.getContentType())
+                    .reviewImageData(image.getBytes())
+                    .build();
+        } else {
+            reviewBoardDTO = ReviewBoardDTO.builder()
+                    .title(updatedReviewBoardDTO.getTitle())
+                    .content(updatedReviewBoardDTO.getContent())
+                    .build();
+        }
         // update 메서드를 호출하여 수정된 내용을 DB에 반영
         reviewBoardMapper.updateReviewBoard(reviewBoardDTO);
 
