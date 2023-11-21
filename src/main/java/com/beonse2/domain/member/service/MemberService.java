@@ -4,8 +4,11 @@ import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.exception.ErrorCode;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.branch.dto.BranchRequestDTO;
+import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.member.dto.*;
 import com.beonse2.domain.member.mapper.MemberMapper;
+import com.beonse2.domain.member.vo.enums.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -26,10 +30,9 @@ public class MemberService {
 
     // 암호화
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
     private final JwtUtil jwtUtil;
-
     private final MemberMapper memberMapper;
+    private final BranchMapper branchMapper;
 
     /**
      * 유저 회원가입
@@ -82,7 +85,24 @@ public class MemberService {
             throw new CustomException(ErrorCode.NOT_MATCH_PASSWORD);
         }
 
-        return memberDTO;
+        if (memberDTO.getRole().equals(Role.ROLE_BRANCH)) {
+            BranchRequestDTO findBranch = branchMapper.findByMemberId(memberDTO.getMid()).orElseThrow(
+                    () -> new CustomException(NOT_FOUND_BRANCH)
+            );
+            return MemberDTO.builder()
+                    .mid(memberDTO.getMid())
+                    .branchId(findBranch.getBid())
+                    .role(memberDTO.getRole())
+                    .email(memberDTO.getEmail())
+                    .build();
+        } else {
+            return MemberDTO.builder()
+                    .mid(memberDTO.getMid())
+                    .role(memberDTO.getRole())
+                    .email(memberDTO.getEmail())
+                    .build();
+        }
+
     }
 
     /**

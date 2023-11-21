@@ -3,6 +3,7 @@ package com.beonse2.domain.member.controller;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.*;
 import com.beonse2.domain.member.service.MemberService;
+import com.beonse2.domain.member.vo.enums.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -41,14 +42,26 @@ public class MemberController {
 
         TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
 
-        return ResponseEntity.ok()
-                .header("AccessToken", token.getAccessToken())
-                .header("RefreshToken", token.getRefreshToken())
-                .body(LoginResponseDTO.builder()
-                        .role(memberDTO.getRole())
-                        .statusCode(HttpStatus.OK.value())
-                        .successMessage("로그인 성공")
-                        .build());
+        if (memberDTO.getRole().equals(Role.ROLE_BRANCH)) {
+            return ResponseEntity.ok()
+                    .header("AccessToken", token.getAccessToken())
+                    .header("RefreshToken", token.getRefreshToken())
+                    .body(LoginResponseDTO.builder()
+                            .role(memberDTO.getRole())
+                            .branchId(memberDTO.getBranchId())
+                            .statusCode(HttpStatus.OK.value())
+                            .successMessage("로그인 성공")
+                            .build());
+        } else {
+            return ResponseEntity.ok()
+                    .header("AccessToken", token.getAccessToken())
+                    .header("RefreshToken", token.getRefreshToken())
+                    .body(LoginResponseDTO.builder()
+                            .role(memberDTO.getRole())
+                            .statusCode(HttpStatus.OK.value())
+                            .successMessage("로그인 성공")
+                            .build());
+        }
     }
 
     /**
@@ -60,7 +73,7 @@ public class MemberController {
         return ResponseEntity.ok(memberService.haveMember(email));
     }
 
-    @GetMapping("/main")
+    @GetMapping("/rank")
     public ResponseEntity<MaxPaymentDTO> getMember() {
         return ResponseEntity.ok(memberService.findMaxPayment());
     }
