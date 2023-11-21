@@ -12,6 +12,7 @@ import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
 import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
+import com.beonse2.domain.reservation.dto.ReservationTimeDTO;
 import com.beonse2.domain.reservation.mapper.ReservationMapper;
 import com.beonse2.domain.reservation.vo.Reservation;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -100,5 +103,14 @@ public class ReservationService {
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
                 .build();
+    }
+
+    public List<ReservationTimeDTO> findReservationTimeList(Long branchId, String date) {
+
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("branchId", branchId);
+        searchMap.put("date", date.replace("-", "/"));
+
+        return reservationMapper.findTimeList(searchMap);
     }
 }
