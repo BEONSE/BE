@@ -45,6 +45,7 @@ public class BranchService {
                 .email(branchRequestDTO.getEmail())
                 .password(passwordEncoder.encode(branchRequestDTO.getPassword()))
                 .name(branchRequestDTO.getName())
+                .nickname(branchRequestDTO.getBranchName())
                 .address(branchRequestDTO.getAddress())
                 .build();
 
@@ -181,11 +182,13 @@ public class BranchService {
         return BranchDTO.builder()
                 .bId(branchDTO.getBId())
                 .memberMid(branchDTO.getMemberMid())
-                .email(branchDTO.getEmail())
-                .imageDTOS(imageDTO)
+                .address(branchDTO.getAddress())
+                .lat(branchDTO.getLat())
+                .lng(branchDTO.getLng())
                 .branchName(branchDTO.getBranchName())
-                .isApproval(branchDTO.getIsApproval())
                 .introduction(branchDTO.getIntroduction())
+                .imageDTOS(imageDTO)
                 .build();
     }
+
 }
