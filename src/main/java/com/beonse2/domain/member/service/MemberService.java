@@ -129,7 +129,7 @@ public class MemberService {
                 .build();
     }
 
-    public MemberEditDTO updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
+    public SuccessMessageDTO updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -181,7 +181,10 @@ public class MemberService {
 
         memberMapper.updateInfo(memberEditDTO);
 
-        return memberEditDTO;
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("회원 정보 수정 완료")
+                .build();
     }
 
     public MaxPaymentDTO findMaxPayment() {

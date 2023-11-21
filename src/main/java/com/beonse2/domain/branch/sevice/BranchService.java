@@ -40,6 +40,10 @@ public class BranchService {
             throw new RuntimeException("이미 가입된 회원입니다");
         }
 
+        if (memberMapper.findByNickname(branchRequestDTO.getBranchName()).isPresent()) {
+            throw new CustomException(DUPLICATE_NICKNAME);
+        }
+
         //멤버 빌드 저장 후 메퍼에 저장
         MemberDTO member = MemberDTO.builder()
                 .email(branchRequestDTO.getEmail())

@@ -1,6 +1,7 @@
 package com.beonse2.domain.myPage.contoller;
 
 import com.beonse2.config.utils.page.PageResponseDTO;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.service.MemberService;
 import com.beonse2.domain.myPage.service.MyPageService;
@@ -32,8 +33,8 @@ public class MyPageController {
 
     @PatchMapping("/info") //회원정보 수정
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<MemberEditDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
-                                                    MemberEditDTO memberEditDTO) throws IOException {
+    public ResponseEntity<SuccessMessageDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
+                                                        MemberEditDTO memberEditDTO) throws IOException {
         return ResponseEntity.ok(memberService.updateInfo(memberEditDTO, accessToken));
     }
 
