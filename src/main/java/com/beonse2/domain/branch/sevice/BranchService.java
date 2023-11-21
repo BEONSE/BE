@@ -178,10 +178,6 @@ public class BranchService {
 
         List<ImageDTO> imageDTO = branchMapper.findImage(branchId);
 
-        if (imageDTO.isEmpty()) {
-            throw new CustomException(NOT_FOUND_IMAGE);
-        }
-
         return BranchDTO.builder()
                 .bId(branchDTO.getBId())
                 .memberMid(branchDTO.getMemberMid())
