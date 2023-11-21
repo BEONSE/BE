@@ -17,27 +17,20 @@
     ]]>
     </sql>-->
 
-<!-- 게시글 작성 -->
+    <!-- 게시글 작성 -->
     <insert id="createReviewBoard" parameterType="reviewBoardDTO" >
         INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE, ORIGINAL_FILE_NAME, IMAGE_TYPE)
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberMid}, #{branchBid}, #{couponCid}, #{title}, #{content},
             <choose>
                 <when test="image != null">
-                    #{imageData, jdbcType=BLOB}, #{originalFileName}, #{imageType})
+                    #{reviewImageData, jdbcType=BLOB}, #{reviewOriginalFileName}, #{reviewImageType})
                 </when>
                 <otherwise>
-                    null, null, null)
+                    NULL, NULL, NULL)
                 </otherwise>
             </choose>
     </insert>
 
-
-    <!--this.memberOriginalFileName = memberOriginalFileName;
-    this.memberImageType = memberImageType;
-    this.memberImageData = memberImageData;
-    this.reviewOriginalFileName = reviewOriginalFileName;
-    this.reviewImageType = reviewImageType;
-    this.reviewImageData = reviewImageData;-->
 <!--게시글 조회-->
     <select id="reviewBoardPage" resultType="reviewBoardDTO" parameterType="pageRequest">
         <![CDATA[
@@ -126,10 +119,10 @@
         SET TITLE = #{title}, CONTENT = #{content},
         <choose>
             <when test="image != null">
-               IMAGE =  #{image},
+                IMAGE = #{reviewImageData, jdbcType=BLOB}, ORIGINAL_FILE_NAME #{reviewOriginalFileName}, IMAGE_TYPE = #{reviewImageType}
             </when>
             <otherwise>
-                IMAGE =  NULL,
+                IMAGE =  NULL, ORIGINAL_FILE_NAME NULL, IMAGE_TYPE = NULL
             </otherwise>
         </choose>
             MODIFIED_AT = sysdate WHERE RBID = #{rbId}

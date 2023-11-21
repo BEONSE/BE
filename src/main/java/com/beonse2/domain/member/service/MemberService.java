@@ -124,7 +124,9 @@ public class MemberService {
                 .build();
     }
 
-    public SuccessMessageDTO updateInfo(MemberEditDTO memberEditDTO, String accessToken) throws IOException {
+    public SuccessMessageDTO updateInfo(MemberEditDTO memberEditDTO,
+                                        MultipartFile image,
+                                        String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -145,9 +147,7 @@ public class MemberService {
         }
 
         if (email.equals(memberEditDTO.getEmail())) {
-            if (memberEditDTO.getImage() != null && !memberEditDTO.getImage().isEmpty()) {
-                MultipartFile image = memberEditDTO.getImage();
-
+            if (image != null && !image.isEmpty()) {
                 memberEditDTO = MemberEditDTO.builder()
                         .mid(mid)
                         .email(email)
