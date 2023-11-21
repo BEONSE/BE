@@ -19,6 +19,7 @@ import java.util.Collection;
 public class MemberDTO implements UserDetails {
 
     private Long mid;
+    private Long branchId;
     private String email; //email -> id
     private String name;
     private String nickname; //닉네임
