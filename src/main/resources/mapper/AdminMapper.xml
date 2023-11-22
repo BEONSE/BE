@@ -5,6 +5,61 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.beonse2.domain.admin.mapper.AdminMapper">
+
+    <select id="findAllBranchMember" resultType="branchMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, email, is_approval, role, bid, name, address, created_at
+            FROM (
+                SELECT m.mid, m.email, m.is_approval, m.role, b.bid, b.name, b.address, b.created_at
+                FROM member m
+                    JOIN branch b
+                        ON m.mid = b.member_mid
+                WHERE m.role = 'ROLE_BRANCH'
+                  AND m.is_approval = '승인 대기'
+                ORDER BY b.created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getWaitingCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE role = 'ROLE_BRANCH'
+          AND is_approval = '승인 대기'
+    </select>
+
+    <select id="findResultMember" resultType="branchMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, email, is_approval, role, bid, name, address, created_at
+            FROM (
+                SELECT m.mid, m.email, m.is_approval, m.role, b.bid, b.name, b.address, b.created_at
+                FROM member m
+                    JOIN branch b
+                        ON m.mid = b.member_mid
+                WHERE m.role = 'ROLE_BRANCH'
+                  AND m.is_approval IN ('승인', '가입 거절')
+                ORDER BY b.created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getResultCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE role = 'ROLE_BRANCH'
+          AND is_approval IN ('승인', '가입 거절')
+    </select>
+
     <update id="updateAcceptApproval" parameterType="long">
         UPDATE member
         SET is_approval = '승인'

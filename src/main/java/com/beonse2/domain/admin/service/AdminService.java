@@ -1,7 +1,10 @@
 package com.beonse2.domain.admin.service;
 
 import com.beonse2.config.exception.CustomException;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.admin.dto.BranchMemberDTO;
 import com.beonse2.domain.admin.mapper.AdminMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
@@ -9,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
 import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_APPROVAL;
@@ -54,6 +59,58 @@ public class AdminService {
         return SuccessMessageDTO.builder()
                 .statusCode(HttpStatus.OK.value())
                 .successMessage("가입 거절 완료")
+                .build();
+    }
+
+    public PageResponseDTO findBranchMember(int page) {
+
+        int totalRows = adminMapper.getWaitingCount();
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<BranchMemberDTO> branchMemberDTOS = adminMapper.findAllBranchMember(pageRequest);
+
+        if (branchMemberDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_MEMBER);
+        }
+
+        return PageResponseDTO.builder()
+                .content(branchMemberDTOS)
+                .page(page)
+                .size(10)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build();
+    }
+
+    public PageResponseDTO findMemberResult(int page) {
+
+        int totalRows = adminMapper.getResultCount();
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<BranchMemberDTO> branchMemberDTOS = adminMapper.findResultMember(pageRequest);
+
+        if (branchMemberDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_MEMBER);
+        }
+
+        return PageResponseDTO.builder()
+                .content(branchMemberDTOS)
+                .page(page)
+                .size(10)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
                 .build();
     }
 }

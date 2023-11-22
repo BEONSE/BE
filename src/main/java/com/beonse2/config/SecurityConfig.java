@@ -3,7 +3,6 @@ package com.beonse2.config;
 
 import com.beonse2.config.jwt.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -53,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/reservation/*").hasRole("USER")
+                .antMatchers("/admin/*").hasRole("ADMIN")
                 .antMatchers("/main").permitAll()
                 .antMatchers("/reviews/*").permitAll()
                 .antMatchers("/mates").permitAll();

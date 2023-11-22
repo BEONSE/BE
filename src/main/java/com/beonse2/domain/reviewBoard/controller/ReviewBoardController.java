@@ -24,7 +24,7 @@ public class ReviewBoardController {
     @PostMapping("/coupons/{coupon-id}/reviews") //리뷰작성
     @PreAuthorize("hasAnyRole('USER')")
     public ResponseEntity<SuccessMessageDTO> postReviewBoard(@PathVariable("coupon-id") Long couponId,
-                                                             @RequestPart MultipartFile image,
+                                                             @RequestPart(required = false) MultipartFile image,
                                                              @RequestPart ReviewBoardDTO reviewBoardDTO,
                                                              @RequestHeader(value = "Authorization") String accessToken) throws IOException {
         return ResponseEntity.ok(reviewBoardService.createReviewBoard(couponId, image, reviewBoardDTO, accessToken));

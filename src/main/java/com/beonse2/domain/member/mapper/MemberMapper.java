@@ -6,6 +6,7 @@ import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper

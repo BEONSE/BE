@@ -56,7 +56,6 @@ public class ReviewBoardService {
         Long branchId = branchMapper.findByBranchName(couponResponseDTO.getBranchName());
 
         if (image != null && !image.isEmpty()) {
-
             reviewBoardDTO = ReviewBoardDTO.builder()
                     .memberMid(findMember.getMid())
                     .branchBid(branchId)
