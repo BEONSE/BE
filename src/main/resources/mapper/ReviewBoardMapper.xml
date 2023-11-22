@@ -22,7 +22,7 @@
         INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE, ORIGINAL_FILE_NAME, IMAGE_TYPE)
         VALUES (REVIEWBOARD_SEQ.nextval, #{memberMid}, #{branchBid}, #{couponCid}, #{title}, #{content},
             <choose>
-                <when test="image != null">
+                <when test="reviewImageData != null">
                     #{reviewImageData, jdbcType=BLOB}, #{reviewOriginalFileName}, #{reviewImageType})
                 </when>
                 <otherwise>
