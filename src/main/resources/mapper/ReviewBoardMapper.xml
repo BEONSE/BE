@@ -118,7 +118,7 @@
         UPDATE REVIEWBOARD
         SET TITLE = #{title}, CONTENT = #{content},
         <choose>
-            <when test="image != null">
+            <when test="reviewImageData != null">
                 IMAGE = #{reviewImageData, jdbcType=BLOB}, ORIGINAL_FILE_NAME #{reviewOriginalFileName}, IMAGE_TYPE = #{reviewImageType}
             </when>
             <otherwise>
