@@ -89,6 +89,12 @@ public class MemberService {
             BranchRequestDTO findBranch = branchMapper.findByMemberId(memberDTO.getMid()).orElseThrow(
                     () -> new CustomException(NOT_FOUND_BRANCH)
             );
+            if (memberDTO.getIsApproval().equals("승인 대기")) {
+                throw new CustomException(WAITING_JOIN);
+            } else if (memberDTO.getIsApproval().equals("가입 거절")) {
+                throw new CustomException(REJECT_JOIN);
+            }
+
             return MemberDTO.builder()
                     .mid(memberDTO.getMid())
                     .branchId(findBranch.getBid())
