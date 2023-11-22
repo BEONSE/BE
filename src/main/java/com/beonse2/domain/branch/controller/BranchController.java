@@ -63,7 +63,6 @@ public class BranchController {
     }
 
     @GetMapping("/branches/names")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<String>> getBranchNames() {
         return ResponseEntity.ok(branchService.findBranchNames());
     }
