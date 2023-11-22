@@ -65,7 +65,7 @@ public class MateBoardService {
 
         PageRequestDTO pageRequest = PageRequestDTO.builder()
                 .rowsPerPage(8)
-                .pagesPerGroup(5)
+                .pagesPerGroup(8)
                 .totalRows(totalRows)
                 .page(page)
                 .build();

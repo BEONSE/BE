@@ -43,7 +43,7 @@
 
     <insert id="saveImage" parameterType="imageDTO">
         INSERT INTO branchimage(bmid, branch_bid, image, original_file_name, image_type)
-        VALUES (branchimage_seq.NEXTVAL, #{branchBid}, #{imageData}, #{originalFileName}, #{imageType})
+        VALUES (branchimage_seq.NEXTVAL, #{branchBid}, #{reviewImageData}, #{reviewOriginalFileName}, #{reviewImageType})
     </insert>
 
     <!--가맹점 조회-->
