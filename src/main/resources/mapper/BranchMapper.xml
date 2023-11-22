@@ -51,7 +51,8 @@
         SELECT B.BID, B.MEMBER_MID, M.EMAIL, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION, B.CREATED_AT, B.MODIFIED_AT
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
-        AND B.MEMBER_MID = #{ value }
+          AND B.MEMBER_MID = #{ value }
+          AND M.IS_APPROVAL = '승인'
     </select>
 
     <!--가맹점 조회-->
@@ -63,8 +64,11 @@
 
     <!--전체 가맹점 이름 조회-->
     <select id="findAllBranchName" resultType="string">
-        SELECT name
-        FROM BRANCH
+        SELECT B.name
+        FROM BRANCH B
+            JOIN MEMBER M
+                ON B.member_mid = M.mid
+        WHERE M.IS_APPROVAL = '승인'
         ORDER BY name
     </select>
 
@@ -82,6 +86,7 @@
         FROM BRANCH B,
              MEMBER M
         WHERE B.MEMBER_MID = M.MID
+          AND M.IS_APPROVAL = '승인'
           AND B.name LIKE '%'||#{name}||'%'
         ORDER BY name
     </select>
