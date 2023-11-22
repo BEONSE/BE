@@ -7,7 +7,7 @@
 <mapper namespace="com.beonse2.domain.admin.mapper.AdminMapper">
     <update id="updateAcceptApproval" parameterType="long">
         UPDATE member
-        SET is_approval = '가입 승인'
+        SET is_approval = '승인'
         WHERE mid = #{value}
     </update>
 

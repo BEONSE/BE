@@ -104,7 +104,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         JSONObject responseJson = new JSONObject();
         try {
             responseJson.put("HttpStatus", HttpStatus.UNAUTHORIZED);
-            responseJson.put("message", ex.getMessage());
+            responseJson.put("message", "토큰 시간 만료"/*ex.getMessage()*/);
             responseJson.put("status", false);
             responseJson.put("statusCode", 401);
             responseJson.put("code", "Tk401");

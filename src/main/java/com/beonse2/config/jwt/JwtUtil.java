@@ -144,7 +144,7 @@ public class JwtUtil implements InitializingBean {
     public static boolean validateToken(String token) {
 
         boolean validate = false;
-        try {
+//        try {
             JwtParser parser = Jwts.parser();
             //복호화하기 위해서 secretKey 넣어줌
             parser.setSigningKey(key);
@@ -152,10 +152,9 @@ public class JwtUtil implements InitializingBean {
             Claims claims = jws.getBody();
             //만료기간 확인 -> true : 유효, false : 만료
             validate = !claims.getExpiration().before(new Date());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return validate;
     }
 

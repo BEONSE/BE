@@ -35,7 +35,9 @@ public enum ErrorCode {
     NOT_FOUND_BRANCH_NAMES(HttpStatus.NOT_FOUND.value(), "지점명을 찾을 수 없습니다."),
     NOT_FOUND_IMAGE(HttpStatus.NOT_FOUND.value(), "이미지가 없습니다."),
     DUPLICATE_NICKNAME(HttpStatus.BAD_REQUEST.value(), "이미 사용중인 닉네임입니다."),
-    NOT_MATCH_APPROVAL(HttpStatus.BAD_REQUEST.value(), "가입 대기 회원이 아닙니다.");
+    NOT_MATCH_APPROVAL(HttpStatus.BAD_REQUEST.value(), "가입 대기 회원이 아닙니다."),
+    WAITING_JOIN(HttpStatus.FORBIDDEN.value(), "가입 승인 대기중인 회원입니다."),
+    REJECT_JOIN(HttpStatus.FORBIDDEN.value(), "가입이 거절된 회원입니다.");
 
     private final int statusCode;
     private final String errorMessage;

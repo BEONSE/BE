@@ -64,7 +64,7 @@ public class MateBoardService {
         int totalRows = mateBoardMapper.getCount();
 
         PageRequestDTO pageRequest = PageRequestDTO.builder()
-                .rowsPerPage(5)
+                .rowsPerPage(8)
                 .pagesPerGroup(5)
                 .totalRows(totalRows)
                 .page(page)
@@ -86,7 +86,7 @@ public class MateBoardService {
         return PageResponseDTO.builder()
                 .content(mateBoards)
                 .page(page)
-                .size(5)
+                .size(8)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
                 .build();
