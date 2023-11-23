@@ -40,7 +40,7 @@ public class MemberController {
 
         MemberDTO memberDTO = memberService.login(loginDto);
 
-        TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
+         TokenDTO token = memberService.tokenGenerator(memberDTO.getEmail());
 
         if (memberDTO.getRole().equals(Role.ROLE_BRANCH)) {
             return ResponseEntity.ok()

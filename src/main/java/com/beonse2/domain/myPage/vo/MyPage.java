@@ -1,5 +1,6 @@
 package com.beonse2.domain.myPage.vo;
 
+import com.beonse2.domain.member.vo.enums.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,11 @@ public class MyPage {
     private int paymentAmount;
     private int pointAmount;
     private int grade;
+    private Role role;
 
     @Builder
     public MyPage(Long mid, String email, String password, String name, String nickname, MultipartFile image,
-                  String originalFileName, String imageType, String address, int paymentAmount, int pointAmount, int grade) {
+                  String originalFileName, String imageType, String address, int paymentAmount, int pointAmount, int grade, Role role) {
         this.mid = mid;
         this.email = email;
         this.password = password;
@@ -37,6 +39,7 @@ public class MyPage {
         this.paymentAmount = paymentAmount;
         this.pointAmount = pointAmount;
         this.grade = grade;
+        this.role = role;
     }
 
     public void updateGrade(int grade) {

@@ -71,9 +71,10 @@
     </update>
 
     <select id="findUseAllCoupon" parameterType="String" resultType="couponResponseDTO">
-        SELECT *
-        FROM coupon
+        SELECT c.cid, c.member_mid, m.name as name, c.type, c.price, c.branch_name, c.is_used, c.payment_date
+        FROM coupon c, member m
         WHERE branch_name = #{branchName}
+        AND c.member_mid = m.mid
         ORDER BY type DESC
     </select>
 
