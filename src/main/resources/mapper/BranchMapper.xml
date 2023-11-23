@@ -78,6 +78,7 @@
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND M.ROLE = 'ROLE_BRANCH'
+          AND M.IS_APPROVAL = '승인'
         ORDER BY name
     </select>
 
