@@ -63,8 +63,8 @@ public class MyPageService {
 
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .paramId(findMember.getMid())
-                .rowsPerPage(5)
-                .pagesPerGroup(5)
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
                 .totalRows(totalRows)
                 .page(page)
                 .build();
@@ -77,7 +77,7 @@ public class MyPageService {
         return PageResponseDTO.builder()
                 .content(reviewBoardDTOS)
                 .page(page)
-                .size(5)
+                .size(10)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequestDTO.getTotalPageNo())
                 .build();

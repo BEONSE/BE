@@ -17,6 +17,7 @@
         <typeAlias alias="branchDTO" type="com.beonse2.domain.branch.dto.BranchDTO" />
         <typeAlias alias="imageDTO" type="com.beonse2.domain.branch.dto.ImageDTO" />
         <typeAlias alias="memberDTO" type="com.beonse2.domain.member.dto.MemberDTO" />
+        <typeAlias alias="allMemberDTO" type="com.beonse2.domain.admin.dto.AllMemberDTO" />
         <typeAlias alias="branchMemberDTO" type="com.beonse2.domain.admin.dto.BranchMemberDTO" />
         <typeAlias alias="memberEditDTO" type="com.beonse2.domain.member.dto.MemberEditDTO" />
         <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
