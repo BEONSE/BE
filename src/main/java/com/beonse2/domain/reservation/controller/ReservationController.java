@@ -50,4 +50,10 @@ public class ReservationController {
                                                                            @PathVariable("date") String date) {
         return ResponseEntity.ok(reservationService.findReservationTimeList(branchId, date));
     }
+
+    @GetMapping("reservation/{branch-id}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<String> getBranchName(@PathVariable("branch-id") Long branchId) {
+        return ResponseEntity.ok(reservationService.findBranchName(branchId));
+    }
 }
