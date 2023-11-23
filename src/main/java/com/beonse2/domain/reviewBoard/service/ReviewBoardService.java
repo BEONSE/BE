@@ -68,6 +68,15 @@ public class ReviewBoardService {
                     .reviewImageType(image.getContentType())
                     .reviewImageData(image.getBytes())
                     .build();
+        } else {
+            reviewBoardDTO = ReviewBoardDTO.builder()
+                    .memberMid(findMember.getMid())
+                    .branchBid(branchId)
+                    .couponCid(couponResponseDTO.getCid())
+                    .title(reviewBoardDTO.getTitle())
+                    .content(reviewBoardDTO.getContent())
+                    .writer(findMember.getNickname())
+                    .build();
         }
 
         reviewBoardMapper.createReviewBoard(reviewBoardDTO);

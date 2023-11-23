@@ -53,11 +53,35 @@
         ]]>
     </select>
 
+    <select id="findAllMember" resultType="allMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, email, nickname, name, address, role, payment_amount, status, point_amount, created_at
+            FROM (
+                SELECT mid, email, nickname, name, address, role, payment_amount, status, point_amount, created_at
+                FROM member
+                WHERE status = '0'
+                  AND role IN ('ROLE_USER', 'ROLE_BRANCH')
+                ORDER BY created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
     <select id="getResultCount" resultType="int">
         SELECT COUNT(*)
         FROM member
         WHERE role = 'ROLE_BRANCH'
           AND is_approval IN ('승인', '가입 거절')
+    </select>
+
+    <select id="getMemberCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE status = '0'
     </select>
 
     <update id="updateAcceptApproval" parameterType="long">

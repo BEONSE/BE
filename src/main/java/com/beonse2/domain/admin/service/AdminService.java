@@ -4,6 +4,7 @@ import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.admin.dto.AllMemberDTO;
 import com.beonse2.domain.admin.dto.BranchMemberDTO;
 import com.beonse2.domain.admin.mapper.AdminMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -62,7 +63,7 @@ public class AdminService {
                 .build();
     }
 
-    public PageResponseDTO findBranchMember(int page) {
+    public PageResponseDTO findBranchMemberPage(int page) {
 
         int totalRows = adminMapper.getWaitingCount();
 
@@ -88,7 +89,7 @@ public class AdminService {
                 .build();
     }
 
-    public PageResponseDTO findMemberResult(int page) {
+    public PageResponseDTO findMemberResultPage(int page) {
 
         int totalRows = adminMapper.getResultCount();
 
@@ -100,6 +101,32 @@ public class AdminService {
                 .build();
 
         List<BranchMemberDTO> branchMemberDTOS = adminMapper.findResultMember(pageRequest);
+
+        if (branchMemberDTOS.isEmpty()) {
+            throw new CustomException(NOT_FOUND_MEMBER);
+        }
+
+        return PageResponseDTO.builder()
+                .content(branchMemberDTOS)
+                .page(page)
+                .size(10)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build();
+    }
+
+    public PageResponseDTO findMemberPage(int page) {
+
+        int totalRows = adminMapper.getMemberCount();
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<AllMemberDTO> branchMemberDTOS = adminMapper.findAllMember(pageRequest);
 
         if (branchMemberDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_MEMBER);
