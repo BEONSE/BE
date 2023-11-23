@@ -61,9 +61,9 @@
         <![CDATA[
         SELECT *
         FROM (SELECT rownum rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, BRANCHNAME, TITLE, CONTENT,
-                     STATUS, IMAGE_DATA, ORIGINAL_FILE_NAME, IMAGE_TYPE, CREATED_AT, MODIFIED_AT
+                     STATUS, reviewImageData, reviewOriginalFileName, reviewImageType, CREATED_AT, MODIFIED_AT
               FROM (SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
-                           R.STATUS, R.IMAGE IMAGE_DATA, R.ORIGINAL_FILE_NAME, R.IMAGE_TYPE, R.CREATED_AT, R.MODIFIED_AT
+                           R.STATUS, R.IMAGE reviewImageData, R.ORIGINAL_FILE_NAME reviewOriginalFileName, R.IMAGE_TYPE reviewImageType, R.CREATED_AT, R.MODIFIED_AT
                     FROM REVIEWBOARD R
                         JOIN MEMBER M
                             ON R.member_mid = m.mid
