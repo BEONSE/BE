@@ -14,6 +14,7 @@ public class MateBoardListResponseDTO {
     private int rnum;
     private Long mbid;
     private String title;
+    private String content;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp modifiedAt;
     private String nickname;
@@ -22,10 +23,11 @@ public class MateBoardListResponseDTO {
     private int grade;
 
     @Builder
-    public MateBoardListResponseDTO(int rnum, Long mbid, String title, Timestamp modifiedAt, String nickname, int paymentAmount) {
+    public MateBoardListResponseDTO(int rnum, Long mbid, String title, String content, Timestamp modifiedAt, String nickname, int paymentAmount) {
         this.rnum = rnum;
         this.mbid = mbid;
         this.title = title;
+        this.content = content;
         this.modifiedAt = modifiedAt;
         this.nickname = nickname;
         this.paymentAmount = paymentAmount;
