@@ -13,6 +13,7 @@ public class CouponResponseDTO {
 
     private Long cid;
     private Long memberMid;
+    private String name;
     private String type;
     private int price;
     private boolean isUsed;
@@ -21,9 +22,10 @@ public class CouponResponseDTO {
     private Timestamp paymentDate;
 
     @Builder
-    public CouponResponseDTO(Long cid, Long memberMid, String type, int price, boolean isUsed, Timestamp paymentDate) {
+    public CouponResponseDTO(Long cid, Long memberMid, String name, String type, int price, boolean isUsed, Timestamp paymentDate) {
         this.cid = cid;
         this.memberMid = memberMid;
+        this.name = name;
         this.type = type;
         this.price = price;
         this.isUsed = isUsed;

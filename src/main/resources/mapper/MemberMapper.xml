@@ -44,7 +44,7 @@
         INSERT INTO MEMBER (MID, EMAIL, NICKNAME, PASSWORD, NAME, ADDRESS, ROLE, PAYMENT_AMOUNT,STATUS, IMAGE, IS_APPROVAL, CREATED_AT, MODIFIED_AT) VALUES
             (MEMBER_SEQ.nextval,
              #{email},
-             #{name},
+             #{nickname},
              #{password},
              #{name},
              #{address},
@@ -84,6 +84,8 @@
         ORDER BY point_amount
             FETCH FIRST 1 ROW ONLY
     </select>
+
+
 
     <!--누적 결제 내역-->
     <update id="updatePayment" parameterType="memberDTO">

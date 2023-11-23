@@ -44,6 +44,10 @@ public class BranchService {
             throw new CustomException(DUPLICATE_NICKNAME);
         }
 
+        if (memberMapper.findByNickname(branchRequestDTO.getBranchName()).isPresent()) {
+            throw new CustomException(DUPLICATE_MEMBER);
+        }
+
         //멤버 빌드 저장 후 메퍼에 저장
         MemberDTO member = MemberDTO.builder()
                 .email(branchRequestDTO.getEmail())
@@ -55,10 +59,13 @@ public class BranchService {
 
         memberMapper.saveBranch(member);
 
+
+
         //response로 멤버 아이디  findbyEmail찾음
         MemberDTO findMember = memberMapper.findByEmail(branchRequestDTO.getEmail()).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
+
 
         //가맹점 빌드 저장
         Branch branch = Branch.builder()
@@ -69,6 +76,10 @@ public class BranchService {
                 .lng(branchRequestDTO.getLng())
                 .introduction(branchRequestDTO.getIntroduction())
                 .build();
+
+//        if(findBranchNames().contains(branch.getBranchName())) {
+//            throw new CustomException(DUPLICATE_BRANCH);
+//        }
 
         //가맹점 매퍼 저장
         branchMapper.save(branch);

@@ -57,7 +57,7 @@ public class BranchController {
     }
 
     @GetMapping("/branches/{branch-id}") //가맹점 상세 조회
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<BranchDTO> getBranch(@PathVariable("branch-id") Long branchId) {
         return ResponseEntity.ok(branchService.findBranch(branchId));
     }
@@ -79,4 +79,6 @@ public class BranchController {
                                                          @RequestHeader("Authorization") String accessToken) throws IOException {
         return ResponseEntity.ok(branchService.updateBranch(accessToken, image, branchRequestDTO));
     }
+
+
 }
