@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -112,5 +113,14 @@ public class ReservationService {
         searchMap.put("date", date.replace("-", "/"));
 
         return reservationMapper.findTimeList(searchMap);
+    }
+
+    public String findBranchName(Long branchId) {
+
+        BranchDTO findBranch = branchMapper.findById(branchId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BRANCH)
+        );
+
+        return findBranch.getBranchName();
     }
 }
