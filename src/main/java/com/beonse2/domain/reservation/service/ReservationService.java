@@ -47,12 +47,12 @@ public class ReservationService {
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        BranchRequestDTO findBranch = branchMapper.findByMemberId(branchId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_BRANCH)
+        BranchDTO findBranch = branchMapper.findById(branchId).orElseThrow(
+                () -> new CustomException(NOT_FOUND_BRANCH)
         );
 
         Reservation reservation = Reservation.builder()
-                .branchId(findBranch.getBid())
+                .branchId(findBranch.getBId())
                 .memberId(findMember.getMid())
                 .reservationTime(Timestamp.valueOf(reservationResponseDTO.getReservationTime()))
                 .build();
