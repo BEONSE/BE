@@ -158,7 +158,7 @@ public class BranchService {
 //        findMember.getPassword() : passwordEncoder.encode(branchRequestDTO.getPassword());
 
         try {
-            if (branchRequestDTO.getPassword().isEmpty()) {
+            if (!branchRequestDTO.getPassword().isEmpty()) {
                 password = passwordEncoder.encode(branchRequestDTO.getPassword());
             }
         } catch (NullPointerException e) {
