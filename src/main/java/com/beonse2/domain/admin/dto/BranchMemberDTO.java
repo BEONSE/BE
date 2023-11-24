@@ -11,10 +11,12 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class BranchMemberDTO {
 
+    private int rnum;
     private Long mid;
     private Long bid;
     private String email;
     private String name;
+    private String nickname;
     private Role role;
     private String address;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:dd", timezone = "Asia/Seoul")

@@ -9,10 +9,29 @@
         INSERT INTO point (pid, member_mid, points, payment_price, card_name, card_number, payment_date)
         VALUES (point_seq.NEXTVAL, #{memberMid}, ${points}, #{paymentPrice}, #{cardName}, #{cardNumber}, SYSTIMESTAMP)
     </insert>
+<!--            SELECT pid, points, payment_price, card_name, card_number, payment_date-->
+<!--            FROM point-->
+<!--            WHERE member_mid = #{ value }-->
+    <select id="findMyPayments" resultType="pointResponseDTO" parameterType="pageRequest">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, pid, points, payment_price, card_name, card_number, payment_date
+            FROM (
+                SELECT pid, points, payment_price, card_name, card_number, payment_date
+                FROM point
+                WHERE member_mid = #{paramId}
+                ORDER BY payment_date DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
 
-    <select id="findMyPayments" resultType="pointVo" parameterType="long">
-        SELECT pid, points, payment_price, card_name, card_number, payment_date
+    <select id="getCount" resultType="int" parameterType="long">
+        SELECT COUNT(*)
         FROM point
-        WHERE member_mid = #{ value }
+        WHERE member_mid = #{value}
     </select>
 </mapper>

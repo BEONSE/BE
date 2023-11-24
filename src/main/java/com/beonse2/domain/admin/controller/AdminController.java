@@ -39,4 +39,9 @@ public class AdminController {
     public ResponseEntity<PageResponseDTO> getMemberPage(@RequestParam(defaultValue = "1") int page) {
         return ResponseEntity.ok(adminService.findMemberPage(page));
     }
+
+    @GetMapping("/payments")
+    public ResponseEntity<PageResponseDTO> getPaymentPage(@RequestParam(defaultValue = "1") int page) {
+        return ResponseEntity.ok(adminService.findPaymentPage(page));
+    }
 }

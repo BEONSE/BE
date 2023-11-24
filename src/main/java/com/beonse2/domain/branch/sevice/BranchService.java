@@ -3,10 +3,7 @@ package com.beonse2.domain.branch.sevice;
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
-import com.beonse2.domain.branch.dto.BranchDTO;
-import com.beonse2.domain.branch.dto.BranchListDTO;
-import com.beonse2.domain.branch.dto.BranchRequestDTO;
-import com.beonse2.domain.branch.dto.ImageDTO;
+import com.beonse2.domain.branch.dto.*;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.branch.vo.Branch;
 import com.beonse2.domain.member.dto.MemberDTO;
@@ -90,15 +87,15 @@ public class BranchService {
                 .build();
     }
 
-    public List<String> findBranchNames() {
+    public List<BranchNameDTO> findBranchNames() {
 
-        List<String> branchNames = branchMapper.findAllBranchName();
+        List<BranchNameDTO> branch = branchMapper.findAllBranchNameAndBid();
 
-        if (branchNames.isEmpty()) {
+        if (branch.isEmpty()) {
             throw new CustomException(NOT_FOUND_BRANCH_NAMES);
         }
 
-        return branchNames;
+        return branch;
     }
 
     public List<BranchListDTO> findByAllBranch() {

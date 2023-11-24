@@ -3,9 +3,11 @@ package com.beonse2.domain.admin.mapper;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.admin.dto.AllMemberDTO;
 import com.beonse2.domain.admin.dto.BranchMemberDTO;
+import com.beonse2.domain.admin.dto.PaymentDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface AdminMapper {
@@ -26,4 +28,8 @@ public interface AdminMapper {
     int getMemberCount();
 
     List<AllMemberDTO> findAllMember(PageRequestDTO pageRequest);
+
+    int getPaymentCount();
+
+    List<PaymentDTO> findPaymentPage(PageRequestDTO pageRequest);
 }

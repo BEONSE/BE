@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 public class PointResponseDTO {
 
     private Long pid;
+    private int rnum;
     private int points;
     private int paymentPrice;
     private String cardName;

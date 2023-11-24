@@ -63,13 +63,13 @@
     </select>
 
     <!--전체 가맹점 이름 조회-->
-    <select id="findAllBranchName" resultType="string">
-        SELECT B.name
+    <select id="findAllBranchNameAndBid" resultType="branchNameDTO">
+        SELECT B.bid, B.name branch_name
         FROM BRANCH B
             JOIN MEMBER M
                 ON B.member_mid = M.mid
         WHERE M.IS_APPROVAL = '승인'
-        ORDER BY name
+        ORDER BY branch_name
     </select>
 
     <!--전체 가맹정 리스트-->
