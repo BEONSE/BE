@@ -14,6 +14,8 @@ public class PaymentDTO {
     private Long pid;
     private Long mid;
     private String name;
+    private String nickname;
+    private String address;
     private String points;
     private String cardName;
     private String cardNumber;

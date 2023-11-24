@@ -37,9 +37,9 @@
         <![CDATA[
         SELECT *
         FROM (
-            SELECT rownum rnum, mid, email, is_approval, role, bid, name, address, created_at
+            SELECT rownum rnum, mid, name, nickname, email, is_approval, role, bid, address, created_at
             FROM (
-                SELECT m.mid, m.email, m.is_approval, m.role, b.bid, b.name, b.address, b.created_at
+                SELECT m.mid, m.name, m.nickname, m.email, m.is_approval, m.role, b.bid, b.address, b.created_at
                 FROM member m
                     JOIN branch b
                         ON m.mid = b.member_mid
@@ -75,9 +75,9 @@
         <![CDATA[
         SELECT *
         FROM (
-            SELECT rownum rnum, pid, points, card_name, card_number, mid, name, payment_date
+            SELECT rownum rnum, pid, points, card_name, card_number, mid, name, nickname, address, payment_date
             FROM (
-                SELECT p.pid, p.points, p.card_name, p.card_number, m.mid, m.name, p.payment_date
+                SELECT p.pid, p.points, p.card_name, p.card_number, m.mid, m.name, m.nickname, m.address, p.payment_date
                 FROM point p
                     JOIN member m
                         ON p.member_mid = m.mid
