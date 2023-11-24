@@ -74,7 +74,7 @@
         FROM coupon c, member m
         WHERE branch_name = #{branchName}
         AND c.member_mid = m.mid
-        ORDER BY type DESC
+        ORDER BY payment_date DESC
     </select>
 
     <select id="findUseMemberCoupon" parameterType="map" resultType="couponResponseDTO">
