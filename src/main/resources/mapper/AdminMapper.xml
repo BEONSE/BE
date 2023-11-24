@@ -75,9 +75,9 @@
         <![CDATA[
         SELECT *
         FROM (
-            SELECT rownum rnum, pid, points, card_name, card_number, mid, name, nickname, address, payment_date
+            SELECT rownum rnum, pid, points, payment_price price, card_name, card_number, mid, name, nickname, address, payment_date
             FROM (
-                SELECT p.pid, p.points, p.card_name, p.card_number, m.mid, m.name, m.nickname, m.address, p.payment_date
+                SELECT p.pid, p.points, p.payment_price, p.card_name, p.card_number, m.mid, m.name, m.nickname, m.address, p.payment_date
                 FROM point p
                     JOIN member m
                         ON p.member_mid = m.mid
