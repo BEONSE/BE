@@ -10,13 +10,15 @@ public class LoginResponseDTO {
     private Long branchId;
     private int statusCode;
     private String successMessage;
+    private String nickname;
     private Role role;
 
     @Builder
-    public LoginResponseDTO(Long branchId, int statusCode, String successMessage, Role role) {
+    public LoginResponseDTO(Long branchId, int statusCode, String successMessage, String nickname, Role role) {
         this.branchId = branchId;
         this.statusCode = statusCode;
         this.successMessage = successMessage;
+        this.nickname = nickname;
         this.role = role;
     }
 }

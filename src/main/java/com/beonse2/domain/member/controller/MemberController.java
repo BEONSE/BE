@@ -58,6 +58,7 @@ public class MemberController {
                     .header("RefreshToken", token.getRefreshToken())
                     .body(LoginResponseDTO.builder()
                             .role(memberDTO.getRole())
+                            .nickname(memberDTO.getNickname())
                             .statusCode(HttpStatus.OK.value())
                             .successMessage("로그인 성공")
                             .build());

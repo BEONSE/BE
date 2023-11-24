@@ -16,6 +16,7 @@ public class PaymentDTO {
     private String name;
     private String nickname;
     private String address;
+    private String price;
     private String points;
     private String cardName;
     private String cardNumber;
