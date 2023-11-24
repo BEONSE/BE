@@ -105,6 +105,7 @@ public class MemberService {
             return MemberDTO.builder()
                     .mid(memberDTO.getMid())
                     .role(memberDTO.getRole())
+                    .nickname(memberDTO.getNickname())
                     .email(memberDTO.getEmail())
                     .build();
         }
