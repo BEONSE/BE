@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -78,11 +77,12 @@ public class MemberService {
      */
     public MemberDTO login(LoginDTO loginDTO) {
 
-        MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail())
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_MATCH_EMAIL));
+        MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail()).orElseThrow(
+                () -> new CustomException(NOT_MATCH_EMAIL)
+        );
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), memberDTO.getPassword())) {
-            throw new CustomException(ErrorCode.NOT_MATCH_PASSWORD);
+            throw new CustomException(NOT_MATCH_PASSWORD);
         }
 
         if (memberDTO.getRole().equals(Role.ROLE_BRANCH)) {
@@ -160,7 +160,7 @@ public class MemberService {
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        if (memberMapper.findByNickname(memberEditDTO.getNickname()).isPresent()) {
+        if (!(jwtUtil.getEmail(token).equals(findMember.getEmail())) && memberMapper.findByNickname(memberEditDTO.getNickname()).isPresent()) {
             throw new CustomException(DUPLICATE_NICKNAME);
         }
 
@@ -181,7 +181,6 @@ public class MemberService {
                         .nickname(memberEditDTO.getNickname())
                         .address(memberEditDTO.getAddress())
                         .password(password)
-                        .image(memberEditDTO.getImage())
                         .originalFileName(image.getOriginalFilename())
                         .imageType(image.getContentType())
                         .imageData(image.getBytes())

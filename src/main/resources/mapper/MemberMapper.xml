@@ -111,7 +111,7 @@
             ADDRESS = #{address},
             MODIFIED_AT = SYSTIMESTAMP,
         <choose>
-            <when test="image != null">
+            <when test="imageData != null">
                 IMAGE =  #{imageData, jdbcType=BLOB},
                 ORIGINAL_FILE_NAME = #{originalFileName},
                 IMAGE_TYPE = #{imageType}

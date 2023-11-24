@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 
@@ -18,7 +16,6 @@ public class MemberEditDTO {
     private String nickname;
     private String password;
     private String address;
-    private MultipartFile image;
     private String originalFileName;
     private String imageType;
     private byte[] imageData;
@@ -26,14 +23,13 @@ public class MemberEditDTO {
     private Timestamp modifiedAt;
 
     @Builder
-    public MemberEditDTO(Long mid, String email, String nickname, String password, String address, MultipartFile image,
+    public MemberEditDTO(Long mid, String email, String nickname, String password, String address,
                          String originalFileName, String imageType, byte[] imageData, Timestamp modifiedAt) {
         this.mid = mid;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.address = address;
-        this.image = image;
         this.originalFileName = originalFileName;
         this.imageType = imageType;
         this.imageData = imageData;
