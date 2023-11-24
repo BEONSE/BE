@@ -4,6 +4,7 @@ import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
+import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO;
 import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.comment.mapper.MateCommentMapper;
@@ -16,9 +17,13 @@ import com.beonse2.domain.reservation.mapper.ReservationMapper;
 import com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO;
 import com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.beonse2.config.exception.ErrorCode.*;
 
@@ -33,6 +38,7 @@ public class MyPageService {
     private final MateBoardMapper mateBoardMapper;
     private final MateCommentMapper mateCommentMapper;
     private final ReservationMapper reservationMapper;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public MyPage myInfo(String accessToken) {
         String token = jwtUtil.resolveToken(accessToken);
@@ -154,6 +160,26 @@ public class MyPageService {
                 .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
+                .build();
+    }
+
+    @Transactional
+    public SuccessMessageDTO updatePassword(MemberDTO memberDTO) {
+
+        MemberDTO findMember = memberMapper.findByEmail(memberDTO.getEmail()).orElseThrow(
+                () -> new CustomException(NOT_FOUND_MEMBER)
+        );
+
+        findMember = MemberDTO.builder()
+                .mid(findMember.getMid())
+                .password(passwordEncoder.encode(memberDTO.getPassword()))
+                .build();
+
+        memberMapper.updatePassword(findMember);
+
+        return SuccessMessageDTO.builder()
+                .statusCode(HttpStatus.OK.value())
+                .successMessage("비밀번호 수정 완료")
                 .build();
     }
 }

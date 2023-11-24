@@ -78,11 +78,11 @@ public class MemberService {
     public MemberDTO login(LoginDTO loginDTO) {
 
         MemberDTO memberDTO = memberMapper.findByEmail(loginDTO.getEmail()).orElseThrow(
-                () -> new CustomException(NOT_MATCH_EMAIL)
+                () -> new CustomException(NOT_MATCH_MEMBER)
         );
 
         if (!passwordEncoder.matches(loginDTO.getPassword(), memberDTO.getPassword())) {
-            throw new CustomException(NOT_MATCH_PASSWORD);
+            throw new CustomException(NOT_MATCH_MEMBER);
         }
 
         if (memberDTO.getRole().equals(Role.ROLE_BRANCH)) {
@@ -168,9 +168,9 @@ public class MemberService {
         String email = findMember.getEmail();
         String password;
         if (memberEditDTO.getPassword() != null) {
-            password = passwordEncoder.encode(memberEditDTO.getPassword());
+            password = memberEditDTO.getPassword();
         } else {
-            password = findMember.getPassword();
+            password = passwordEncoder.encode(findMember.getPassword());
         }
 
         if (email.equals(memberEditDTO.getEmail())) {

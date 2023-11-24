@@ -151,4 +151,10 @@
     <!--        WHERE-->
     <!--            EMAIL = #{value}-->
     <!--    </select>-->
+
+    <update id="updatePassword" parameterType="memberDTO">
+        UPDATE member
+        SET password = #{password}
+        WHERE mid = #{mid}
+    </update>
 </mapper>
