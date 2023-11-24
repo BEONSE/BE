@@ -150,8 +150,8 @@ public class MemberService {
                 .build();
     }
 
-    public SuccessMessageDTO updateInfo(MemberEditDTO memberEditDTO,
-                                        MultipartFile image,
+    public SuccessMessageDTO updateInfo(MultipartFile image,
+                                        MemberEditDTO memberEditDTO,
                                         String accessToken) throws IOException {
         String token = jwtUtil.resolveToken(accessToken);
 

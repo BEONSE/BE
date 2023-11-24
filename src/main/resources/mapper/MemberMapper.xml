@@ -129,8 +129,7 @@
     <!--가맹점 회원 정보 수정-->
     <update id="updateBranchInfo" parameterType="branch">
         UPDATE MEMBER
-        SET PASSWORD = #{password},
-            ADDRESS = #{address}
+        SET PASSWORD = #{password}
         WHERE MID = #{memberId}
     </update>
 
