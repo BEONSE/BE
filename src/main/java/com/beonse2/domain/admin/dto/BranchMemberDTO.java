@@ -19,6 +19,7 @@ public class BranchMemberDTO {
     private String nickname;
     private Role role;
     private String address;
+    private String isApproval;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:dd", timezone = "Asia/Seoul")
     private Timestamp createdAt;
 
