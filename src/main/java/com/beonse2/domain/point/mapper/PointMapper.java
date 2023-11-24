@@ -1,5 +1,7 @@
 package com.beonse2.domain.point.mapper;
 
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.domain.point.dto.PointResponseDTO;
 import com.beonse2.domain.point.vo.PointVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,5 +12,7 @@ public interface PointMapper {
 
     void savePoint(PointVO pointVO);
 
-    List<PointVO> findMyPayments(Long memberMid);
+    List<PointResponseDTO> findMyPayments(PageRequestDTO pageRequest);
+
+    int getCount(Long memberMid);
 }

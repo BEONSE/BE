@@ -1,5 +1,6 @@
 package com.beonse2.domain.point.controller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.point.dto.PointRequestDTO;
 import com.beonse2.domain.point.dto.PointResponseDTO;
@@ -42,8 +43,9 @@ public class PointController {
     })
     @GetMapping("/mypage/payments")
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<PointResponseDTO>> getPointList(@RequestHeader(value = "Authorization") String accessToken) {
-        return ResponseEntity.ok(pointService.findPointList(accessToken));
+    public ResponseEntity<PageResponseDTO> getPointList(@RequestHeader(value = "Authorization") String accessToken,
+                                                        @RequestParam(defaultValue = "1") int page) {
+        return ResponseEntity.ok(pointService.findPointList(accessToken, page));
     }
 
     @GetMapping("/points")

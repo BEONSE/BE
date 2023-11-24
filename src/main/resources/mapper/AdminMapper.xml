@@ -10,9 +10,9 @@
         <![CDATA[
         SELECT *
         FROM (
-            SELECT rownum rnum, mid, email, is_approval, role, bid, name, address, created_at
+            SELECT rownum rnum, mid, email, is_approval, role, name, nickname, bid, address, created_at
             FROM (
-                SELECT m.mid, m.email, m.is_approval, m.role, b.bid, b.name, b.address, b.created_at
+                SELECT m.mid, m.email, m.is_approval, m.role, m.name, m.nickname, b.bid, b.address, b.created_at
                 FROM member m
                     JOIN branch b
                         ON m.mid = b.member_mid
@@ -71,6 +71,25 @@
         ]]>
     </select>
 
+    <select id="findPaymentPage" parameterType="pageRequest" resultType="paymentDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, pid, points, card_name, card_number, mid, name, payment_date
+            FROM (
+                SELECT p.pid, p.points, p.card_name, p.card_number, m.mid, m.name, p.payment_date
+                FROM point p
+                    JOIN member m
+                        ON p.member_mid = m.mid
+                WHERE m.status = '0'
+                ORDER BY p.payment_date DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
     <select id="getResultCount" resultType="int">
         SELECT COUNT(*)
         FROM member
@@ -82,6 +101,11 @@
         SELECT COUNT(*)
         FROM member
         WHERE status = '0'
+    </select>
+
+    <select id="getPaymentCount" resultType="int">
+        SELECT COUNT(*)
+        FROM point
     </select>
 
     <update id="updateAcceptApproval" parameterType="long">

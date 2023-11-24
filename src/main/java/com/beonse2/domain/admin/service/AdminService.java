@@ -6,6 +6,7 @@ import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.admin.dto.AllMemberDTO;
 import com.beonse2.domain.admin.dto.BranchMemberDTO;
+import com.beonse2.domain.admin.dto.PaymentDTO;
 import com.beonse2.domain.admin.mapper.AdminMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
@@ -16,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.beonse2.config.exception.ErrorCode.NOT_FOUND_MEMBER;
-import static com.beonse2.config.exception.ErrorCode.NOT_MATCH_APPROVAL;
+import static com.beonse2.config.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -138,6 +138,32 @@ public class AdminService {
                 .size(10)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
+                .build();
+    }
+
+    public PageResponseDTO findPaymentPage(int page) {
+
+        int totalRows = adminMapper.getPaymentCount();
+
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<PaymentDTO> paymentDTO = adminMapper.findPaymentPage(pageRequest);
+
+        if (paymentDTO.isEmpty()) {
+            throw new CustomException(NOT_FOUND_PAYMENT);
+        }
+
+        return PageResponseDTO.builder()
+                .page(page)
+                .size(10)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .content(paymentDTO)
                 .build();
     }
 }

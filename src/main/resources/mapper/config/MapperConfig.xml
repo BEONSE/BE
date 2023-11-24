@@ -12,6 +12,8 @@
 
     <typeAliases>
         <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
+        <typeAlias alias="pointResponseDTO" type="com.beonse2.domain.point.dto.PointResponseDTO" />
+        <typeAlias alias="paymentDTO" type="com.beonse2.domain.admin.dto.PaymentDTO" />
         <typeAlias alias="branch" type="com.beonse2.domain.branch.vo.Branch" />
         <typeAlias alias="branchRequestDTO" type="com.beonse2.domain.branch.dto.BranchRequestDTO" />
         <typeAlias alias="branchDTO" type="com.beonse2.domain.branch.dto.BranchDTO" />
@@ -20,7 +22,6 @@
         <typeAlias alias="allMemberDTO" type="com.beonse2.domain.admin.dto.AllMemberDTO" />
         <typeAlias alias="branchMemberDTO" type="com.beonse2.domain.admin.dto.BranchMemberDTO" />
         <typeAlias alias="memberEditDTO" type="com.beonse2.domain.member.dto.MemberEditDTO" />
-        <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
         <typeAlias alias="mateBoardVo" type="com.beonse2.domain.mate.board.vo.MateBoardVO" />
         <typeAlias alias="mateBoardListDTO" type="com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO" />
         <typeAlias alias="pageRequest" type="com.beonse2.config.utils.page.PageRequestDTO" />
@@ -36,6 +37,7 @@
         <typeAlias alias="couponVo" type="com.beonse2.domain.coupon.vo.CouponVO" />
         <typeAlias alias="couponResponseDTO" type="com.beonse2.domain.coupon.dto.CouponResponseDTO" />
         <typeAlias alias="branchListDTO" type="com.beonse2.domain.branch.dto.BranchListDTO" />
+        <typeAlias alias="branchNameDTO" type="com.beonse2.domain.branch.dto.BranchNameDTO" />
         <typeAlias alias="maxPaymentDTO" type="com.beonse2.domain.member.dto.MaxPaymentDTO" />
     </typeAliases>
 </configuration>

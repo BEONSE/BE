@@ -2,6 +2,8 @@ package com.beonse2.domain.point.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
@@ -77,30 +79,36 @@ public class PointService {
                 .build();
     }
 
-    public List<PointResponseDTO> findPointList(String accessToken) {
+    public PageResponseDTO findPointList(String accessToken, int page) {
 
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
+        int totalRows = pointMapper.getCount(findMember.getMid());
 
-        List<PointVO> pointVOS = pointMapper.findMyPayments(findMember.getMid());
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(findMember.getMid())
+                .rowsPerPage(10)
+                .pagesPerGroup(10)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
 
-        if (pointVOS.isEmpty()) {
+        List<PointResponseDTO> pointResponseDTOS = pointMapper.findMyPayments(pageRequest);
+
+        if (pointResponseDTOS.isEmpty()) {
             throw new CustomException(NOT_FOUND_PAYMENT);
         }
 
-        List<PointResponseDTO> pointResponseDTOS = new ArrayList<>();
-        for (PointVO pointVO : pointVOS) {
-            PointResponseDTO pointResponseDTO = PointResponseDTO.builder()
-                    .pointVO(pointVO)
-                    .build();
-
-            pointResponseDTOS.add(pointResponseDTO);
-        }
-
-        return pointResponseDTOS;
+        return PageResponseDTO.builder()
+                .page(page)
+                .size(10)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .content(pointResponseDTOS)
+                .build();
     }
 
     public Map<String, Integer> findPoint(String accessToken) {

@@ -3,6 +3,7 @@ package com.beonse2.domain.branch.controller;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchListDTO;
+import com.beonse2.domain.branch.dto.BranchNameDTO;
 import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.sevice.BranchService;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -63,7 +65,7 @@ public class BranchController {
     }
 
     @GetMapping("/branches/names")
-    public ResponseEntity<List<String>> getBranchNames() {
+    public ResponseEntity<List<BranchNameDTO>> getBranchNames() {
         return ResponseEntity.ok(branchService.findBranchNames());
     }
 

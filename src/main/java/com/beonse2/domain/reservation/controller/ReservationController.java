@@ -52,7 +52,6 @@ public class ReservationController {
     }
 
     @GetMapping("reservation/{branch-id}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<String> getBranchName(@PathVariable("branch-id") Long branchId) {
         return ResponseEntity.ok(reservationService.findBranchName(branchId));
     }
