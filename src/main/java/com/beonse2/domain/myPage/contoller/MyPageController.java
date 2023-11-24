@@ -32,7 +32,7 @@ public class MyPageController {
         return ResponseEntity.ok(myPageService.myInfo(accessToken));
     }
 
-    @PatchMapping(value = "/info") //회원정보 수정
+    @PatchMapping("/info") //회원정보 수정
     public ResponseEntity<SuccessMessageDTO> updateInfo(@RequestPart(required = false) MultipartFile image,
                                                         @RequestPart MemberEditDTO memberEditDTO,
                                                         @RequestHeader(value = "Authorization") String accessToken) throws IOException {
