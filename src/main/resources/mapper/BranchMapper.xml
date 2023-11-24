@@ -101,7 +101,7 @@
     </update>
 
     <select id="findById" parameterType="long" resultType="branchDTO">
-        SELECT bid, member_mid, address, lat, lng, name branch_name, introduction
+        SELECT bid, member_mid, address, lat, lng, name branch_name, image, introduction
         FROM branch
         WHERE bid = #{branchId}
     </select>
