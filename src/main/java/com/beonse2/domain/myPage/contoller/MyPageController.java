@@ -32,12 +32,11 @@ public class MyPageController {
         return ResponseEntity.ok(myPageService.myInfo(accessToken));
     }
 
-    @PatchMapping("/info") //회원정보 수정
-    @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<SuccessMessageDTO> updateInfo(@RequestHeader(value = "Authorization") String accessToken,
-                                                        @RequestPart MultipartFile image,
-                                                        @RequestPart MemberEditDTO memberEditDTO) throws IOException {
-        return ResponseEntity.ok(memberService.updateInfo(memberEditDTO, image, accessToken));
+    @PatchMapping(value = "/info") //회원정보 수정
+    public ResponseEntity<SuccessMessageDTO> updateInfo(@RequestPart(required = false) MultipartFile image,
+                                                        @RequestPart MemberEditDTO memberEditDTO,
+                                                        @RequestHeader(value = "Authorization") String accessToken) throws IOException {
+        return ResponseEntity.ok(memberService.updateInfo(image, memberEditDTO, accessToken));
     }
 
     @GetMapping("/reviews")

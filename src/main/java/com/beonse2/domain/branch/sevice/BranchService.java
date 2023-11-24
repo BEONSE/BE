@@ -57,7 +57,6 @@ public class BranchService {
         memberMapper.saveBranch(member);
 
 
-
         //response로 멤버 아이디  findbyEmail찾음
         MemberDTO findMember = memberMapper.findByEmail(branchRequestDTO.getEmail()).orElseThrow(
                 () -> new CustomException(NOT_FOUND_MEMBER)
@@ -136,26 +135,34 @@ public class BranchService {
 
         Long mid = findMember.getMid();
 
-        if (!images.isEmpty()) {
-            for (MultipartFile image : images) {
-                ImageDTO imageDTO = ImageDTO.builder()
-                        .branchBid(findBranch.getBid())
-                        .image(image)
-                        .imageData(image.getBytes())
-                        .originalFileName(image.getOriginalFilename())
-                        .imageType(image.getContentType())
-                        .build();
+        try {
+            if (!images.isEmpty()) {
+                for (MultipartFile image : images) {
+                    ImageDTO imageDTO = ImageDTO.builder()
+                            .branchBid(findBranch.getBid())
+                            .image(image)
+                            .imageData(image.getBytes())
+                            .originalFileName(image.getOriginalFilename())
+                            .imageType(image.getContentType())
+                            .build();
 
-                branchMapper.saveImage(imageDTO);
+                    branchMapper.saveImage(imageDTO);
+                }
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
 
         String email = findMember.getEmail();
-        String password;
-        if (branchRequestDTO.getPassword().isEmpty()) {
+        String password = "";
+//        findMember.getPassword() : passwordEncoder.encode(branchRequestDTO.getPassword());
+
+        try {
+            if (branchRequestDTO.getPassword().isEmpty()) {
+                password = passwordEncoder.encode(branchRequestDTO.getPassword());
+            }
+        } catch (NullPointerException e) {
             password = findMember.getPassword();
-        } else {
-            password = passwordEncoder.encode(branchRequestDTO.getPassword());
         }
 
         Branch branch;
@@ -165,8 +172,6 @@ public class BranchService {
             branch = Branch.builder()
                     .bid(findBranch.getBid())
                     .memberId(mid)
-                    .branchName(branchRequestDTO.getBranchName())
-                    .address(branchRequestDTO.getAddress())
                     .password(password)
                     .introduction(branchRequestDTO.getIntroduction())
                     .build();

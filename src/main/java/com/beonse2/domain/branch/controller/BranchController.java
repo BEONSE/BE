@@ -76,7 +76,7 @@ public class BranchController {
 
     @PatchMapping("/branches/info")
     @PreAuthorize("hasRole('BRANCH')")
-    public ResponseEntity<SuccessMessageDTO> patchBranch(@RequestPart List<MultipartFile> image,
+    public ResponseEntity<SuccessMessageDTO> patchBranch(@RequestPart(required = false) List<MultipartFile> image,
                                                          @RequestPart BranchRequestDTO branchRequestDTO,
                                                          @RequestHeader("Authorization") String accessToken) throws IOException {
         return ResponseEntity.ok(branchService.updateBranch(accessToken, image, branchRequestDTO));

@@ -94,8 +94,7 @@
 
     <update id="updateBranchInfo" parameterType="branch">
         UPDATE branch
-        SET name         = #{branchName},
-            introduction = #{introduction},
+        SET introduction = #{introduction},
             address      = #{address}
         WHERE bid = #{bid}
     </update>

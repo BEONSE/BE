@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class MemberEditDTO {
 
