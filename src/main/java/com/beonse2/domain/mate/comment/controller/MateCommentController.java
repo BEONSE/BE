@@ -1,5 +1,6 @@
 package com.beonse2.domain.mate.comment.controller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.comment.dto.MateCommentRequestDTO;
 import com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO;
@@ -28,8 +29,9 @@ public class MateCommentController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<List<MateCommentResponseDTO>> getMateCommentList(@PathVariable("mateBoard-id") Long mateBoardId) {
-        return ResponseEntity.ok(mateCommentService.findMateCommentList(mateBoardId));
+    public ResponseEntity<PageResponseDTO> getMateCommentList(@PathVariable("mateBoard-id") Long mateBoardId,
+                                                              @RequestParam(defaultValue = "1") int page) {
+        return ResponseEntity.ok(mateCommentService.findMateCommentList(mateBoardId, page));
     }
 
     @PatchMapping("/{mateComment-id}")

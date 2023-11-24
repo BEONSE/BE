@@ -2,6 +2,7 @@ package com.beonse2.domain.myPage.contoller;
 
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
+import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.dto.MemberEditDTO;
 import com.beonse2.domain.member.service.MemberService;
 import com.beonse2.domain.myPage.service.MyPageService;
@@ -63,6 +64,11 @@ public class MyPageController {
     public ResponseEntity<PageResponseDTO> getReservationPage(@RequestHeader(value = "Authorization") String accessToken,
                                                               @RequestParam(defaultValue = "1") int page) {
         return ResponseEntity.ok(myPageService.findMyReservationPage(accessToken, page));
+    }
+
+    @PatchMapping("/zzzzz")
+    public ResponseEntity<SuccessMessageDTO> patchPassword(@RequestBody MemberDTO memberDTO) {
+        return ResponseEntity.ok(myPageService.updatePassword(memberDTO));
     }
 
 }

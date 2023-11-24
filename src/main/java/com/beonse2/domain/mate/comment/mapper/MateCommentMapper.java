@@ -1,5 +1,6 @@
 package com.beonse2.domain.mate.comment.mapper;
 
+import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO;
 import com.beonse2.domain.mate.comment.vo.MateCommentVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,9 +15,12 @@ public interface MateCommentMapper {
 
     int findCommentCount(Long mateBoardId);
 
-    List<MateCommentResponseDTO> findAllMateComment(Long mateBoardId);
+    List<MateCommentResponseDTO> findAllMateComment(PageRequestDTO pageRequest);
 
     Optional<MateCommentResponseDTO> findById(Long mateCommentId);
 
     void deleteMateComment(Long mateCommentId);
+
+    int getCount(Long mateBoardId);
+
 }

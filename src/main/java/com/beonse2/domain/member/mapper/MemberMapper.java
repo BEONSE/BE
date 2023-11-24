@@ -32,5 +32,6 @@ public interface MemberMapper {
 
     Optional<MaxPaymentDTO> findMaxPayment();
 
+    void updatePassword(MemberDTO findMember);
 }
 

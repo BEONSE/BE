@@ -16,6 +16,7 @@ public class MyPage {
     private String name;
     private String nickname;
     private MultipartFile image;
+    private byte[] imageData;
     private String originalFileName;
     private String imageType;
     private String address;
@@ -25,14 +26,15 @@ public class MyPage {
     private Role role;
 
     @Builder
-    public MyPage(Long mid, String email, String password, String name, String nickname, MultipartFile image,
-                  String originalFileName, String imageType, String address, int paymentAmount, int pointAmount, int grade, Role role) {
+    public MyPage(Long mid, String email, String password, String name, String nickname, MultipartFile image, String originalFileName,
+                  String imageType, byte[] imageData, String address, int paymentAmount, int pointAmount, int grade, Role role) {
         this.mid = mid;
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
         this.image = image;
+        this.imageData = imageData;
         this.originalFileName = originalFileName;
         this.imageType = imageType;
         this.address = address;

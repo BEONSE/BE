@@ -2,6 +2,8 @@ package com.beonse2.domain.mate.comment.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.mate.board.mapper.MateBoardMapper;
 import com.beonse2.domain.mate.comment.dto.MateCommentRequestDTO;
@@ -54,9 +56,18 @@ public class MateCommentService {
                 .build();
     }
 
-    public List<MateCommentResponseDTO> findMateCommentList(Long mateBoardId) {
+    public PageResponseDTO findMateCommentList(Long mateBoardId, int page) {
 
-        List<MateCommentResponseDTO> mateComments = mateCommentMapper.findAllMateComment(mateBoardId);
+        int totalRows = mateCommentMapper.getCount(mateBoardId);
+        PageRequestDTO pageRequest = PageRequestDTO.builder()
+                .paramId(mateBoardId)
+                .rowsPerPage(6)
+                .pagesPerGroup(6)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<MateCommentResponseDTO> mateComments = mateCommentMapper.findAllMateComment(pageRequest);
 
         if (mateComments.isEmpty()) {
             throw new CustomException(NOT_FOUND_COMMENT);
@@ -66,7 +77,13 @@ public class MateCommentService {
             mateComment.updateGrade(mateComment.getPaymentAmount() < 150000 ? 3 : mateComment.getPaymentAmount() < 300000 ? 2 : 1);
         }
 
-        return mateComments;
+        return PageResponseDTO.builder()
+                .page(page)
+                .size(6)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .content(mateComments)
+                .build();
     }
 
     public SuccessMessageDTO removeMateComment(Long mateBoardId, Long mateCommentId, String accessToken) {
