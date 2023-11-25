@@ -15,8 +15,8 @@
         <![CDATA[
                 SELECT *
                 FROM (
-                    SELECT rownum rnum, mbid, title, modified_at, nickname, payment_amount
-                    FROM (SELECT mb.mbid, mb.title, mb.modified_at, m.nickname, m.payment_amount
+                    SELECT rownum rnum, mbid, title, modified_at, nickname, payment_amount, branch_name
+                    FROM (SELECT mb.mbid, mb.title, mb.modified_at, m.nickname, m.payment_amount, mb.branch_name
                             FROM mateboard mb
                                 JOIN member m
                                     ON mb.member_mid = m.mid
