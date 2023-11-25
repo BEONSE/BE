@@ -3,10 +3,12 @@ package com.beonse2.domain.mate.board.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Getter
+@NoArgsConstructor
 public class MateBoardResponseDTO {
 
     private Long mbid;
