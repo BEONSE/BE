@@ -20,9 +20,11 @@ public class CouponResponseDTO {
     private String branchName;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp paymentDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Timestamp usedDate;
 
     @Builder
-    public CouponResponseDTO(Long cid, Long memberMid, String name, String type, int price, boolean isUsed, Timestamp paymentDate) {
+    public CouponResponseDTO(Long cid, Long memberMid, String name, String type, int price, boolean isUsed, Timestamp paymentDate, Timestamp usedDate) {
         this.cid = cid;
         this.memberMid = memberMid;
         this.name = name;
@@ -30,6 +32,7 @@ public class CouponResponseDTO {
         this.price = price;
         this.isUsed = isUsed;
         this.paymentDate = paymentDate;
+        this.usedDate = usedDate;
     }
 
     public void updateBranchName(String branchName) {
