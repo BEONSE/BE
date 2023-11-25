@@ -90,8 +90,8 @@ public class PointService {
 
         PageRequestDTO pageRequest = PageRequestDTO.builder()
                 .paramId(findMember.getMid())
-                .rowsPerPage(10)
-                .pagesPerGroup(10)
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
                 .totalRows(totalRows)
                 .page(page)
                 .build();
@@ -104,7 +104,7 @@ public class PointService {
 
         return PageResponseDTO.builder()
                 .page(page)
-                .size(10)
+                .size(5)
                 .totalRows(totalRows)
                 .totalPageNo(pageRequest.getTotalPageNo())
                 .content(pointResponseDTOS)
