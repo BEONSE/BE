@@ -97,7 +97,7 @@ public class ReviewBoardService {
 
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .paramId(branchId)
-                .rowsPerPage(5)
+                .rowsPerPage(20)
                 .pagesPerGroup(5)
                 .totalRows(totalRows)
                 .page(page)

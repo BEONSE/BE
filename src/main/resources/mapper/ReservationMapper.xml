@@ -30,7 +30,7 @@
                             JOIN BRANCH B
                                 ON R.BRANCH_BID = B.BID
                         WHERE R.member_mid = #{paramId}
-                        ORDER BY R.RVID DESC)
+                        ORDER BY R.RESERVATION_TIME DESC)
                 WHERE rownum <= #{endRowNo}
             )
         WHERE rnum >= #{startRowNo}
