@@ -28,4 +28,6 @@ public interface BranchMapper {
     Optional<BranchDTO> findById(Long branchId);
 
     List<ImageDTO> findImage(Long branchId);
+
+    void deleteImage(Long bid);
 }

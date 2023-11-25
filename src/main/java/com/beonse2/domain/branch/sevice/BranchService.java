@@ -137,6 +137,7 @@ public class BranchService {
 
         try {
             if (!images.isEmpty()) {
+                branchMapper.deleteImage(findBranch.getBid());
                 for (MultipartFile image : images) {
                     ImageDTO imageDTO = ImageDTO.builder()
                             .branchBid(findBranch.getBid())
@@ -155,14 +156,11 @@ public class BranchService {
 
         String email = findMember.getEmail();
         String password = "";
-//        findMember.getPassword() : passwordEncoder.encode(branchRequestDTO.getPassword());
 
-        try {
-            if (!branchRequestDTO.getPassword().isEmpty()) {
-                password = passwordEncoder.encode(branchRequestDTO.getPassword());
-            }
-        } catch (NullPointerException e) {
+        if (branchRequestDTO.getPassword() == null || branchRequestDTO.getPassword().equals("")) {
             password = findMember.getPassword();
+        } else {
+            password = passwordEncoder.encode(branchRequestDTO.getPassword());
         }
 
         Branch branch;

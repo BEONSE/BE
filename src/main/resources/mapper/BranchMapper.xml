@@ -43,7 +43,7 @@
 
     <insert id="saveImage" parameterType="imageDTO">
         INSERT INTO branchimage(bmid, branch_bid, image, original_file_name, image_type)
-        VALUES (branchimage_seq.NEXTVAL, #{branchBid}, #{reviewImageData}, #{reviewOriginalFileName}, #{reviewImageType})
+        VALUES (branchimage_seq.NEXTVAL, #{branchBid}, #{imageData, jdbcType=BLOB}, #{originalFileName}, #{imageType})
     </insert>
 
     <!--가맹점 조회-->
@@ -94,8 +94,7 @@
 
     <update id="updateBranchInfo" parameterType="branch">
         UPDATE branch
-        SET introduction = #{introduction},
-            address      = #{address}
+        SET introduction = #{introduction}
         WHERE bid = #{bid}
     </update>
 
@@ -110,4 +109,9 @@
         FROM branchimage
         WHERE branch_bid = #{branchId}
     </select>
+
+    <delete id="deleteImage" parameterType="long">
+        DELETE FROM branchimage
+        WHERE branch_bid = #{bid}
+    </delete>
 </mapper>
