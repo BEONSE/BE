@@ -2,6 +2,7 @@ package com.beonse2.domain.coupon.service;
 
 import com.beonse2.config.exception.CustomException;
 import com.beonse2.config.jwt.JwtUtil;
+import com.beonse2.config.utils.page.PageRequestBranchName;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
@@ -156,7 +157,7 @@ public class CouponService {
                 .build();
     }
 
-    public List<CouponResponseDTO> findUseAllCoupon(String accessToken) {
+    public PageResponseDTO findUseAllCoupon(String accessToken, int page) {
         String token = jwtUtil.resolveToken(accessToken);
 
         MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
@@ -165,36 +166,29 @@ public class CouponService {
 
         String branchName = findMember.getNickname();
 
-        List<CouponResponseDTO> findCoupon = couponMapper.findUseAllCoupon(branchName);
+        int totalRows = couponMapper.getCountBranchName(branchName);
+
+        PageRequestBranchName pageRequest = PageRequestBranchName.builder()
+                .branchName(branchName)
+                .rowsPerPage(5)
+                .pagesPerGroup(5)
+                .totalRows(totalRows)
+                .page(page)
+                .build();
+
+        List<CouponResponseDTO> findCoupon = couponMapper.findUseAllCoupon(pageRequest);
 
         if (findMember.getNickname().isEmpty()) {
             throw new CustomException(NOT_FOUND_COUPON);
         }
 
-        return findCoupon;
+        return PageResponseDTO.builder()
+                .content(findCoupon)
+                .page(page)
+                .size(5)
+                .totalRows(totalRows)
+                .totalPageNo(pageRequest.getTotalPageNo())
+                .build();
     }
 
-    public List<CouponResponseDTO> findUseMemberCoupon(Long memberId, String accessToken) {
-
-        String token = jwtUtil.resolveToken(accessToken);
-
-        MemberDTO findMember = memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
-                () -> new CustomException(NOT_FOUND_BRANCH)
-        );
-
-        String branchName = findMember.getNickname();
-
-        List<CouponResponseDTO> findCoupon = couponMapper.findUseAllCoupon(branchName);
-
-        for (CouponResponseDTO couponResponseDTO : findCoupon) {
-            if (!couponResponseDTO.getMemberMid().equals(memberId)) {
-                throw new CustomException(NOT_FOUND_MEMBER);
-            }
-        }
-
-        if (findMember.getNickname().isEmpty()) {
-            throw new CustomException(NOT_FOUND_COUPON);
-        }
-        return findCoupon;
-    }
 }

@@ -1,5 +1,6 @@
 package com.beonse2.domain.coupon.mapper;
 
+import com.beonse2.config.utils.page.PageRequestBranchName;
 import com.beonse2.config.utils.page.PageRequestDTO;
 import com.beonse2.domain.coupon.dto.CouponResponseDTO;
 import com.beonse2.domain.coupon.vo.CouponVO;
@@ -19,9 +20,7 @@ public interface CouponMapper {
 
     void updateCoupon(Map<String, Object> searchMap);
 
-    List<CouponResponseDTO> findUseAllCoupon(String branchName);
-
-    List<CouponResponseDTO> findUseMemberCoupon(CouponResponseDTO couponResponseDTO);
+    List<CouponResponseDTO> findUseAllCoupon(PageRequestBranchName pageRequest);
 
     void updateCouponWriteReview(CouponResponseDTO couponResponseDTO);
 
@@ -30,4 +29,6 @@ public interface CouponMapper {
     int getCountUseCoupons(Long memberId);
 
     List<CouponResponseDTO> findUseCouponPages(PageRequestDTO pageRequest);
+
+    int getCountBranchName(String branchName);
 }
