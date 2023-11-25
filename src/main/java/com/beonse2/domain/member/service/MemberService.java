@@ -168,9 +168,9 @@ public class MemberService {
         String email = findMember.getEmail();
         String password;
         if (memberEditDTO.getPassword() == null || memberEditDTO.getPassword().equals("")) {
-            password = passwordEncoder.encode(memberEditDTO.getPassword());
-        } else {
             password = findMember.getPassword();
+        } else {
+            password = passwordEncoder.encode(memberEditDTO.getPassword());
         }
 
         if (email.equals(memberEditDTO.getEmail())) {
