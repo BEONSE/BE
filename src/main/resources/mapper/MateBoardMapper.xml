@@ -46,7 +46,8 @@
 
 
     <select id="findById" resultType="mateBoardDTO" parameterType="long">
-        SELECT mb.mbid, mb.title, mb.content, m.nickname, m.payment_amount, m.image image_data, mb.created_at, mb.modified_at
+        SELECT mb.mbid, mb.title, mb.content, m.nickname, m.payment_amount,
+               m.image image_data, mb.created_at, mb.modified_at, mb.branch_name
         FROM mateboard mb
             JOIN member m
                 ON mb.member_mid = m.mid
