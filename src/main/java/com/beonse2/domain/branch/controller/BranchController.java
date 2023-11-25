@@ -1,5 +1,6 @@
 package com.beonse2.domain.branch.controller;
 
+import com.beonse2.config.utils.page.PageResponseDTO;
 import com.beonse2.config.utils.success.SuccessMessageDTO;
 import com.beonse2.domain.branch.dto.BranchDTO;
 import com.beonse2.domain.branch.dto.BranchListDTO;
@@ -42,15 +43,9 @@ public class BranchController {
 
     @GetMapping("/branches/coupons") //전체 쿠폰 사용 내역 조회
     @PreAuthorize("hasRole('BRANCH')")
-    public ResponseEntity<List<CouponResponseDTO>> getUseCoupons(@RequestHeader("Authorization") String accessToken) {
-        return ResponseEntity.ok(couponService.findUseAllCoupon(accessToken));
-    }
-
-    @GetMapping("/branches/coupons/{member-id}") //단일 회원 쿠폰 결제
-    @PreAuthorize("hasRole('BRANCH')")
-    public ResponseEntity<List<CouponResponseDTO>> getUseMemberCoupons(@PathVariable("member-id") Long memberId,
-                                                                       @RequestHeader("Authorization") String accessToken) {
-        return ResponseEntity.ok(couponService.findUseMemberCoupon(memberId, accessToken));
+    public ResponseEntity<PageResponseDTO> getUseCoupons(@RequestHeader("Authorization") String accessToken,
+                                                         @RequestParam(defaultValue = "1") int page) {
+        return ResponseEntity.ok(couponService.findUseAllCoupon(accessToken, page));
     }
 
     @GetMapping("/branches") // 가맹점 전체 조회
