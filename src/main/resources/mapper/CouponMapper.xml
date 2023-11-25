@@ -31,14 +31,14 @@
     <select id="findUseCouponPages" parameterType="pageRequest" resultType="couponResponseDTO">
         <![CDATA[
         SELECT * FROM (
-            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date
+            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
             FROM (
-                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
+                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
                 FROM coupon
                 WHERE member_mid = ${paramId}
                     AND branch_name IS NOT NULL
-                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
-                ORDER BY is_used, type DESC
+                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
+                ORDER BY is_used, type, used_date DESC
                 )
             WHERE rownum <= #{endRowNo})
         WHERE rnum >= #{startRowNo}
@@ -65,7 +65,8 @@
 
     <update id="updateCoupon" parameterType="map">
         UPDATE coupon
-        SET branch_name = #{branchName}
+        SET branch_name = #{branchName},
+            used_date = SYSTIMESTAMP
         WHERE cid = #{couponId}
     </update>
 

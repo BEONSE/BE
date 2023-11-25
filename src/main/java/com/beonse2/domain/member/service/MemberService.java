@@ -167,10 +167,10 @@ public class MemberService {
         Long mid = findMember.getMid();
         String email = findMember.getEmail();
         String password;
-        if (memberEditDTO.getPassword() != null) {
-            password = memberEditDTO.getPassword();
+        if (memberEditDTO.getPassword() == null || memberEditDTO.getPassword().equals("")) {
+            password = passwordEncoder.encode(memberEditDTO.getPassword());
         } else {
-            password = passwordEncoder.encode(findMember.getPassword());
+            password = findMember.getPassword();
         }
 
         if (email.equals(memberEditDTO.getEmail())) {
