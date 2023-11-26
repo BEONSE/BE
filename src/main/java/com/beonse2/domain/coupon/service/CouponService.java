@@ -47,11 +47,12 @@ public class CouponService {
                 .price(couponRequestDTO.getPrice())
                 .build();
 
+        int pointPayment = findMember.getPointAmount();
         for (int i = 0; i < couponRequestDTO.getQuantity(); i++) {
             couponMapper.saveCoupon(couponVO);
+            pointPayment -= couponRequestDTO.getPrice();
         }
 
-        int pointPayment = findMember.getPointAmount() - couponRequestDTO.getPrice();
         findMember.updateAmounts(0, pointPayment);
 
         memberMapper.updatePoint(findMember);
