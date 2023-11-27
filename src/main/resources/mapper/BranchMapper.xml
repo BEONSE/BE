@@ -20,16 +20,8 @@
 
     <!-- 가맹점 회원 가입 -->
     <insert id="save" parameterType="branch" useGeneratedKeys="true">
-        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, LAT, LNG, IMAGE, INTRODUCTION, CREATED_AT, MODIFIED_AT)
+        INSERT INTO BRANCH (BID, MEMBER_MID, NAME, ADDRESS, LAT, LNG, INTRODUCTION, CREATED_AT, MODIFIED_AT)
         VALUES (BRANCH_SEQ.nextval, #{memberId}, #{name}, #{address}, #{lat}, #{lng},
-        <choose>
-            <when test="image != null">
-                #{image},
-            </when>
-            <otherwise>
-                NULL,
-            </otherwise>
-        </choose>
         <choose>
             <when test="introduction != null">
                 #{introduction},
@@ -48,7 +40,7 @@
 
     <!--가맹점 조회-->
     <select id="findByMemberId" parameterType="long" resultType="branchRequestDTO">
-        SELECT B.BID, B.MEMBER_MID, M.EMAIL, B.NAME, B.ADDRESS, B.IMAGE, B.INTRODUCTION, B.CREATED_AT, B.MODIFIED_AT
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, B.NAME, B.ADDRESS, B.INTRODUCTION, B.CREATED_AT, B.MODIFIED_AT
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND B.MEMBER_MID = #{ value }
@@ -74,7 +66,7 @@
 
     <!--전체 가맹정 리스트-->
     <select id="findByAllBranch" resultType="branchListDTO">
-        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.IMAGE, B.INTRODUCTION
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.INTRODUCTION
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND M.ROLE = 'ROLE_BRANCH'
@@ -83,7 +75,7 @@
     </select>
 
     <select id="searchBranches" parameterType="string" resultType="branchListDTO">
-        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.IMAGE, B.INTRODUCTION
+        SELECT B.BID, B.MEMBER_MID, M.EMAIL, M.ROLE, B.NAME, B.ADDRESS, b.lat, b.lng, B.INTRODUCTION
         FROM BRANCH B,
              MEMBER M
         WHERE B.MEMBER_MID = M.MID
@@ -99,7 +91,7 @@
     </update>
 
     <select id="findById" parameterType="long" resultType="branchDTO">
-        SELECT bid, member_mid, address, lat, lng, name branch_name, image, introduction
+        SELECT bid, member_mid, address, lat, lng, name branch_name, introduction
         FROM branch
         WHERE bid = #{branchId}
     </select>

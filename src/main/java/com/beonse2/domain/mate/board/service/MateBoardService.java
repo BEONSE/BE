@@ -60,7 +60,6 @@ public class MateBoardService {
 
     public PageResponseDTO findMateBoardPage(int page) {
 
-        /*int rowsPerPage, int pagesPerGroup, int totalRows, int pageNo) {*/
         int totalRows = mateBoardMapper.getCount();
 
         PageRequestDTO pageRequest = PageRequestDTO.builder()
