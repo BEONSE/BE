@@ -66,9 +66,4 @@ public class MyPageController {
         return ResponseEntity.ok(myPageService.findMyReservationPage(accessToken, page));
     }
 
-    @PatchMapping("/zzzzz")
-    public ResponseEntity<SuccessMessageDTO> patchPassword(@RequestBody MemberDTO memberDTO) {
-        return ResponseEntity.ok(myPageService.updatePassword(memberDTO));
-    }
-
 }

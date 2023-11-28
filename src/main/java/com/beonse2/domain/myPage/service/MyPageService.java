@@ -163,23 +163,4 @@ public class MyPageService {
                 .build();
     }
 
-    @Transactional
-    public SuccessMessageDTO updatePassword(MemberDTO memberDTO) {
-
-        MemberDTO findMember = memberMapper.findByEmail(memberDTO.getEmail()).orElseThrow(
-                () -> new CustomException(NOT_FOUND_MEMBER)
-        );
-
-        findMember = MemberDTO.builder()
-                .mid(findMember.getMid())
-                .password(passwordEncoder.encode(memberDTO.getPassword()))
-                .build();
-
-        memberMapper.updatePassword(findMember);
-
-        return SuccessMessageDTO.builder()
-                .statusCode(HttpStatus.OK.value())
-                .successMessage("비밀번호 수정 완료")
-                .build();
-    }
 }

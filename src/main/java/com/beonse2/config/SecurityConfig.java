@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("https://localhost:3000");
+        configuration.addAllowedOrigin("https://beonse.vercel.app");
         //모든 요청 헤더 허용
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
