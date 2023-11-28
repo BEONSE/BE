@@ -17,6 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 src/main/resources/*.yml
+src/main/resources/ssl/keystore.p12
 
 ### IntelliJ IDEA ###
 .idea
