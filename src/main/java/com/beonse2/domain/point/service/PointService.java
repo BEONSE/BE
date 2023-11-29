@@ -55,7 +55,7 @@ public class PointService {
             throw new CustomException(WRONG_CARD_NUMBER);
         }
 
-        int points = (int) (pointRequestDTO.getPaymentPrice() * 1.1);
+        int points = (int) (pointRequestDTO.getPaymentPrice() * 0.9 + (pointRequestDTO.getPaymentPrice() / 10000) * 100);
 
         int memberPayment = findMember.getPaymentAmount() + pointRequestDTO.getPaymentPrice();
 
