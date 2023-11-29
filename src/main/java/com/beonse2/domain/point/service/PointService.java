@@ -43,7 +43,7 @@ public class PointService {
                 () -> new CustomException(NOT_FOUND_MEMBER)
         );
 
-        if (!(pointRequestDTO.getPaymentPrice() == 10000 || pointRequestDTO.getPaymentPrice() == 30000 || pointRequestDTO.getPaymentPrice() == 50000)) {
+        if (!(pointRequestDTO.getPaymentPrice() == 11000 || pointRequestDTO.getPaymentPrice() == 33000 || pointRequestDTO.getPaymentPrice() == 55000)) {
             throw new CustomException(NOT_MATCH_PAYMENT_PRICE);
         }
 
