@@ -91,13 +91,7 @@ public class MateBoardService {
                 .build();
     }
 
-    public MateBoardResponseDTO findMateBoard(Long mateBoardId, String accessToken) {
-
-        String token = jwtUtil.resolveToken(accessToken);
-
-        memberMapper.findByEmail(jwtUtil.getEmail(token)).orElseThrow(
-                () -> new CustomException(NOT_FOUND_MEMBER)
-        );
+    public MateBoardResponseDTO findMateBoard(Long mateBoardId) {
 
         MateBoardResponseDTO mateBoardResponseDTO = mateBoardMapper.findById(mateBoardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)

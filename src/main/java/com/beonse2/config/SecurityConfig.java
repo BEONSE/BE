@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/main").permitAll()
 //                .antMatchers("/mypage/zzzzz").permitAll()
                 .antMatchers("/reviews/*").permitAll()
-                .antMatchers("/mates").permitAll()
+                .antMatchers("/mates/*").permitAll()
                 .antMatchers("/rank").permitAll();
 
         http.exceptionHandling()
