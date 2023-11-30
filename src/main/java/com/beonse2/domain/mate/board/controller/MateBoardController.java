@@ -48,10 +48,8 @@ public class MateBoardController {
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!")
     })
     @GetMapping("/{mateBoard-id}")
-    @PreAuthorize("hasAnyRole('USER')")
-    public ResponseEntity<MateBoardResponseDTO> getMateBoard(@PathVariable("mateBoard-id") Long mateBoardId,
-                                                             @RequestHeader(value = "Authorization") String accessToken) {
-        return ResponseEntity.ok(mateBoardService.findMateBoard(mateBoardId, accessToken));
+    public ResponseEntity<MateBoardResponseDTO> getMateBoard(@PathVariable("mateBoard-id") Long mateBoardId) {
+        return ResponseEntity.ok(mateBoardService.findMateBoard(mateBoardId));
     }
 
     @Operation(summary = "메이트 게시글 수정", description = "메이트 게시글 수정")
