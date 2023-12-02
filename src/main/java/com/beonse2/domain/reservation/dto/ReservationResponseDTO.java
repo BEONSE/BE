@@ -14,6 +14,8 @@ public class ReservationResponseDTO {
 
     private Long branchBid;
 
+    private String memberName;
+
     private String branchName;
 
     private String reservationTime;
@@ -21,10 +23,11 @@ public class ReservationResponseDTO {
     private boolean status;
 
     @Builder
-    public ReservationResponseDTO(Long rvid, Long memberMid, Long branchBid, String branchName, String reservationTime, boolean status) {
+    public ReservationResponseDTO(Long rvid, Long memberMid, Long branchBid, String memberName, String branchName, String reservationTime, boolean status) {
         this.rvid = rvid;
         this.memberMid = memberMid;
         this.branchBid = branchBid;
+        this.memberName = memberName;
         this.branchName = branchName;
         this.reservationTime = reservationTime;
         this.status = status;

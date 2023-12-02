@@ -35,8 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //CORS 설정 . msa 로 구성시 필요. 단일 서버에서는 사용 안해도 됨. 도메인, 포트, 프로토콜이 다를 경우 사용
-        http.cors().configurationSource(corsConfigurationSource())    // rest api이므로 csrf 보안이 필요없으므로 disable처리.
+        http.cors().configurationSource(corsConfigurationSource())
                 //사이트간 요청 위조 방지 비활성화. 시큐리티에 기본적으로 적용되어 있음
+                // rest api이므로 csrf 보안이 필요없으므로 disable처리.
                 .and().csrf().disable()
 
                 //폼을 통한 인증 사용하지 않음

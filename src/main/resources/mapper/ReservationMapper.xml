@@ -41,13 +41,15 @@
         <![CDATA[
         SELECT *
         FROM (
-                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, BRANCH_NAME, RESERVATION_TIME, STATUS
-                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, MEMBER_NAME, BRANCH_NAME, RESERVATION_TIME, STATUS
+                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, M.NAME AS MEMBER_NAME, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
                         FROM RESERVATION R
                             JOIN BRANCH B
                                 ON R.BRANCH_BID = B.BID
+                        JOIN MEMBER M
+                                ON R.MEMBER_MID = M.MID
                         WHERE R.branch_bid = #{paramId}
-                        ORDER BY R.RVID DESC)
+                        ORDER BY R.RESERVATION_TIME DESC)
                 WHERE rownum <= #{endRowNo}
             )
         WHERE rnum >= #{startRowNo}
