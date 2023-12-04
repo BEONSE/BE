@@ -44,14 +44,14 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.findReservationPage(branchId, accessToken, page));
     }
 
-    @GetMapping("reservation/{branch-id}/{date}")
+    @GetMapping("/reservation/{branch-id}/{date}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<ReservationTimeDTO>> getReservationTimeList(@PathVariable("branch-id") Long branchId,
                                                                            @PathVariable("date") String date) {
         return ResponseEntity.ok(reservationService.findReservationTimeList(branchId, date));
     }
 
-    @GetMapping("reservation/{branch-id}")
+    @GetMapping("/reservation/{branch-id}")
     public ResponseEntity<String> getBranchName(@PathVariable("branch-id") Long branchId) {
         return ResponseEntity.ok(reservationService.findBranchName(branchId));
     }
