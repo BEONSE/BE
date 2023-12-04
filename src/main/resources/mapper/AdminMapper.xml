@@ -44,7 +44,7 @@
                     JOIN branch b
                         ON m.mid = b.member_mid
                 WHERE m.role = 'ROLE_BRANCH'
-                  AND m.is_approval IN ('승인', '가입 거절')
+                  AND m.is_approval IN ('가입 승인', '가입 거절')
                 ORDER BY b.created_at DESC
                  )
             WHERE rownum <= #{endRowNo}
@@ -94,7 +94,7 @@
         SELECT COUNT(*)
         FROM member
         WHERE role = 'ROLE_BRANCH'
-          AND is_approval IN ('승인', '가입 거절')
+          AND is_approval IN ('가입 승인', '가입 거절')
     </select>
 
     <select id="getMemberCount" resultType="int">
@@ -110,7 +110,7 @@
 
     <update id="updateAcceptApproval" parameterType="long">
         UPDATE member
-        SET is_approval = '승인'
+        SET is_approval = '가입 승인'
         WHERE mid = #{value}
     </update>
 
