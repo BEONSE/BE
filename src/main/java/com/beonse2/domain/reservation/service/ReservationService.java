@@ -11,6 +11,7 @@ import com.beonse2.domain.branch.dto.BranchRequestDTO;
 import com.beonse2.domain.branch.mapper.BranchMapper;
 import com.beonse2.domain.member.dto.MemberDTO;
 import com.beonse2.domain.member.mapper.MemberMapper;
+import com.beonse2.domain.reservation.dto.ReservationRequestDTO;
 import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
 import com.beonse2.domain.reservation.dto.ReservationTimeDTO;
 import com.beonse2.domain.reservation.mapper.ReservationMapper;
@@ -109,17 +110,19 @@ public class ReservationService {
     public List<ReservationTimeDTO> findReservationTimeList(Long branchId, String date) {
 
         StringBuilder dateBuilder = new StringBuilder();
+        date = date.replace("-", "/");
         dateBuilder.append(date);
 
         if (dateBuilder.length() == 7) {
             dateBuilder.insert(6, 0);
         }
 
-        Map<String, Object> searchMap = new HashMap<>();
-        searchMap.put("branchId", branchId);
-        searchMap.put("date", dateBuilder.toString().replace("-", "/"));
+        ReservationRequestDTO reservationRequestDTO = ReservationRequestDTO.builder()
+                .bid(branchId)
+                .date(dateBuilder.toString())
+                .build();
 
-        return reservationMapper.findTimeList(searchMap);
+        return reservationMapper.findTimeList(reservationRequestDTO);
     }
 
     public String findBranchName(Long branchId) {

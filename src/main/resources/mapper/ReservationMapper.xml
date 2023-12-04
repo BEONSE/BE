@@ -66,13 +66,13 @@
         WHERE branch_bid = #{branchId}
     </select>
 
-    <select id="findTimeList" parameterType="map" resultType="reservationTime">
+    <select id="findTimeList" parameterType="timeReq" resultType="reservationTime">
         SELECT R.reservation_time, COUNT(R.reservation_time) count, B.name branch_name
         FROM reservation R
             JOIN branch B
                 ON R.branch_bid = B.bid
         WHERE R.reservation_time LIKE #{date}||'%'
-          AND R.branch_bid = #{branchId}
-        GROUP BY reservation_time, name
+          AND R.branch_bid = #{bid}
+        GROUP BY R.reservation_time, B.name
     </select>
 </mapper>

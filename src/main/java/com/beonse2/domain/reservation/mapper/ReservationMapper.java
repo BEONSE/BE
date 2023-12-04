@@ -1,6 +1,7 @@
 package com.beonse2.domain.reservation.mapper;
 
 import com.beonse2.config.utils.page.PageRequestDTO;
+import com.beonse2.domain.reservation.dto.ReservationRequestDTO;
 import com.beonse2.domain.reservation.dto.ReservationResponseDTO;
 import com.beonse2.domain.reservation.dto.ReservationTimeDTO;
 import com.beonse2.domain.reservation.vo.Reservation;
@@ -21,5 +22,5 @@ public interface ReservationMapper {
 
     int getCountByBranchId(Long branchId);
 
-    List<ReservationTimeDTO> findTimeList(Map<String, Object> searchMap);
+    List<ReservationTimeDTO> findTimeList(ReservationRequestDTO reservationRequestDTO);
 }

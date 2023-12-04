@@ -45,7 +45,6 @@ public class ReservationController {
     }
 
     @GetMapping("/reservation/{branch-id}/{date}")
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<ReservationTimeDTO>> getReservationTimeList(@PathVariable("branch-id") Long branchId,
                                                                            @PathVariable("date") String date) {
         return ResponseEntity.ok(reservationService.findReservationTimeList(branchId, date));
