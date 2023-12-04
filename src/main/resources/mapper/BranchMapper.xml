@@ -44,7 +44,7 @@
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND B.MEMBER_MID = #{ value }
-          AND M.IS_APPROVAL = '승인'
+          AND M.IS_APPROVAL = '가입 승인'
     </select>
 
     <!--가맹점 조회-->
@@ -60,7 +60,7 @@
         FROM BRANCH B
             JOIN MEMBER M
                 ON B.member_mid = M.mid
-        WHERE M.IS_APPROVAL = '승인'
+        WHERE M.IS_APPROVAL = '가입 승인'
         ORDER BY branch_name
     </select>
 
@@ -70,7 +70,7 @@
         FROM BRANCH B, MEMBER M
         WHERE B.MEMBER_MID = M.MID
           AND M.ROLE = 'ROLE_BRANCH'
-          AND M.IS_APPROVAL = '승인'
+          AND M.IS_APPROVAL = '가입 승인'
         ORDER BY name
     </select>
 
@@ -79,7 +79,7 @@
         FROM BRANCH B,
              MEMBER M
         WHERE B.MEMBER_MID = M.MID
-          AND M.IS_APPROVAL = '승인'
+          AND M.IS_APPROVAL = '가입 승인'
           AND B.name LIKE '%'||#{name}||'%'
         ORDER BY name
     </select>
