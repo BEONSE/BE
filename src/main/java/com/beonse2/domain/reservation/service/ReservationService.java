@@ -108,9 +108,16 @@ public class ReservationService {
 
     public List<ReservationTimeDTO> findReservationTimeList(Long branchId, String date) {
 
+        StringBuilder dateBuilder = new StringBuilder();
+        dateBuilder.append(date);
+
+        if (dateBuilder.length() == 7) {
+            dateBuilder.insert(6, 0);
+        }
+
         Map<String, Object> searchMap = new HashMap<>();
         searchMap.put("branchId", branchId);
-        searchMap.put("date", date.replace("-", "/"));
+        searchMap.put("date", dateBuilder.toString().replace("-", "/"));
 
         return reservationMapper.findTimeList(searchMap);
     }
