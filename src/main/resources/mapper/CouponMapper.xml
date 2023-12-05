@@ -38,7 +38,7 @@
                 WHERE member_mid = ${paramId}
                     AND branch_name IS NOT NULL
                     GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
-                ORDER BY is_used, type, used_date DESC
+                ORDER BY is_used, used_date DESC
                 )
             WHERE rownum <= #{endRowNo})
         WHERE rnum >= #{startRowNo}
@@ -98,7 +98,7 @@
         FROM coupon
         WHERE branch_name = #{branchName}
         AND  member_mid = #{memberMid}
-        ORDER BY type DESC
+        ORDER BY used_date DESC
     </select>
 
     <update id="updateCouponWriteReview" parameterType="couponResponseDTO">
