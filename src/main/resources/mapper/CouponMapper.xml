@@ -21,7 +21,7 @@
                 WHERE member_mid = ${paramId}
                     AND branch_name IS NULL
                     GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
-                ORDER BY type DESC
+                ORDER BY payment_date DESC
                 )
             WHERE rownum <= #{endRowNo})
         WHERE rnum >= #{startRowNo}
