@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/reviews/*").permitAll()
                 .antMatchers("/mates/*").permitAll()
                 .antMatchers("/mates").permitAll()
+                .antMatchers("/join/*").permitAll()
                 .antMatchers("/rank").permitAll();
 
         http.exceptionHandling()
