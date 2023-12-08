@@ -113,8 +113,6 @@ public class JwtUtil implements InitializingBean {
         String userId = getEmail(token);
         UserDetails userDetails =
                 memberDetailsService.loadUserByUsername(userId);
-        System.out.println("getEmail(token) " + userId);
-        System.out.println("UserDetails: " + userDetails);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
