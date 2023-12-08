@@ -165,7 +165,6 @@ public class ReviewBoardService {
 
         String token = jwtUtil.resolveToken(accessToken);
         String email = jwtUtil.getEmail(token);
-        System.out.println("getEmail(token)" + email);
 
         // 리뷰 게시판이 사용자에게 속하는지 확인
         ReviewBoardDTO reviewBoardDTO = reviewBoardMapper.findByReviewBoardId(rbId).orElseThrow(

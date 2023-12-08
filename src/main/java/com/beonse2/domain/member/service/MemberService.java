@@ -43,7 +43,6 @@ public class MemberService {
 
         // 가입된 유저인지 확인
         if (memberMapper.findByEmail(member.getEmail()).isPresent()) {
-            System.out.println("이미 가입된 회원입니다");
             throw new CustomException(ErrorCode.DUPLICATE_MEMBER);
         }
 
