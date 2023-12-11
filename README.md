@@ -5,23 +5,24 @@
 
 - BEONSE (비 온 뒤에 세차 하자!!)
     
-    ![Logo.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/ecec4387-301e-486c-b6fa-3fa9161a8cb5/Logo.png)
+    ![image](https://github.com/BEONSE/BE/assets/104209781/47359d70-34f7-40db-a42c-c33e0ab02072)
+
     
 
 ## 팀 구성
 
-[인원구성 및 역할분담 (3)](https://www.notion.so/6ce1dc916e8b48d1b57e36cb887b677a?pvs=21)
+![image](https://github.com/BEONSE/BE/assets/104209781/d913391a-e114-4023-886d-0db80efeec07)
 
 ## 깃허브
 
-- **FE**
+- FE
     - https://github.com/BEONSE/FE
 - BE
     - https://github.com/BEONSE/BE
 
 ## 프로젝트 아키텍처
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/059657c9-48b8-4f51-b937-d67616d9edbf/Untitled.png)
+![image](https://github.com/BEONSE/BE/assets/104209781/0867c7c4-054e-45cf-a51b-0a293b9b78d8)
 
 ## Git Convention
 
@@ -68,13 +69,9 @@ ex) feat : 게시들 등록 기능 추가
 - 
 ```
 
-예시)
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/3c97c7e9-9ac9-4421-b944-1776c49d9a9e/Untitled.png)
-
 ### PR 후 merge 메시지
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/a16bd36f-d345-4d4a-9520-577a616bf2c1/Untitled.png)
+![image](https://github.com/BEONSE/BE/assets/104209781/a9c6c92c-dfe6-4043-ac94-65da5f6d114a)
 
 - merge title - 프로젝트 명 #1(pull request 번호) / 기능 대분류 - 기능 상세
 - merge content - 그대로 사용
@@ -120,13 +117,13 @@ public ResponseEntity<Board> createBoard() {}
 
 ## ERD
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/70ce63ce-af21-4635-92fd-bd637af6465f/Untitled.png)
+![image](https://github.com/BEONSE/BE/assets/104209781/b929eb97-0971-410a-a1d9-de0c94808d66)
 
 ## 와이어 프레임
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/dea4de2f-4af4-4b56-8a87-2a552e026248/Untitled.png)
+![image](https://github.com/BEONSE/BE/assets/104209781/4fc9a866-ca9f-4dd3-8d51-d010b1a69012)
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/7d643252-f652-4a47-b275-036aa397731d/Untitled.png)
+![image](https://github.com/BEONSE/BE/assets/104209781/e8fed509-3589-42e9-b305-39e9d7ba7d4e)
 
 # 트러블슈팅
 
@@ -134,19 +131,20 @@ public ResponseEntity<Board> createBoard() {}
 
 - MyBatis
 
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/6df5f04b-9cbe-4e43-9d55-10a3c5bddde8/Untitled.png)
+  ![image](https://github.com/BEONSE/BE/assets/104209781/b3d61ca3-79c2-4c9b-98cb-8ac6f2c5dead)
 
 - AWS Build
     
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/3d415608-3be0-4806-9b17-04d04f139aff/Untitled.png)
-    
+  ![image](https://github.com/BEONSE/BE/assets/104209781/1d29ebef-dbc4-482b-abcf-83e6e034f26f)
+
 - AWS 배포 실행
-    
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/a2954912-2b27-417b-b502-23c034632351/Untitled.png)
-    
+
+  ![image](https://github.com/BEONSE/BE/assets/104209781/9bca525b-3a86-4d0e-b4e0-67a376230fa9)
+
 - SSL 인증서 발급
-    
-    ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/a2a05ba9-5767-4ecf-b237-640ce95f1125/ad5ab000-d076-47cd-9930-3f2f70f36c1d/Untitled.png)
+
+  ![image](https://github.com/BEONSE/BE/assets/104209781/59500be3-d339-426a-bc24-ae1d157f92f0)
+
 - Mapper Query
   
   ![image](https://github.com/BEONSE/BE/assets/104209781/872106b1-f59d-444c-922f-aa7811777963)
