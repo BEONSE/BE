@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.admin.mapper.AdminMapper">
+
+    <select id="findAllBranchMember" resultType="branchMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, email, is_approval, role, name, nickname, bid, address, created_at
+            FROM (
+                SELECT m.mid, m.email, m.is_approval, m.role, m.name, m.nickname, b.bid, b.address, b.created_at
+                FROM member m
+                    JOIN branch b
+                        ON m.mid = b.member_mid
+                WHERE m.role = 'ROLE_BRANCH'
+                  AND m.is_approval = '승인 대기'
+                ORDER BY b.created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getWaitingCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE role = 'ROLE_BRANCH'
+          AND is_approval = '승인 대기'
+    </select>
+
+    <select id="findResultMember" resultType="branchMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, name, nickname, email, is_approval, role, bid, address, created_at
+            FROM (
+                SELECT m.mid, m.name, m.nickname, m.email, m.is_approval, m.role, b.bid, b.address, b.created_at
+                FROM member m
+                    JOIN branch b
+                        ON m.mid = b.member_mid
+                WHERE m.role = 'ROLE_BRANCH'
+                  AND m.is_approval IN ('가입 승인', '가입 거절')
+                ORDER BY b.created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findAllMember" resultType="allMemberDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mid, email, nickname, name, address, role, payment_amount, status, point_amount, created_at
+            FROM (
+                SELECT mid, email, nickname, name, address, role, payment_amount, status, point_amount, created_at
+                FROM member
+                WHERE status = '0'
+                  AND role IN ('ROLE_USER', 'ROLE_BRANCH')
+                ORDER BY created_at DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findPaymentPage" parameterType="pageRequest" resultType="paymentDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, pid, points, payment_price price, card_name, card_number, mid, name, nickname, address, payment_date
+            FROM (
+                SELECT p.pid, p.points, p.payment_price, p.card_name, p.card_number, m.mid, m.name, m.nickname, m.address, p.payment_date
+                FROM point p
+                    JOIN member m
+                        ON p.member_mid = m.mid
+                WHERE m.status = '0'
+                ORDER BY p.payment_date DESC
+                 )
+            WHERE rownum <= #{endRowNo}
+             )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getResultCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE role = 'ROLE_BRANCH'
+          AND is_approval IN ('가입 승인', '가입 거절')
+    </select>
+
+    <select id="getMemberCount" resultType="int">
+        SELECT COUNT(*)
+        FROM member
+        WHERE status = '0'
+    </select>
+
+    <select id="getPaymentCount" resultType="int">
+        SELECT COUNT(*)
+        FROM point
+    </select>
+
+    <update id="updateAcceptApproval" parameterType="long">
+        UPDATE member
+        SET is_approval = '가입 승인'
+        WHERE mid = #{value}
+    </update>
+
+    <update id="updateRejectApproval" parameterType="long">
+        UPDATE member
+        SET is_approval = '가입 거절'
+        WHERE mid = #{value}
+    </update>
+</mapper>

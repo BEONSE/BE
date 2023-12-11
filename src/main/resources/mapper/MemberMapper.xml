@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.member.mapper.MemberMapper">
+
+    <!--    <sql id="memberColumns">
+        <![CDATA[
+              mid
+            , email
+            , nickname
+            , password
+            , name
+            , address
+            , role
+            , paymentAmount
+            , status
+            , image
+            ,isApproval
+            , createAt
+            , modifiedAt
+        ]]>
+        </sql>-->
+
+    <!-- 회원 정보 저장 (회원 가입) -->
+    <insert id="save" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
+        INSERT INTO MEMBER (MID, EMAIL, NICKNAME, PASSWORD, NAME, ADDRESS, ROLE, PAYMENT_AMOUNT, STATUS, IMAGE, CREATED_AT, MODIFIED_AT) VALUES
+            (MEMBER_SEQ.nextval,
+             #{email},
+             #{nickname},
+             #{password},
+             #{name},
+             #{address},
+             #{role},
+             #{paymentAmount},
+             '0',
+             NULL,
+             SYSDATE,
+             SYSDATE)
+    </insert>
+
+    <!-- 지점사 회원 정보 저장 (회원 가입) -->
+    <insert id="saveBranch" parameterType="memberDTO" useGeneratedKeys="true" keyProperty="email">
+        INSERT INTO MEMBER (MID, EMAIL, NICKNAME, PASSWORD, NAME, ADDRESS, ROLE, PAYMENT_AMOUNT,STATUS, IMAGE, IS_APPROVAL, CREATED_AT, MODIFIED_AT) VALUES
+            (MEMBER_SEQ.nextval,
+             #{email},
+             #{nickname},
+             #{password},
+             #{name},
+             #{address},
+             'ROLE_BRANCH',
+             #{paymentAmount},
+             '0',
+             NULL,
+             '승인 대기',
+             SYSTIMESTAMP,
+             SYSTIMESTAMP)
+    </insert>
+
+    <!--회원 상세정보 조회-->
+
+    <select id="findByEmail" parameterType="string" resultType="memberDTO" >
+        SELECT *
+        FROM MEMBER
+        WHERE STATUS = 0 AND EMAIL = #{value}
+    </select>
+
+    <select id="findByNickname" parameterType="string" resultType="memberDTO">
+        SELECT *
+        FROM member
+        WHERE nickname = #{value}
+    </select>
+
+    <select id="findById" parameterType="long" resultType="memberDTO">
+        SELECT *
+        FROM member
+        WHERE mid = #{value}
+    </select>
+
+    <select id="findMaxPayment" resultType="maxPaymentDTO">
+        SELECT mid, nickname, payment_amount, point_amount
+        FROM member
+        WHERE payment_amount = (SELECT MAX(payment_amount) FROM member)
+        ORDER BY point_amount
+            FETCH FIRST 1 ROW ONLY
+    </select>
+
+
+
+    <!--누적 결제 내역-->
+    <update id="updatePayment" parameterType="memberDTO">
+        UPDATE MEMBER
+        SET PAYMENT_AMOUNT = #{paymentAmount},
+            POINT_AMOUNT = #{pointAmount}
+        WHERE MID = #{mid}
+    </update>
+
+    <!--쿠폰 구매-->
+    <update id="updatePoint" parameterType="memberDTO">
+        UPDATE MEMBER
+        SET POINT_AMOUNT = #{pointAmount}
+        WHERE MID = #{mid}
+    </update>
+
+    <!--회원 정보 수정-->
+    <update id="updateInfo" parameterType="memberEditDTO">
+        UPDATE MEMBER
+        SET
+            NICKNAME = #{nickname},
+            PASSWORD = #{password},
+            ADDRESS = #{address},
+            MODIFIED_AT = SYSTIMESTAMP,
+        <choose>
+            <when test="imageData != null">
+                IMAGE =  #{imageData, jdbcType=BLOB},
+                ORIGINAL_FILE_NAME = #{originalFileName},
+                IMAGE_TYPE = #{imageType}
+            </when>
+            <otherwise>
+                IMAGE =  NULL,
+                ORIGINAL_FILE_NAME = NULL,
+                IMAGE_TYPE = NULL
+            </otherwise>
+        </choose>
+
+        WHERE MID = #{mid}
+    </update>
+
+    <!--가맹점 회원 정보 수정-->
+    <update id="updateBranchInfo" parameterType="branch">
+        UPDATE MEMBER
+        SET PASSWORD = #{password}
+        WHERE MID = #{memberId}
+    </update>
+
+    <!--&lt;!&ndash;회원 정보 삭제(회원 탈퇴)&ndash;&gt;-->
+    <!--    <delete id="deleteById" parameterType="long">-->
+    <!--        UPDATE MEMBER-->
+    <!--        SET-->
+    <!--            STATUS = 1-->
+    <!--        WHERE-->
+    <!--            MID = #{id}-->
+    <!--    </delete>-->
+
+    <!--&lt;!&ndash;회원 수 카운팅 (ID 중복 체크)&ndash;&gt;-->
+    <!--    <select id="duplicateEmail" parameterType="String" resultType="int">-->
+    <!--        SELECT-->
+    <!--            count(*)-->
+    <!--        FROM-->
+    <!--            MEMBER-->
+    <!--        WHERE-->
+    <!--            EMAIL = #{value}-->
+    <!--    </select>-->
+
+    <update id="updatePassword" parameterType="memberDTO">
+        UPDATE member
+        SET password = #{password}
+        WHERE mid = #{mid}
+    </update>
+</mapper>

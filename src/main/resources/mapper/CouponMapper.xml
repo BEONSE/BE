@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.coupon.mapper.CouponMapper">
+
+    <insert id="saveCoupon" parameterType="couponVo">
+        INSERT INTO coupon(cid, member_mid, type, price)
+        VALUES (coupon_seq.NEXTVAL, #{memberMid}, #{type}, #{price})
+    </insert>
+
+    <select id="findCouponPages" parameterType="pageRequest" resultType="couponResponseDTO">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date
+            FROM (
+                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
+                FROM coupon
+                WHERE member_mid = ${paramId}
+                    AND branch_name IS NULL
+                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date
+                ORDER BY payment_date DESC
+                )
+            WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findUseCouponPages" parameterType="pageRequest" resultType="couponResponseDTO">
+        <![CDATA[
+        SELECT * FROM (
+            SELECT rownum rnum, cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
+            FROM (
+                SELECT cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
+                FROM coupon
+                WHERE member_mid = ${paramId}
+                    AND branch_name IS NOT NULL
+                    GROUP BY cid, member_mid, type, price, branch_name, is_used, payment_date, used_date
+                ORDER BY is_used, used_date DESC
+                )
+            WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findById" parameterType="long" resultType="couponResponseDTO">
+        SELECT cid, member_mid, type, price, branch_name, is_used, payment_date
+        FROM coupon
+        WHERE cid = #{value}
+    </select>
+
+    <select id="getCountCoupons" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        WHERE member_mid = #{value}
+          AND branch_name IS NULL
+    </select>
+
+    <select id="getCountUseCoupons" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        WHERE member_mid = #{value}
+          AND branch_name IS NOT NULL
+    </select>
+
+    <select id="getCountBranchName" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM coupon
+        WHERE branch_name = #{value}
+    </select>
+
+    <update id="updateCoupon" parameterType="map">
+        UPDATE coupon
+        SET branch_name = #{branchName},
+            used_date = SYSTIMESTAMP
+        WHERE cid = #{couponId}
+    </update>
+
+    <select id="findUseAllCoupon" parameterType="pageRequestBranchName" resultType="CouponResponseDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, cid, member_mid, name, type, price, branch_name, is_used, payment_date, used_date
+            FROM (
+                SELECT c.cid, c.member_mid, m.name, c.type, c.price, c.branch_name, c.is_used, c.payment_date, c.used_date
+                FROM coupon c, member m
+                WHERE branch_name = #{branchName}
+                  AND c.member_mid = m.mid
+                ORDER BY payment_date DESC
+            )
+            WHERE rownum <= #{endRowNo}
+        )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findUseMemberCoupon" parameterType="map" resultType="couponResponseDTO">
+        SELECT *
+        FROM coupon
+        WHERE branch_name = #{branchName}
+        AND  member_mid = #{memberMid}
+        ORDER BY used_date DESC
+    </select>
+
+    <update id="updateCouponWriteReview" parameterType="couponResponseDTO">
+        UPDATE coupon
+        SET is_used = #{isUsed}
+        WHERE cid = #{cid}
+    </update>
+
+</mapper>

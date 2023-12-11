@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.mate.comment.mapper.MateCommentMapper">
+
+    <insert id="saveMateComment" parameterType="mateCommentVo">
+        INSERT INTO matecomment(mcid, member_mid, mateboard_mbid, content)
+        VALUES (mateComment_seq.NEXTVAL, #{memberMid}, #{mateBoardMbid}, #{content})
+    </insert>
+
+    <select id="findCommentCount" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM matecomment
+        WHERE mateboard_mbid = #{value} AND status = '0'
+    </select>
+
+    <select id="findAllMateComment" parameterType="pageRequest" resultType="mateCommentListDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+            SELECT rownum rnum, mcid, member_mid, mateboard_mbid, nickname, payment_amount, image_data, content, created_at
+            FROM (
+                SELECT mc.mcid, mc.member_mid, mc.mateboard_mbid, m.nickname, m.payment_amount, m.image image_data, mc.content, mc.created_at
+                FROM matecomment mc
+                    JOIN mateboard mb
+                        ON mc.mateboard_mbid = mb.mbid
+                    JOIN member m
+                        ON mc.member_mid = m.mid
+                WHERE mateboard_mbid = #{paramId}
+                  AND mc.status = '0'
+                ORDER BY mc.created_at DESC
+                )
+            WHERE rownum <= #{endRowNo}
+            )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findById" parameterType="long" resultType="mateCommentListDTO">
+        SELECT mc.mcid, mc.member_mid, mc.mateboard_mbid, m.nickname, m.payment_amount, mc.content, mc.created_at
+        FROM matecomment mc
+            JOIN mateboard mb
+                ON mc.mateboard_mbid = mb.mbid
+            JOIN member m
+                ON mc.member_mid = m.mid
+        WHERE mc.mcid = #{value}
+    </select>
+
+    <select id="getCount" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+        FROM matecomment
+        WHERE mateboard_mbid = #{value}
+    </select>
+
+    <update id="deleteMateComment" parameterType="long">
+        UPDATE matecomment
+        SET status = '1'
+        WHERE mcid = #{value}
+    </update>
+
+</mapper>
+

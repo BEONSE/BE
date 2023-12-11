@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.reservation.mapper.ReservationMapper">
+
+<!--    <sql id="reservationColumns">
+    <![CDATA[
+          rvid
+        , memberId
+        , branchId
+        , reservationTime
+        , status
+    ]]>
+    </sql>-->
+
+<!-- 게시글 작성 -->
+    <insert id="createReservation" parameterType="reservation" >
+        INSERT INTO RESERVATION (RVID, MEMBER_MID, BRANCH_BID, RESERVATION_TIME, STATUS)
+        VALUES (REVIEWBOARD_SEQ.nextval, #{memberId}, #{branchId}, #{reservationTime}, '0')
+    </insert>
+
+    <select id="findMyReservationPage" parameterType="pageRequest" resultType="reservationResponseDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, BRANCH_NAME, RESERVATION_TIME, STATUS
+                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+                        FROM RESERVATION R
+                            JOIN BRANCH B
+                                ON R.BRANCH_BID = B.BID
+                        WHERE R.member_mid = #{paramId}
+                        ORDER BY R.RESERVATION_TIME DESC)
+                WHERE rownum <= #{endRowNo}
+            )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="findBranchReservationPage" parameterType="pageRequest" resultType="reservationResponseDTO">
+        <![CDATA[
+        SELECT *
+        FROM (
+                SELECT rownum rnum, RVID, MEMBER_MID, BRANCH_BID, MEMBER_NAME, BRANCH_NAME, RESERVATION_TIME, STATUS
+                FROM (SELECT R.RVID, R.MEMBER_MID, R.BRANCH_BID, M.NAME AS MEMBER_NAME, B.NAME AS BRANCH_NAME, R.RESERVATION_TIME, R.STATUS
+                        FROM RESERVATION R
+                            JOIN BRANCH B
+                                ON R.BRANCH_BID = B.BID
+                        JOIN MEMBER M
+                                ON R.MEMBER_MID = M.MID
+                        WHERE R.branch_bid = #{paramId}
+                        ORDER BY R.RESERVATION_TIME DESC)
+                WHERE rownum <= #{endRowNo}
+            )
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getCountByMemberId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM reservation
+        WHERE member_mid = #{memberId}
+    </select>
+
+    <select id="getCountByBranchId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM reservation
+        WHERE branch_bid = #{branchId}
+    </select>
+
+    <select id="findTimeList" parameterType="timeReq" resultType="reservationTime">
+        SELECT R.reservation_time, COUNT(R.reservation_time) count, B.name branch_name
+        FROM reservation R
+            JOIN branch B
+                ON R.branch_bid = B.bid
+        WHERE R.reservation_time LIKE #{date}||'%'
+          AND R.branch_bid = #{bid}
+        GROUP BY R.reservation_time, B.name
+    </select>
+</mapper>

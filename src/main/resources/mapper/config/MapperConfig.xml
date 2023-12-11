@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias alias="pointVo" type="com.beonse2.domain.point.vo.PointVO" />
+        <typeAlias alias="pointResponseDTO" type="com.beonse2.domain.point.dto.PointResponseDTO" />
+        <typeAlias alias="paymentDTO" type="com.beonse2.domain.admin.dto.PaymentDTO" />
+        <typeAlias alias="branch" type="com.beonse2.domain.branch.vo.Branch" />
+        <typeAlias alias="branchRequestDTO" type="com.beonse2.domain.branch.dto.BranchRequestDTO" />
+        <typeAlias alias="branchDTO" type="com.beonse2.domain.branch.dto.BranchDTO" />
+        <typeAlias alias="imageDTO" type="com.beonse2.domain.branch.dto.ImageDTO" />
+        <typeAlias alias="memberDTO" type="com.beonse2.domain.member.dto.MemberDTO" />
+        <typeAlias alias="allMemberDTO" type="com.beonse2.domain.admin.dto.AllMemberDTO" />
+        <typeAlias alias="branchMemberDTO" type="com.beonse2.domain.admin.dto.BranchMemberDTO" />
+        <typeAlias alias="memberEditDTO" type="com.beonse2.domain.member.dto.MemberEditDTO" />
+        <typeAlias alias="mateBoardVo" type="com.beonse2.domain.mate.board.vo.MateBoardVO" />
+        <typeAlias alias="mateBoardListDTO" type="com.beonse2.domain.mate.board.dto.MateBoardListResponseDTO" />
+        <typeAlias alias="pageRequest" type="com.beonse2.config.utils.page.PageRequestDTO" />
+        <typeAlias alias="pageRequestBranchName" type="com.beonse2.config.utils.page.PageRequestBranchName" />
+        <typeAlias alias="mateBoardDTO" type="com.beonse2.domain.mate.board.dto.MateBoardResponseDTO" />
+        <typeAlias alias="mateBoardUpdateDTO" type="com.beonse2.domain.mate.board.dto.MateBoardRequestDTO" />
+        <typeAlias alias="mateCommentVo" type="com.beonse2.domain.mate.comment.vo.MateCommentVO" />
+        <typeAlias alias="mateCommentListDTO" type="com.beonse2.domain.mate.comment.dto.MateCommentResponseDTO" />
+        <typeAlias alias="reservation" type="com.beonse2.domain.reservation.vo.Reservation" />
+        <typeAlias alias="reservationResponseDTO" type="com.beonse2.domain.reservation.dto.ReservationResponseDTO" />
+        <typeAlias alias="reservationTime" type="com.beonse2.domain.reservation.dto.ReservationTimeDTO" />
+        <typeAlias alias="timeReq" type="com.beonse2.domain.reservation.dto.ReservationRequestDTO" />
+        <typeAlias alias="reviewBoardDTO" type="com.beonse2.domain.reviewBoard.dto.ReviewBoardDTO" />
+        <typeAlias alias="myPage" type="com.beonse2.domain.myPage.vo.MyPage" />
+        <typeAlias alias="couponVo" type="com.beonse2.domain.coupon.vo.CouponVO" />
+        <typeAlias alias="couponResponseDTO" type="com.beonse2.domain.coupon.dto.CouponResponseDTO" />
+        <typeAlias alias="branchListDTO" type="com.beonse2.domain.branch.dto.BranchListDTO" />
+        <typeAlias alias="branchNameDTO" type="com.beonse2.domain.branch.dto.BranchNameDTO" />
+        <typeAlias alias="maxPaymentDTO" type="com.beonse2.domain.member.dto.MaxPaymentDTO" />
+    </typeAliases>
+</configuration>

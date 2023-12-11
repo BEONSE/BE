@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.reviewBoard.mapper.ReviewBoardMapper">
+
+<!--    <sql id="reviewColumns">
+    <![CDATA[
+          rbid
+        , memberId
+        , branchId
+        , title
+        , content
+        , status
+        , createAt
+        , modifiedAt
+    ]]>
+    </sql>-->
+
+    <!-- 게시글 작성 -->
+    <insert id="createReviewBoard" parameterType="reviewBoardDTO" >
+        INSERT INTO REVIEWBOARD (RBID, MEMBER_MID, BRANCH_BID, COUPON_CID, TITLE, CONTENT, IMAGE, ORIGINAL_FILE_NAME, IMAGE_TYPE)
+        VALUES (REVIEWBOARD_SEQ.nextval, #{memberMid}, #{branchBid}, #{couponCid}, #{title}, #{content},
+            <choose>
+                <when test="reviewImageData != null">
+                    #{reviewImageData, jdbcType=BLOB}, #{reviewOriginalFileName}, #{reviewImageType})
+                </when>
+                <otherwise>
+                    NULL, NULL, NULL)
+                </otherwise>
+            </choose>
+    </insert>
+
+<!--게시글 조회-->
+    <select id="reviewBoardPage" resultType="reviewBoardDTO" parameterType="pageRequest">
+        <![CDATA[
+        SELECT rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, COUPON_CID, BRANCHNAME, TITLE, CONTENT,
+               STATUS, PAYMENT_AMOUNT, MEMBER_IMAGE_DATA, MEMBER_ORIGINAL_FILE_NAME, MEMBER_IMAGE_TYPE,
+               REVIEW_IMAGE_DATA, REVIEW_ORIGINAL_FILE_NAME, REVIEW_IMAGE_TYPE, created_at, modified_at
+        FROM (SELECT rownum rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, COUPON_CID, BRANCHNAME, TITLE, CONTENT,
+                     STATUS, PAYMENT_AMOUNT, MEMBER_IMAGE_DATA, MEMBER_ORIGINAL_FILE_NAME, MEMBER_IMAGE_TYPE,
+                     REVIEW_IMAGE_DATA, REVIEW_ORIGINAL_FILE_NAME, REVIEW_IMAGE_TYPE, created_at, modified_at
+              FROM (SELECT R.RBID, R.MEMBER_MID, M.NICKNAME AS WRITER, R.BRANCH_BID, R.COUPON_CID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
+                           R.STATUS, M.PAYMENT_AMOUNT, M.IMAGE MEMBER_IMAGE_DATA, M.ORIGINAL_FILE_NAME MEMBER_ORIGINAL_FILE_NAME, M.IMAGE_TYPE MEMBER_IMAGE_TYPE,
+                           R.IMAGE REVIEW_IMAGE_DATA, R.ORIGINAL_FILE_NAME REVIEW_ORIGINAL_FILE_NAME, R.IMAGE_TYPE REVIEW_IMAGE_TYPE,
+                           R.created_at, R.modified_at
+                    FROM REVIEWBOARD R
+                        JOIN MEMBER M
+                            ON R.member_mid = m.mid
+                        JOIN BRANCH B
+                            ON R.branch_bid = b.bid
+                    WHERE B.bid = #{paramId}
+                    ORDER BY R.MODIFIED_AT DESC)
+              WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+<!--내가 쓴 게시글 조회-->
+    <select id="myReviewBoardPage" resultType="reviewBoardDTO" parameterType="pageRequest">
+        <![CDATA[
+        SELECT *
+        FROM (SELECT rownum rnum, RBID, MEMBER_MID, WRITER, BRANCH_BID, BRANCHNAME, TITLE, CONTENT,
+                     STATUS, reviewImageData, reviewOriginalFileName, reviewImageType, CREATED_AT, MODIFIED_AT
+              FROM (SELECT R.RBID, R.MEMBER_MID, M.EMAIL AS WRITER, R.BRANCH_BID, B.NAME  AS BRANCHNAME, R.TITLE, R.CONTENT,
+                           R.STATUS, R.IMAGE reviewImageData, R.ORIGINAL_FILE_NAME reviewOriginalFileName, R.IMAGE_TYPE reviewImageType, R.CREATED_AT, R.MODIFIED_AT
+                    FROM REVIEWBOARD R
+                        JOIN MEMBER M
+                            ON R.member_mid = m.mid
+                        JOIN BRANCH B
+                            ON R.branch_bid = b.bid
+                    WHERE R.member_mid = #{paramId}
+                    ORDER BY R.MODIFIED_AT DESC)
+              WHERE rownum <= #{endRowNo})
+        WHERE rnum >= #{startRowNo}
+        ]]>
+    </select>
+
+    <select id="getCount" parameterType="long" resultType="int">
+            SELECT count(*) FROM reviewboard
+            WHERE branch_bid = #{branchId}
+              AND status = '0'
+    </select>
+
+    <select id="getCountByMemberId" parameterType="long" resultType="int">
+            SELECT count(*) FROM reviewboard
+            WHERE member_mid = #{mid}
+              AND status = '0'
+    </select>
+
+<!--단일 조회-->
+    <select id="findByReviewBoardId" resultType="reviewBoardDTO" parameterType="Long">
+
+        SELECT
+            R.RBID,
+            R.MEMBER_MID,
+            M.EMAIL AS WRITER,
+            R.BRANCH_BID,
+            B.NAME AS BRANCHNAME,
+            R.TITLE,
+            R.CONTENT,
+            R.STATUS,
+            R.IMAGE,
+            R.CREATED_AT,
+            R.MODIFIED_AT
+        FROM
+            REVIEWBOARD R, MEMBER M, BRANCH B
+        WHERE
+            R.MEMBER_MID = M.MID
+          AND R.BRANCH_BID = B.BID
+          AND R.RBID = #{rbid}
+        ORDER BY
+            R.CREATED_AT DESC
+    </select>
+
+    <!--게시글 수정-->
+    <update id="updateReviewBoard" parameterType="reviewBoardDTO">
+        UPDATE REVIEWBOARD
+        SET TITLE = #{title}, CONTENT = #{content},
+        <choose>
+            <when test="reviewImageData != null">
+                IMAGE = #{reviewImageData, jdbcType=BLOB}, ORIGINAL_FILE_NAME #{reviewOriginalFileName}, IMAGE_TYPE = #{reviewImageType}
+            </when>
+            <otherwise>
+                IMAGE =  NULL, ORIGINAL_FILE_NAME NULL, IMAGE_TYPE = NULL
+            </otherwise>
+        </choose>
+            MODIFIED_AT = sysdate WHERE RBID = #{rbId}
+    </update>
+
+<!--게시글 삭제-->
+    <update id="deleteReviewBoard" parameterType="Long">
+        UPDATE REVIEWBOARD
+        SET
+            STATUS = 1
+        WHERE
+            RBID = #{rbId}
+    </update>
+</mapper>

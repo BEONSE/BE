@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTO Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.beonse2.domain.mate.board.mapper.MateBoardMapper">
+
+    <insert id="saveMateBoard" parameterType="mateBoardVo">
+        INSERT INTO mateboard(mbid, member_mid, title, content, branch_name)
+        VALUES (mateBoard_seq.NEXTVAL, #{memberMid}, #{title}, #{content}, #{branchName})
+    </insert>
+
+    <select id="findMateBoardPage" parameterType="pageRequest" resultType="mateBoardListDTO">
+        <![CDATA[
+                SELECT *
+                FROM (
+                    SELECT rownum rnum, mbid, title, modified_at, nickname, payment_amount, branch_name
+                    FROM (SELECT mb.mbid, mb.title, mb.modified_at, m.nickname, m.payment_amount, mb.branch_name
+                            FROM mateboard mb
+                                JOIN member m
+                                    ON mb.member_mid = m.mid
+                            WHERE mb.status = '0'
+                            ORDER BY mb.modified_at DESC)
+                    WHERE rownum <= #{endRowNo})
+                WHERE rnum >= #{startRowNo}
+            ]]>
+    </select>
+
+    <select id="findMyMateBoardPage" parameterType="pageRequest" resultType="mateBoardListDTO">
+        <![CDATA[
+                SELECT *
+                FROM (
+                    SELECT rownum rnum, mbid, title, content, modified_at, nickname, payment_amount
+                    FROM (SELECT mb.mbid, mb.title, mb.content, mb.modified_at, m.nickname, m.payment_amount
+                            FROM mateboard mb
+                                JOIN member m
+                                    ON mb.member_mid = m.mid
+                            WHERE mb.status = '0'
+                              AND mb.member_mid = #{paramId}
+                            ORDER BY mb.modified_at DESC)
+                    WHERE rownum <= #{endRowNo})
+                WHERE rnum >= #{startRowNo}
+            ]]>
+    </select>
+
+
+    <select id="findById" resultType="mateBoardDTO" parameterType="long">
+        SELECT mb.mbid, mb.title, mb.content, m.nickname, m.payment_amount,
+               m.image image_data, mb.created_at, mb.modified_at, mb.branch_name
+        FROM mateboard mb
+            JOIN member m
+                ON mb.member_mid = m.mid
+        WHERE mb.mbid = #{value}
+        AND mb.status = '0'
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(*) FROM mateboard
+        WHERE status = '0'
+    </select>
+
+    <select id="getCountByMemberId" parameterType="long" resultType="int">
+        SELECT COUNT(*) FROM mateboard
+        WHERE status = '0'
+          AND member_mid = #{mid}
+    </select>
+
+    <update id="updateMateBoard" parameterType="mateBoardUpdateDTO">
+        UPDATE mateboard
+        SET title = #{title}, content = #{content}, branch_name = #{branchName}
+        WHERE mbid = #{mbid}
+    </update>
+
+    <update id="deleteById" parameterType="long">
+        UPDATE mateboard
+        SET status = '1'
+        WHERE mbid = #{value}
+    </update>
+
+</mapper>
+
